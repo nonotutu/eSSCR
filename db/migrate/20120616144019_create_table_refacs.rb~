@@ -1,0 +1,16 @@
+class CreateTableRefacs < ActiveRecord::Migration
+
+  def change
+
+    create_table :refacs do |t|
+    
+      t.integer :crentite_id
+      t.decimal :quota
+      
+      t.timestamps      
+      
+    end
+    
+  end
+
+end

@@ -45,6 +45,6 @@
             %td{ :align => :right }
               = ligne[4]
 
-  - @refacs = @event.refacs
+  - @refacs = @events.refacs
   = render "refacs/list_refacs"
         

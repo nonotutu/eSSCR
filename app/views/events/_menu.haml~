@@ -5,6 +5,7 @@
         = link_to 'All events', events_path
 
     %li    
+      -# active = controller_name == 'events' && ( action_name == 'show' || action_name == 'edit' ) ? :active : nil
       - active = selected_item == 'show' ? :active : nil
       = link_to 'Event data', event_path(@event), :class => active
 

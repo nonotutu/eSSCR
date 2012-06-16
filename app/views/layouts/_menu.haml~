@@ -6,7 +6,6 @@
 	      || controller_name == 'evitems'                                |
 	      || controller_name == 'services'                               |
         || controller_name == 'seritems'                               |
-        || controller_name == 'refacs'                                 |
 	      ? :active : nil                                                |
     %li= link_to 'Events', events_path, :class => active
 

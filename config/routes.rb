@@ -26,6 +26,7 @@ ESSCR2::Application.routes.draw do
 
   resources :events do
     resources :evitems
+    resources :refacs
     resources :services do
       resources :seritems
     end

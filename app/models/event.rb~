@@ -7,8 +7,7 @@ class Event < ActiveRecord::Base
   
   has_many :services
   has_many :evitems
-  has_many :crentites, :through => :refacs
-  has_many :refacs
+  has_many :refacs #pas de through, car pas nécessaire d'accès directs entre les 2
   
   validates :category_id, :presence => true
   validates :name,        :presence => true

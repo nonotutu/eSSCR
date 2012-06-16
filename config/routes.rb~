@@ -21,13 +21,12 @@ ESSCR2::Application.routes.draw do
 
   
   resources :categories
-
   resources :invoice_item_templates
-
   resources :invoices
 
   resources :events do
     resources :evitems
+    resources :refac
     resources :services do
       resources :seritems
     end

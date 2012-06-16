@@ -1,0 +1,8 @@
+= simple_form_for ([@event, @refac ||= Refac.new]) do |f|
+  = f.input :event_id, :input_html => { :value => params[:event_id] }, :as => :hidden
+  = f.input :kind
+  = f.input :price
+  = f.association :crentite, :collection => Crentite.all, :include_blank => false
+  = f.submit
+
+=# link_to 'Clear', event_refacs_path(:mode => 'edit')
