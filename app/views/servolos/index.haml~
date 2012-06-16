@@ -1,0 +1,15 @@
+
+= render 'events/list'
+
+.contenu
+  = render 'events/header', :selected_item => 'services'
+  = render 'services/header', :selected_item => 'volos'
+
+  = render "list_volos"
+  %hr
+  - unless params[:mode] == 'edit'
+    = link_to "Add/Remove volunteers", event_service_servolos_path(@event, @service, :mode =>'edit')
+  - else
+    = render "form"
+    = link_to "Back", event_service_servolos_path
+  %hr

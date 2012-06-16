@@ -29,6 +29,7 @@ ESSCR2::Application.routes.draw do
     resources :refacs
     resources :services do
       resources :seritems
+      resources :servolos
     end
   end
 

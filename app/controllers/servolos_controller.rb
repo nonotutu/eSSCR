@@ -1,5 +1,17 @@
 class ServolosController < InheritedResources::Base
   
+  # l'ordre a une importance, car double-nesté
+  belongs_to :event, :service
+
+  def index
+    @event = Event.find(params[:event_id])
+    @service = Service.find(params[:service_id])
+    # pour éditer un evitem sans la page edit, s'il est dans les params
+    @servolos = @service.servolos.all
+    @servolo = begin Servolo.find(params[:servolo_id]) rescue nil end
+  end
+
+  
   # nécessaire pour overrider les redirect_to par défaut
   def create
   

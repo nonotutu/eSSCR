@@ -21,7 +21,7 @@
     
     %li
       - active = selected_item == 'volos' ? :active : nil
-      = link_to "Volunteers(#{@service.volos.count})", event_service_servolos_path(@event, @service), :class => active
+      = link_to "Volunteers(#{@service.volos.count})", event_service_volos_path(@event, @service), :class => active
       
     %li
       - active = selected_item == 'dispositifs' ? :active : nil

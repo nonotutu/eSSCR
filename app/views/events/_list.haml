@@ -7,10 +7,7 @@
   - event_id = params[:event_id].to_i
 
 - if controller_name == 'services'
-  - if params[:id].to_i == 0
-    - service_id = params[:service_id].to_i
-  - else
-    - service_id = params[:id].to_i
+  - service_id = params[:id].to_i
 - else
   - service_id = params[:service_id].to_i
 

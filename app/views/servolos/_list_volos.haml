@@ -1,0 +1,19 @@
+%table
+  %tr
+    %th First_name
+    %th Last_name
+  - @servolos.each do |servolo|
+    %tr
+      %td= servolo.volo.first_name
+      %td= servolo.volo.last_name
+      %td
+        from
+        = servolo.starts_at
+      %td
+        to
+        = servolo.ends_at
+      - if params[:mode] == 'edit'
+        %td= link_to 'edit', event_service_servolos_path(:servolo_id => servolo.id, :mode => 'edit')
+        =#%td= link_to 'edit', event_service_servolos_path(params[:event_id], params[:service_id], { :mode => "edit", :servolo_id => servolo.id } )
+        %td= link_to "remove", { :controller => :servolos, :action => :destroy, :id => servolo.id }, :method => :delete #TODO: améliorer ?
+        =#%td= link_to "remove", { :controller => :servolos, :action => :destroy, :id => servolo.id }, :method => :delete
