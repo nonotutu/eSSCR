@@ -16,7 +16,7 @@
   = to_euro(event_calcul_prix_total(@event.id))
   %br/
   Refac:
-  - if (@event.refacs.count == 0)
+  - if (@event.refac == nil)
     non
   - else
     oui
