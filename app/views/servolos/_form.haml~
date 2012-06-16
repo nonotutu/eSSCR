@@ -1,0 +1,8 @@
+= simple_form_for ( @servolo ||= Servolo.new ) do |f|
+  = f.association :volo, :collection => @all_active_volos, :input_html => { :size => 8 }, :include_blank => false
+  = f.input :starts_at
+  = f.input :ends_at
+  = f.input :service_id, :input_html => { :value => params[:service_id] }, :as => hidden
+  = f.submit
+
+= link_to 'Clear', event_service_volos_path(:mode => 'with_edit')

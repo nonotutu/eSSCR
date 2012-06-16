@@ -1,0 +1,16 @@
+= render 'events/header', :selected_item => 'services'
+
+.title_active_element_2
+  Services list
+
+.liste
+  %ul
+    - @event.services.each do |service|
+      %li
+        - ser = service.starts_at.to_s(:cust_short) + " → " + service.relative_ends_at
+        =link_to ser, event_service_path(@event, service)
+
+=#%td= link_to 'destroy', event, confirm: 'Are you sure?', method: :delete
+
+%hr
+= link_to 'New service', new_event_service_path

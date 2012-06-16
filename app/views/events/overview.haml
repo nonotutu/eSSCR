@@ -1,0 +1,19 @@
+= render 'events/list'
+
+.contenu
+  = render 'header', :selected_item => 'overview'
+
+  Services:
+  = @event.services.count
+  %br/
+  Invoice number:
+  - begin
+    = link_to @event.invoice.number, invoice_path(@event.invoice)
+  - rescue
+    %i no invoice
+  %br/
+  Price:
+  = to_euro(event_calcul_prix_total(@event.id))
+  %br/
+
+  %hr

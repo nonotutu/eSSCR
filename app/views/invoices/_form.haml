@@ -1,0 +1,6 @@
+= simple_form_for @invoice do |f|
+  = f.input :number, :input_html => { :size => 8 } 
+  = f.input :customer_data, :input_html => { :rows => 3, :cols => 40 } 
+  = f.input :sent_at, :start_year => 2010, :end_year => Date.today.year, :include_blank => true
+  = f.submit
+  

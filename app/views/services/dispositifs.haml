@@ -1,0 +1,15 @@
+
+= render 'events/list'
+
+.contenu
+  = render 'events/header', :selected_item => 'services'
+  = render 'header', :selected_item => 'dispositifs'
+
+  = render "list_dispositifs"
+  %hr
+  - unless params[:mode] == 'edit'
+    = link_to "Add/Remove dispositifs", event_service_dispositifs_path(@event, @service, :mode =>'edit')
+  - else
+    = render "disposers/form"
+    = link_to "Back", event_service_dispositifs_path
+  %hr

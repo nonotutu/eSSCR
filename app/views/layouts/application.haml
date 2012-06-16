@@ -1,0 +1,25 @@
+!!!
+%html
+  %head
+    %title ESSCR2
+    = stylesheet_link_tag    "application", :media => "all"
+    = javascript_include_tag "application"
+    = csrf_meta_tags
+
+  %body
+    -#
+      %small
+        controller_name :
+        = controller_name
+        %br/
+        action_name :
+        = action_name
+        %br/
+
+    .notice
+      = flash[:notice]
+      = flash[:alert]
+    
+    = render 'layouts/menu'
+
+    = yield

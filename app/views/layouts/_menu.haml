@@ -1,0 +1,13 @@
+.menu
+  %ul
+    %li= link_to '(Home)'
+      
+    - active = controller_name == 'events'                             |
+	      || controller_name == 'evitems'                                |
+	      || controller_name == 'services'                               |
+        || controller_name == 'seritems'                               |
+	      ? :active : nil                                                |
+    %li= link_to 'Events', events_path, :class => active
+
+    - active = controller_name == 'invoices' ? :active : nil
+    %li= link_to 'Invoices', invoices_path, :class => active

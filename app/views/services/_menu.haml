@@ -1,0 +1,28 @@
+.menu
+
+  %ul
+    -#
+      %li
+        = link_to "All services", event_services_path(@event)
+
+    %li
+      -# active = controller_name == 'services' && ( action_name == 'show' || action_name == 'edit' ? :active : nil )
+      - active = selected_item == 'show' ? :active : nil
+      = link_to "Service data", event_service_path(@event, @service), :class => active
+
+    %li
+      = link_to "[Overview]"
+
+    =# nesté
+    %li
+      -# active = controller_name == 'seritems' && ( action_name == 'index' || action_name == 'new' ) ? :active : nil
+      - active = selected_item == 'seritems' ? :active : nil
+      = link_to "Invoiced service items(#{@service.seritems.count})", event_service_seritems_path(@event, @service), :class => active
+    
+    %li
+      - active = selected_item == 'volos' ? :active : nil
+      = link_to "Volunteers(#{@service.volos.count})", event_service_volos_path(@event, @service), :class => active
+      
+    %li
+      - active = selected_item == 'dispositifs' ? :active : nil
+      = link_to "Dispositifs(#{@service.dispositifs.count})", event_service_dispositifs_path(@event, @service), :class => active

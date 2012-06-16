@@ -1,0 +1,14 @@
+
+= render 'events/list'
+
+.contenu
+  = render 'events/header', :selected_item => 'evitems'
+
+
+  .contenu
+    = render 'list_evitems'
+    %hr
+    = render 'form'
+    %hr
+    = link_to 'Back', event_evitems_path(params[:event_id])
+    = link_to 'Clear (create new)', event_evitems_path(:mode => 'edit')

@@ -1,0 +1,89 @@
+
+- if controller_name == 'events'
+  - event_id = params[:id].to_i
+- else
+  - event_id = params[:event_id].to_i
+
+- if controller_name == 'services'
+  - service_id = params[:id].to_i
+- else
+  - service_id = params[:service_id].to_i
+
+.menu_gauche
+  
+  .menu_gauche_1
+    %ul
+      %li
+        = link_to '→ New event', new_event_path
+      - Event.all.each do |event|
+        %li
+          - active = (event_id == event.id ? :active : nil)
+          - evt = event.category.short_name + " - " + event.name
+          = link_to evt, event_path(event.id), :class => active
+          
+  -#  %hr
+
+  .menu_gauche_2
+    - if ( params[:id].present? || params[:event_id].present? )
+      %ul
+        %li
+          = link_to '→ New service', new_event_service_path(event_id) 
+        - Event.find(event_id).services.order(:starts_at).each do |service|
+          %li
+            - active = (service_id == service.id ? :active : nil)
+            - ser = service.starts_at.to_s(:cust_short) + " → " + service.relative_ends_at
+            = link_to ser, event_service_path(service.event.id, service.id), :class => active
+
+
+-#
+
+
+  .menu_liste
+    .liste
+      %ul
+        - Event.all.each do |event|
+          %li
+            - evt = event.category.short_name + " - " + event.name
+            - if controller_name == 'events'
+              - if action_name == 'index'
+                = link_to evt, event_path(event.id)
+              - else
+                = link_to evt, :controller => controller_name, :action => action_name, :id => event.id
+            - elsif controller_name == 'evitems'
+              = link_to evt, :controller => controller_name, :action => action_name, :event_id => event.id
+            - elsif controller_name == 'services' && action_name == 'index'
+              = link_to evt, :controller => controller_name, :action => action_name, :event_id => event.id
+            - else
+              = link_to evt, event_path(event.id)
+            
+  %hr
+
+  - if (params[:id]).present? || (params[:event_id]).present?
+
+    .menu_liste
+      .liste
+        %ul
+          - if controller_name == 'events'
+            - Event.find(params[:id]).services.each do |service|
+              %li
+                - ser = service.starts_at.to_s(:cust_short) + " → " + service.relative_ends_at
+                = link_to ser, event_service_path(service.event.id, service.id)
+          
+          - if controller_name == 'services'
+            - if action_name == 'volos'
+              - Event.find(params[:event_id]).services.each do |service|
+                %li
+                  - ser = service.starts_at.to_s(:cust_short) + " → " + service.relative_ends_at
+                  = link_to ser, :controller => controller_name, :action => action_name, :service_id => service.id, :event_id => service.event.id
+            - else
+              - Event.find(params[:event_id]).services.each do |service|
+                %li
+                  - ser = service.starts_at.to_s(:cust_short) + " → " + service.relative_ends_at
+                  = link_to ser, :controller => controller_name, :action => action_name, :id => service.id, :event_id => service.event.id
+                    
+          - if controller_name == 'seritems'
+            - Event.find(params[:event_id]).services.each do |service|
+              %li
+                - ser = service.starts_at.to_s(:cust_short) + " → " + service.relative_ends_at
+                = link_to ser, :controller => controller_name, :action => action_name, :service_id => service.id, :event_id => service.event.id
+                

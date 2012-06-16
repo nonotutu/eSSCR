@@ -1,0 +1,19 @@
+
+= render 'events/list'
+
+.contenu
+  = render 'events/header', :selected_item => 'services'
+  = render 'services/header', :selected_item => 'seritems'
+
+  = render "list_seritems"
+  
+  - unless params[:mode] == 'edit'
+    .lien_bas_de_page
+      = link_to '> Manage invoiced service item', event_service_seritems_path(params[:event_id], params[:service_id], :mode => "edit")
+  - else
+    = render 'form'
+    .lien_bas_de_page
+      = link_to '> Back', event_service_seritems_path
+      - if params[:seritem_id].present?
+        |
+        = link_to '> Clear (create new)', event_service_seritems_path(:mode => 'edit')

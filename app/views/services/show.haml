@@ -1,0 +1,19 @@
+
+= render 'events/list'
+
+.contenu
+  = render 'events/header', :selected_item => 'services'
+  = render 'header', :selected_item => 'show'
+
+  Starts_at:
+  =@service.starts_at.to_s(:cust_long)
+
+  %br/
+
+  Ends_at:
+  =@service.ends_at.to_s(:cust_long)
+
+  %hr
+
+  = link_to "Edit", edit_event_service_path(@event, @service)
+  = link_to "Destroy", { :action => :destroy, :id => @service.id }, :method => :delete

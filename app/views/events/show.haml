@@ -1,0 +1,17 @@
+
+= render 'events/list'
+
+.contenu
+  = render 'header', :selected_item => 'show'
+
+  Category:
+  = @event.category.name
+  %br/
+  Name:
+  = @event.name
+  %br/
+  
+  %hr
+
+  = link_to "Edit", edit_event_path
+  = link_to "Destroy", { :action => :destroy, :id => @event.id }, :method => :delete

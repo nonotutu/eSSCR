@@ -1,0 +1,19 @@
+.menu
+  %ul
+    %li
+      = link_to "All invoices", invoices_path
+
+    %li
+      -# active = action_name == 'show' || action_name == 'edit' ? :active : nil
+      - active = selected_item == 'show' ? :active : nil
+      = link_to "Data", invoice_path, :class => active
+
+    %li
+      -# active = action_name == 'overview' ? :active : nil
+      - active = selected_item == 'overview' ? :active : nil
+      = link_to "Overview", invoice_overview_path, :class => active
+
+    %li
+      -# active = action_name == 'events' ? :active : nil
+      - active = selected_item == 'events' ? :active : nil
+      = link_to "Events(#{@invoice.events.count})", invoice_events_path, :class => active

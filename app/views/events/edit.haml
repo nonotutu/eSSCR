@@ -1,0 +1,12 @@
+
+= render 'events/list'
+
+.contenu
+  = render 'header', :selected_item => 'show'
+
+  = render 'form'
+
+  %hr/
+
+  = link_to "Back", event_path
+

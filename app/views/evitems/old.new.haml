@@ -1,0 +1,6 @@
+= render 'events/header', :selected_items => 'events'
+
+= render 'form'
+
+%hr
+= link_to 'Back', event_evitems_path(params[:event_id])

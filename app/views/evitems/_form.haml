@@ -1,0 +1,58 @@
+:ruby
+  # remplir les champs avec les données du template_invoiced_item_id si passé en paramètre
+  t_id = params[:template_invoiced_item_id]
+  if t_id.present?
+    template      = TemplateInvoicedItem.find(t_id)
+    item          = Evitem.new
+    item.name     = template.name
+    item.kind     = template.kind
+    item.price    = template.price
+    item.event_id = @event.id
+    evitem        = item
+  end
+
+=# formulaire mis en page
+.formulaire
+  %table
+    %tr
+      %td{ :class => 'form_gauche' }
+        %i
+          Template :
+      %td{ :colspan => '5' }
+        %form{ :method => :get }
+          %select{ :name => :template_invoiced_item_id }
+            %option{ :value => '' }
+            = TemplateInvoicedItem.all.each do |item|
+              - selected = ( ( t_id.present? && template.pos == item.pos ) ? 'selected' : nil )
+              %option{ :value => item.id, :selected => selected }
+                = item.name
+          %input{ :type => :hidden, :name => 'mode', :value => 'edit' }
+          %input{ :type => :submit, :value => 'Use' }
+    = simple_form_for ([@event, evitem ||= @evitem ||= Evitem.new]) do |f|
+      %tr
+        %td{ :class => 'form_gauche' }
+          Name :
+        %td{ :colspan => '5' }
+          = f.input :name, :label => false
+      %tr
+        %td{ :class => 'form_gauche' }
+          Quantity :
+        %td
+          = f.input :qty, :label => false, :input_html => {:size => 2} 
+        %td{ :class => 'form_gauche' }
+          Kind :
+        %td
+          = f.input :kind,
+              :as => :radio,
+              :collection => [['€', 1], ['%', 2]],
+              :label_method => :first,
+              :value_method => :last,
+              :label => false
+        %td{ :class => 'form_gauche' }
+          Price :
+        %td
+          = f.input :price, :label => false, :input_html => {:size => 2} 
+      %tr
+        %td
+        %td{ :colspan => '5', :align => :right }
+          = f.button :submit    

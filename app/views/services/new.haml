@@ -1,0 +1,13 @@
+
+= render 'events/list'
+
+.contenu
+  = render 'events/header', :selected_item => 'services'
+
+  .title_active_element_2
+    New service
+
+  = render 'form'
+  %hr/
+
+  = link_to "Back", event_services_path # TODO : à trouver mieux

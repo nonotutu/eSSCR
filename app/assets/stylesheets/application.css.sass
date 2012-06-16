@@ -1,0 +1,163 @@
+//
+//  This is a manifest file that'll be compiled into application.css, which will include all the files
+//  listed below.
+// 
+//  Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+//  or vendor/assets/stylesheets of plugins, if any, can be referenced here using a relative path.
+// 
+//  You're free to add application-wide styles to this file and they'll appear at the top of the
+//  compiled file, but it's generally better to create a new file per style scope.
+// 
+// = require_self
+// = require_tree .
+//
+
+body
+  font-family: "URW Gothic L"
+
+.title_active_element_1
+  font-size: xx-large
+  color: red
+  padding-left: 80px
+  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black
+
+.title_active_element_2
+  font-size: x-large
+  color: red
+  padding-left: 120px
+  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black
+
+.contenu
+  overflow: auto
+
+.notice
+  float: right
+  padding-right: 16px
+  
+.menu_gauche // mettre des s et regrouper
+  float: left
+
+.menu_gauche_1
+  background: lightgray
+  width: 300px
+  overflow-y: auto
+  margin: 8px
+  padding: 4px
+  border-radius: 4px
+  ul
+    list-style: none
+    margin: 0
+    padding: 0
+    font-size: small
+  li
+  a
+    color: black
+    &:link
+      text-decoration: none
+    &:hover
+      color: red
+    &.active
+      font-weight: bold
+      color: red
+  height: 300px
+      
+.menu_gauche_2
+  @extend .menu_gauche_1
+  height: 150px
+
+  
+.liste // liste des feux indexs
+  background: rgb(208,208,208)
+  border-radius: 4px
+  ul
+    list-style: none
+    margin: 0
+    padding: 0
+    font-size: small
+  li
+    ul
+      padding-left: 20px
+      font-size: x-small
+  a
+    color: black
+    &:link
+      text-decoration: none
+    &:hover
+      color: red
+    &.active
+      font-weight: bold
+      color: red
+
+
+.table_invoiced_items
+  margin: 8px
+  table
+    border-collapse: collapse
+  th
+    padding-left: 4px
+    padding-right: 4px
+    background: rgb(255,191,191)
+    font-weight: bold
+    font-size: small  
+  tr
+  td
+    border-bottom: 1px solid rgb(255,191,191)
+    padding-left: 8px
+    padding-right: 8px
+    font-family: 'ubuntu mono'
+    font-size: small
+  input
+    font-family: 'URW Gothic L'
+    padding: 0px
+    font-size: xx-small
+    margin: -4px
+    border: 1px solid gray
+    border-radius: 8px
+    background: white
+    &:hover
+      border: 1px solid red
+    &:active
+      background: red
+      color: white
+  a
+    @extend input
+    color: black
+    padding-top: 1px
+    padding-bottom: 1px
+    padding-right: 3px
+    padding-left: 3px
+    text-decoration: none
+    font-size: xx-small
+
+.formulaire
+  margin: 8px
+    
+  table
+    background: rgb(207,191,191)
+    padding: 4px
+    border: 2px solid rgb(255,127,127)
+    border-radius: 4px
+  td
+    margin: 0
+    padding: 0
+
+  .form_gauche
+    padding-right: 8px
+    text-align: right
+    font-size: x-small
+    color: white
+    font-weight: bold
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black
+
+.lien_bas_de_page
+  font-size: small
+  padding-left: 8px
+  a
+    color: black
+    &:link
+      text-decoration: none
+    &:hover
+      text-decoration: none
+      color: red
+    &:active
+      font-weight: bold
