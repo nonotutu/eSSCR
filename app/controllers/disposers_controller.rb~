@@ -1,5 +1,7 @@
 class DisposersController < InheritedResources::Base
   
+  belongs_to :event, :service
+  
   # nécessaire pour overrider les redirect_to par défaut
   def create
   
@@ -8,9 +10,7 @@ class DisposersController < InheritedResources::Base
     if @disposer.quantity <= 0 || @disposer.quantity == nil
       @disposer.quantity = 1
     end
-    
-    @disposer.quantity = -1
-    
+        
     if @disposer.save
       redirect_to :back, :notice => "Disposer created (Dispositif added to service)"
     else

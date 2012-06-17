@@ -43,7 +43,7 @@ class ServicesController < InheritedResources::Base
 
   def overview
     # nécessaires pour les menus
-    @service = Service.find(params[:id])
+    @service = Service.find(params[:service_id])
     @event = @service.event
   end
 

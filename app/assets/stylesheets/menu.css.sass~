@@ -2,6 +2,7 @@
   background: rgb(255,127,127)
   border-radius: 4px
   float : top
+  margin: 4px
   ul
     list-style: none
     margin: 0
@@ -10,7 +11,7 @@
     display: inline
     padding-left: 40px
   a
-    font-size: normal
+    font-size: medium
     color: white
     &:link
       text-decoration: none
@@ -18,4 +19,5 @@
       color: red
     &.active
       font-weight: bold
-      color: red  
+      color: red
+      text-shadow: -1px 0 3px white, 0 1px 3px white, 1px 0 3px white, 0 -1px 3px white

@@ -1,5 +1,5 @@
 = simple_form_for (@event) do |f|
   = f.association :category
   = f.input       :name
-  = f.association :customer
   = f.button      :submit
+  = f.association :customer

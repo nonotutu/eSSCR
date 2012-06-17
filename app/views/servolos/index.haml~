@@ -8,7 +8,7 @@
   = render "list_volos"
   %hr
   - unless params[:mode] == 'edit'
-    = link_to "Add/Remove volunteers", event_service_servolos_path(@event, @service, :mode =>'edit')
+    = link_to "Add/Remove volunteers", event_service_servolos_path(:mode =>'edit')
   - else
     = render "form"
     = link_to "Back", event_service_servolos_path

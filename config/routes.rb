@@ -9,8 +9,8 @@ ESSCR2::Application.routes.draw do
   match "events/:id/add_to_invoice"      => "events#add_to_invoice"
   match "events/:id/remove_from_invoice" => "events#remove_from_invoice"
 
-  match "events/:event_id/services/:service_id/volos"                           => "services#volos",            :as => :event_service_volos
-  match "events/:event_id/services/:service_id/dispositifs"                     => "services#dispositifs",      :as => :event_service_dispositifs
+  match "events/:event_id/services/:id/overview"    => "services#overview",    :as => :event_service_overview
+  #match "events/:event_id/services/:service_id/dispositifs" => "services#dispositifs", :as => :event_service_dispositifs
 
   match "evitems/:id/move_up"   => "evitems#move_up"
   match "evitems/:id/move_down" => "evitems#move_down"
@@ -30,13 +30,14 @@ ESSCR2::Application.routes.draw do
     resources :services do
       resources :seritems
       resources :servolos
+      resources :disposers
     end
   end
 
   resources :volos
-  resources :servolos
+  #resources :servolos
   
-  resources :disposers
+  #resources :disposers
   resources :dispositifs
 
 

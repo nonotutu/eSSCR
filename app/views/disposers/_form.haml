@@ -1,10 +1,9 @@
-= simple_form_for ( @disposer ||= Disposer.new ) do |f|
+= simple_form_for ( [@event, @service, @disposer ||= Disposer.new] ) do |f|
   = f.association :dispositif, :collection => Dispositif.all, :input_html => { :size => 8 }, :include_blank => false
   = f.input :quantity, :input_html => {:size => 2}
   = f.input :service_id, :input_html => { :value => params[:service_id] }, :as => :hidden
   = f.association :crentite, :collection => Crentite.all
   = f.submit
 
-= link_to 'Clear', event_service_dispositifs_path(:mode => 'edit')
+= link_to 'Clear', event_service_disposers_path(:mode => 'edit')
 
-=# page service_dispositifs

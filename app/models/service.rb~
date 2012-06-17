@@ -20,7 +20,7 @@ class Service < ActiveRecord::Base
     if ( diff == 0 )
       self.ends_at.to_s(:cust_time)
     else
-      self.ends_at.to_s(:cust_time) + " (+" + diff.to_s + ")"
+      self.ends_at.to_s(:cust_time) + "(+" + diff.to_s + ")"
     end
   end
   

@@ -1,9 +1,9 @@
-=# simple_form_for ( @servolo ||= Servolo.new ) do |f|
-= simple_form_for ([@event, @service, servolo ||= @servolo ||= Servolo.new ]) do |f|
+=# #TODO: checker si pas meilleure formule
+= simple_form_for ([@event, @service, @servolo ||= Servolo.new ]) do |f|
   = f.association :volo, :collection => @all_active_volos, :input_html => { :size => 8 }, :include_blank => false
   = f.input :starts_at
   = f.input :ends_at
   = f.input :service_id, :input_html => { :value => params[:service_id] }, :as => :hidden
   = f.submit
 
-= link_to 'Clear', event_service_volos_path(:mode => 'with_edit')
+= link_to 'Clear', event_service_servolos_path(:mode => 'edit')

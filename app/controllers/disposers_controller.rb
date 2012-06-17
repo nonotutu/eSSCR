@@ -1,5 +1,16 @@
 class DisposersController < InheritedResources::Base
   
+  belongs_to :event, :service
+  
+  def index
+    @event = Event.find(params[:event_id])
+    @service = Service.find(params[:service_id])
+    # pour éditer un evitem sans la page edit, s'il est dans les params
+    @disposers = @service.disposers.all
+    @disposer = begin Disposer.find(params[:disposer_id]) rescue nil end
+  end
+  
+  
   # nécessaire pour overrider les redirect_to par défaut
   def create
   
