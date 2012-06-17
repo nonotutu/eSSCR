@@ -161,8 +161,6 @@ body
     @extend p
     color: red
     font-size: x-small
-    text-align: right
-    margin-left: 120px
   .d
     @extend p
     y-align: bottom
@@ -181,3 +179,29 @@ body
       color: red
     &:active
       font-weight: bold
+      
+.graphe_volo
+  hr
+    border: 0
+    padding: 0
+    margin: 0
+    height: 24px
+    background: red
+  .a
+    @extend hr
+    background: lightgray
+  .p
+    @extend hr
+    background: lightgreen
+  table
+    padding: 0
+    border-collapse: collapse
+    border: 1px solid red
+    tr
+      padding: 0
+    td
+      padding: 0
+      border: 1px solid yellow
+      font-size: small
+    
+   

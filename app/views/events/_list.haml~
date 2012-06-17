@@ -22,55 +22,55 @@ service_id:
 = params[:service_id]
 |
 
+-#
+  - if (params[:tri_ordre].present?)
+    - session[:tri_ordre] = params[:tri_ordre]
 
-- if (params[:tri_ordre].present?)
-  - session[:tri_ordre] = params[:tri_ordre]
+  - if (params[:tri_annee].present?)
+    - session[:tri_annee] = params[:tri_annee]
 
-- if (params[:tri_annee].present?)
-  - session[:tri_annee] = params[:tri_annee]
+  - liste_ordre = []
+  - liste_ordre << { :value => '1', :name => 'croissant' }
+  - liste_ordre << { :value => '2', :name => 'décroissant' }
+  - liste_ordre << { :value => '3', :name => 'alphabétique' }
+  - liste_ordre << { :value => '4', :name => 'désalphabétique' }
 
-- liste_ordre = []
-- liste_ordre << { :value => '1', :name => 'croissant' }
-- liste_ordre << { :value => '2', :name => 'décroissant' }
-- liste_ordre << { :value => '3', :name => 'alphabétique' }
-- liste_ordre << { :value => '4', :name => 'désalphabétique' }
+  - liste_annee = []
+  - liste_annee << { :value => 'all', :name => 'toutes' }
+  - liste_annee << { :value => '2010', :name => '2010' }
+  - liste_annee << { :value => '2011', :name => '2011' }
+  - liste_annee << { :value => '2012', :name => '2012' }
 
-- liste_annee = []
-- liste_annee << { :value => 'all', :name => 'toutes' }
-- liste_annee << { :value => '2010', :name => '2010' }
-- liste_annee << { :value => '2011', :name => '2011' }
-- liste_annee << { :value => '2012', :name => '2012' }
-
- 
-%form{:action => '', :method => :get}
-  Order by : 
-  %select{:name => 'tri_ordre'}
-    = liste_ordre.each do |item|
-      -  selected = ( item[:value] == session[:tri_ordre] ? 'selected' : nil )
-      %option{ :value => item[:value], :selected => selected }= item[:name]
-  %br/
-  Year : 
-  %select{:name => 'tri_annee'}
-    = liste_annee.each do |item|
-      - selected = ( item[:value] == session[:tri_annee] ? 'selected' : nil )
-      %option{ :value => item[:value], :selected => selected }= item[:name]
-  %input{:type => :submit}
-
-- events = Event
-
-
-- if ( session[:tri_ordre] == '2' )
-  - events = events.all.reverse
   
-- if ( session[:tri_ordre] == '3' )
-  - events = events.order('name')
+  %form{:action => '', :method => :get}
+    Order by : 
+    %select{:name => 'tri_ordre'}
+      = liste_ordre.each do |item|
+        -  selected = ( item[:value] == session[:tri_ordre] ? 'selected' : nil )
+        %option{ :value => item[:value], :selected => selected }= item[:name]
+    %br/
+    Year : 
+    %select{:name => 'tri_annee'}
+      = liste_annee.each do |item|
+        - selected = ( item[:value] == session[:tri_annee] ? 'selected' : nil )
+        %option{ :value => item[:value], :selected => selected }= item[:name]
+    %input{:type => :submit}
 
-- if ( session[:tri_ordre] == '4' )
-  - events = events.order('name').reverse
+  - events = Event
 
-- if ( session[:tri_annee].present? )
-  - unless ( session[:tri_annee] == 'all' )
-    - events = Event.joins(:services).where("SUBSTR(starts_at,1,4) = ?", session[:tri_annee])
+
+  - if ( session[:tri_ordre] == '2' )
+    - events = events.all.reverse
+    
+  - if ( session[:tri_ordre] == '3' )
+    - events = events.order('name')
+
+  - if ( session[:tri_ordre] == '4' )
+    - events = events.order('name').reverse
+
+  - if ( session[:tri_annee].present? )
+    - unless ( session[:tri_annee] == 'all' )
+      - events = Event.joins(:services).where("SUBSTR(starts_at,1,4) = ?", session[:tri_annee])
 
 
 
@@ -80,7 +80,7 @@ service_id:
     %ul
       %li
         = link_to '→ New event', new_event_path
-      - events.each do |event|
+      - Events.all.each do |event|
         %li
           - active = (event_id == event.id ? :active : nil)
           - evt = event.category.short_name + " - " + event.name

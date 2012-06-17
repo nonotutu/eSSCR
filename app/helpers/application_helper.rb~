@@ -226,8 +226,6 @@ module ApplicationHelper
   
   def gen_table_heures(debut_service, fin_service)
 
-    duree_service = fin_service - debut_service
-    
     tableau_heures = Array.new
     i = debut_service
     while i <= fin_service do
