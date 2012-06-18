@@ -1,135 +1,39 @@
 
-- debut_service = @service.starts_at.to_i
-- fin_service = @service.ends_at.to_i
-- duree_service = ( @service.ends_at - @service.starts_at ).to_i
+- service = Service.find(service_id)
 
-- tableau_heures = Array.new
-- i = debut_service
-- while i <= fin_service do
-  - if i%3600 == 0
-    - tableau_heures << i
-  - i += 5.minutes
+- if ( service.ends_at - service.starts_at ).to_i <= 0
+  Erreur : Service a durée négative
+- else
 
-début du service:
-= debut_service
-%br/
-fin du service:
-= fin_service
-%br/
-durée du service:
-= duree_service
-secondes
+  - tableau_heures = fct_calcul_tableau_heures(service.starts_at.to_i, service.ends_at.to_i)
+  - graphe = fct_calcul_tableau_servolos(service.id)
 
-- tableau_heures_temp = Array.new
-- tableau_heures.each do |heure|
-  - tableau_heures_temp << heure - debut_service
-- tableau_heures = tableau_heures_temp
-
-- nombre_heures = tableau_heures.count
-
-- tableau_court_heures = Array.new
-- tableau_court_heures << tableau_heures.first.to_f / duree_service * 100
-- tableau_court_heures << tableau_heures.last.to_f / duree_service * 100
-- tableau_court_heures << tableau_heures.count
-- tableau_court_heures << 3600.to_f / duree_service * 100
-- tableau_court_heures << (duree_service - tableau_heures.last.to_f) / duree_service * 100
-
-%hr/
-heures en secondes:
-- tableau_heures.each do |heure|
-  = heure
-%br
-court:
-- tableau_court_heures.each do |i|
-  = i
-
-  
-- tableau_heures_temp = Array.new
-- tableau_heures.each do |heure|
-  - tableau_heures_temp << ( heure ).to_f / duree_service * 100
-- tableau_heures = tableau_heures_temp
-
-%hr/
-heures en pourcents:
-- tableau_heures.each do |heure|
-  = heure
-
-
-%hr/
-
-- graphe = Array.new
-
-- @service.servolos.each do |servolo|
-  - ligne = Array.new
-  - ligne << servolo.volo.first_name
-  - debut_servolo = ( servolo.starts_at - @service.starts_at ).to_i
-  - if debut_servolo < 0
-    - ligne << 0
-  - else
-    - ligne << debut_servolo
-  - fin_servolo = ( servolo.ends_at - @service.starts_at ).to_i
-  - if fin_servolo > duree_service
-    - ligne << duree_service
-  - else
-    - ligne << fin_servolo
-  - graphe << ligne
-
-En secondes:
-- graphe.each do |ligne|
-  = ligne
-%hr
-
-- graphe.each do |ligne|
-  - ligne[1] = ligne[1].to_f / duree_service * 100
-  - ligne[2] = ligne[2].to_f / duree_service * 100
-
-En /100:
-- graphe.each do |ligne|
-  = ligne
-%hr
-
-- graphe_temp = Array.new
-- graphe.each do |ligne|
-  - ligne_temp = Array.new
-  - ligne_temp << ligne[0] << ligne[1]
-  - ligne_temp << ( ligne[2] - ligne[1] )
-  - ligne_temp << 100 - ligne[2]
-  - ligne_temp << ligne[2]
-  - graphe_temp << ligne_temp
-- graphe = graphe_temp
-
-Nom, dist/100, dist/100, dist/100, fin
-- graphe.each do |ligne|
-  = ligne
-%hr
-
-.graphe_volo
-  %table{ :style => "width: 100%" }
+  %table.graphe_volo
     %tr
-      %td{ :align => "center", :style => "width: 1%" }
-        ×
+      %td{ :style => "width: 1%" }
       %td
-        %table{ :style => "width: 100%;" }
-          %tr{ :style => "height: 32px" }
-            - if tableau_court_heures[0] != 0
-              %td{ :style => "width: " + tableau_court_heures[0].to_s + "%" }
-              - tableau_court_heures[2] = tableau_court_heures[2] - 1
-            - i = 0
-            - while i < tableau_court_heures[2]
-              %td{ :style => "width: " + tableau_court_heures[3].to_s + "%; border-left: 1px solid black" }
-              - i += 1
-            - if tableau_court_heures[1] != 100
-              %td{ :style => "width: " + tableau_court_heures[4].to_s + "%; border-left: 1px solid black" }
+        %table
+          %tr{ :style => "height: 16px" }
+            - if tableau_heures[5]
+              %td{ :style => "width: " + tableau_heures[0] }
+            - heure = service.starts_at + ( 3600 *(tableau_heures[5] ? 1 : 0) )
+            - (tableau_heures[2] - 1).times do
+              %td{ :style => "width: " + tableau_heures[3] + "; border-left: 1px solid black; font-size: xx-small; padding-left: 4px" }
+                = heure.hour.to_s
+              - heure += 1.hour
+            - if tableau_heures[1]
+              %td{ :style => "width: " + tableau_heures[4] + "; border-left: 1px solid black" }
+            - else
+              %td{ :style => "width: 0%; border-right: 1px solid black" }
       
     - graphe.each do |ligne|
       %tr
-        %td{ :nowrap => "nowrap", :align => "right" }
+        %th
           = ligne[0]
           \:
         %td
           - if ligne[1] > 0
-            %hr{ :class => :a, :style => "float: left; width: "+ligne[1].to_s+"%" }
-          %hr{ :class => :p, :style => "float: left; width: "+ligne[2].to_s+"%" }
+            %hr.a{ :style => "width: "+ligne[1].to_s+"%" }
+          %hr.p{ :style => "width: "+ligne[2].to_s+"%" }
           - if ligne[4] < 100
-            %hr{ :class => :a, :style => "float: left; width: "+ligne[3].to_s+"%" }
-              
+            %hr.a{ :style => "width: "+ligne[3].to_s+"%" }

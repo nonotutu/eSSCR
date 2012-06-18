@@ -15,21 +15,71 @@
 body
   font-family: "URW Gothic L"
 
-.title_active_element_1
-  font-size: xx-large
-  color: red
-  padding-left: 80px
-  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black
+.menu
+  background: rgb(255,127,127)
+  border-radius: 4px
+  float : top
+  ul
+    list-style: none
+    margin: 0
+    padding: 0
+  li
+    display: inline
+    padding-left: 40px
+  a
+    font-size: medium
+    color: white
+    &:link
+      text-decoration: none
+    &:hover
+      color: red
+    &.active
+      font-weight: bold
+      color: red
+      text-shadow: -1px 0 3px white, 0 1px 3px white, 1px 0 3px white, 0 -1px 3px white
 
-.title_active_element_2
-  font-size: x-large
-  color: red
-  padding-left: 120px
-  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black
-
-.contenu
+.main
   overflow: auto
-
+  .title
+    color: red
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black
+    &.one
+      font-size: xx-large
+      padding-left: 80px
+    &.two
+      font-size: x-large
+      padding-left: 120px
+  .section
+    margin: 8px
+    h4
+      margin: 0
+      font-size: large
+      color: black
+      margin-left: 120px
+      font-weight: bold
+      hr
+        width: 90%
+        margin: 0
+        margin-left: -120px
+        color: red
+        border: 0
+        background: red //rgb(255,127,127)
+        height: 1px // 2px
+        //border-bottom: 1px solid rgb(255,127,127)
+    h5
+      margin: 0
+      font-size: small
+      color: red
+    h6
+      margin: 0
+      font-size: small
+      color: red
+      float:left
+      display: inline
+      font-weight: bold
+    .info
+      margin: 0
+  
 .notice
   float: right
   padding-right: 16px
@@ -64,30 +114,6 @@ body
 .menu_gauche_2
   @extend .menu_gauche_1
   height: 150px
-
-  
-.liste // liste des feux indexs
-  background: rgb(208,208,208)
-  border-radius: 4px
-  ul
-    list-style: none
-    margin: 0
-    padding: 0
-    font-size: small
-  li
-    ul
-      padding-left: 20px
-      font-size: x-small
-  a
-    color: black
-    &:link
-      text-decoration: none
-    &:hover
-      color: red
-    &.active
-      font-weight: bold
-      color: red
-
 
 .table_invoiced_items
   margin: 8px
@@ -129,44 +155,6 @@ body
     text-decoration: none
     font-size: xx-small
 
-.formulaire
-  margin: 8px
-    
-  table
-    background: rgb(207,191,191)
-    padding: 4px
-    border: 2px solid rgb(255,127,127)
-    border-radius: 4px
-  td
-    margin: 0
-    padding: 0
-
-  .form_gauche
-    padding-right: 8px
-    text-align: right
-    font-size: x-small
-    color: white
-    font-weight: bold
-    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black
-    
-.infos
-  border-left: 3px dotted red
-  margin: 8px
-  padding-left: 8px
-  p
-    display: inline
-    padding: 0
-    margin: 0
-  .h
-    @extend p
-    color: red
-    font-size: x-small
-  .d
-    @extend p
-    y-align: bottom
-    font-size: small
-    
-
 .lien_bas_de_page
   font-size: small
   padding-left: 8px
@@ -179,27 +167,57 @@ body
       color: red
     &:active
       font-weight: bold
-      
-.graphe_volo
-  hr
+
+table.graphe_volo
+  width: 100%
+  border-collapse: collapse
+  &hr
     border: 0
-    padding: 0
     margin: 0
-    height: 24px
-    background: red
-  .a
-    @extend hr
-    background: lightgray
-  .p
-    @extend hr
-    background: lightgreen
-  table
+    height: 16px
+    float: left
+    &.a
+      background: lightgray
+    &.p
+      background: green
+  th
+    white-space: nowrap
+    padding-right: 4px
+    font-size: small
+    text-align: right
+    font-weight: normal
+    overflow: visible
+  td
+    width: 100%
     padding: 0
+  table
+    width: 100%
     border-collapse: collapse
-    tr
-      padding: 0
-    td
-      padding: 0
-      font-size: small
-    
-   
+      
+table.datadisplay
+  border: 1px solid red
+  border-radius: 4px
+  width: 1%
+  td.title
+    colspan: 2
+    text-align: center
+    font-size: large
+    background: red
+    color: white
+    text-shadow: 1px 1px rgb(255,127,127), 1px -1px rgb(255,127,127), -1px 1px rgb(255,127,127), -1px -1px rgb(255,127,127)
+    padding: 0
+    border-radius: 4px
+  th
+    width: 1px
+    white-space: nowrap
+    font-size: small
+    font-weight: normal
+    text-align: right
+    vertical-align: top
+    color: red
+    padding: 0
+    padding-left: 8px
+  td
+    white-space: nowrap
+    padding-right: 16px
+    padding-left: 8px

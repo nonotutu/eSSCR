@@ -2,17 +2,20 @@
   # remplir les champs avec les données du template_invoiced_item_id si passé en paramètre
   t_id = params[:template_invoiced_item_id]
   if t_id.present?
-    template      = TemplateInvoicedItem.find(t_id)
-    item          = Evitem.new
-    item.name     = template.name
-    item.kind     = template.kind
-    item.price    = template.price
-    item.event_id = @event.id
-    evitem        = item
+    template        = TemplateInvoicedItem.find(t_id)
+    item            = Seritem.new
+    item.name       = template.name
+    item.kind       = template.kind
+    item.price      = template.price
+    item.service_id = @service.id
+    seritem         = item
   end
 
-=# formulaire mis en page
-%table.formulaire
+:css
+  table
+    background: blue
+  
+%table
   %tr
     %th
       %i
@@ -27,7 +30,7 @@
               = item.name
         %input{ :type => :hidden, :name => 'mode', :value => 'edit' }
         %input{ :type => :submit, :value => 'Use' }
-  = simple_form_for ([@event, evitem ||= @evitem ||= Evitem.new]) do |f|
+  = simple_form_for ([@event, @service, seritem ||= @seritem ||= Seritem.new ]) do |f|
     %tr
       %th
         Name :
@@ -37,7 +40,7 @@
       %th
         Quantity :
       %td
-        = f.input :qty, :label => false, :input_html => {:size => 2} 
+        = f.input :qty, :label => false, :input_html => {:size => 2}
       %th
         Kind :
       %td

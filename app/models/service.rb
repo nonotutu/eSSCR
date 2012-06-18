@@ -1,3 +1,4 @@
+# coding: utf-8
 class Service < ActiveRecord::Base
   
   attr_accessible :ends_at, :event_id, :starts_at
@@ -22,6 +23,14 @@ class Service < ActiveRecord::Base
     else
       self.ends_at.to_s(:cust_time) + " (+" + diff.to_s + ")"
     end
+  end
+  
+  def fromto
+    self.to_s
+  end
+  
+  def to_s
+    self.starts_at.to_s(:cust_short) + " → " + self.relative_ends_at
   end
   
 private

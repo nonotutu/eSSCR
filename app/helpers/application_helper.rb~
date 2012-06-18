@@ -223,35 +223,93 @@ module ApplicationHelper
   end
   
   
+# retourne : 0 string :  espace du début à la première heure
+#            1 boolean : espace de la dernière heure à la fin ?
+#            2 integer : nombre d'heures
+#            3 string :  espace entre 2 heures
+#            4 string :  espace de la dernière heure à la fin
+#            5 boolean : espace du début à la première heure ?
   
-  def gen_table_heures(debut_service, fin_service)
+  def fct_calcul_tableau_heures(debut_service, fin_service)
 
-    tableau_heures = Array.new
+    duree_service = fin_service - debut_service
+    
+    # si durée négative, retourne nil
+    if ( duree_service <= 0 )
+      nil
+    end
+
+    # TODO : améliorer
+    # tableau de toutes les heures
+    tableau = Array.new
     i = debut_service
     while i <= fin_service do
       if i%3600 == 0
-        tableau_heures << i
-        i += 5.minutes
+        tableau << i - debut_service
       end
+      i += 5.minutes
     end
 
-    tableau_heures_temp = Array.new
-    tableau_heures.each do |heure|
-      tableau_heures_temp << heure - debut_service
-    end
-    tableau_heures = tableau_heures_temp
+    nombre_heures = tableau.count
 
-    nombre_heures = tableau_heures.count
-
-    tableau_court_heures = Array.new
-    tableau_court_heures << tableau_heures.first.to_f / duree_service * 100
-    tableau_court_heures << tableau_heures.last.to_f / duree_service * 100
-    tableau_court_heures << tableau_heures.count
-    tableau_court_heures << 3600.to_f / duree_service * 100
-    tableau_court_heures << (duree_service - tableau_heures.last.to_f) / duree_service * 100
-
-    tableau_court_heures
+    tableau_heures = Array.new
+    tableau_heures << ( tableau.first.to_f / duree_service * 100 ).to_s + "%"
+    tableau_heures << ( tableau.last == duree_service ? false : true )
+    tableau_heures << tableau.count
+    tableau_heures << ( 3600.to_f / duree_service * 100 ).to_s + "%"
+    tableau_heures << ( (duree_service - tableau.last.to_f) / duree_service * 100 ).to_s + "%"
+    tableau_heures << ( tableau.first == 0 ? false : true )
     
+    return tableau_heures
+
   end
   
+
+  def fct_calcul_tableau_servolos(service_id)
+    
+    service = Service.find(service_id)
+    duree_service = ( service.ends_at - service.starts_at ).to_i
+    
+    return duree_service
+    
+    graphe = Array.new
+    
+    service.servolos.each do |servolo|
+      ligne = Array.new
+      ligne << servolo.volo.first_name
+      debut_servolo = ( servolo.starts_at - service.starts_at ).to_i
+      if debut_servolo < 0
+        ligne << 0
+      else
+        ligne << debut_servolo
+      end
+      fin_servolo = ( servolo.ends_at - service.starts_at ).to_i
+      if fin_servolo > duree_service
+        ligne << duree_service
+      else
+        ligne << fin_servolo
+      end
+      graphe << ligne
+    end
+
+    graphe.each do |ligne|
+      ligne[1] = ligne[1].to_f / duree_service * 100
+      ligne[2] = ligne[2].to_f / duree_service * 100
+    end
+
+    graphe_temp = Array.new
+    graphe.each do |ligne|
+      ligne_temp = Array.new
+      ligne_temp << ligne[0] << ligne[1]
+      ligne_temp << ( ligne[2] - ligne[1] )
+      ligne_temp << 100 - ligne[2]
+      ligne_temp << ligne[2]
+      graphe_temp << ligne_temp
+    end
+    graphe = graphe_temp
+
+    graphe
+
+  end
+
 end

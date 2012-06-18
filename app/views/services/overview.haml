@@ -1,8 +1,19 @@
 
 = render 'events/list'
 
-.contenu
+.main
   = render 'events/header', :selected_item => 'services'
   = render 'header', :selected_item => 'overview'
 
-  = render "graph_volos"
+  .section
+    %h4
+      %hr
+      Dispositif
+      %hr
+    - @disposers = @service.disposers.all
+    = render "disposers/list_dispositifs"
+    %h4
+      %hr
+      Volontaires
+      %hr
+    = render "graph_volos", :service_id => @service.id

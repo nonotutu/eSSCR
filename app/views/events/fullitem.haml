@@ -1,50 +1,51 @@
 = render 'events/list'
 
-.contenu
+.main
   = render 'header', :selected_item => 'fullitem'
 
-  .table_invoiced_items
-    %table
-      %tr
-        %th{ :witdh => '40px' }
-        %th Name
-        %th Qty
-        %th Price
-        %th Total
-      - table_event_fullitem(params[:id]).each do |ligne|
-        - if ( ligne[0].to_i == -4 )
-          %tr{ :style => "background: rgb(255,223,223)" }
-            %td{ :colspan => 4 }
-              %i
+  .section
+    .table_invoiced_items
+      %table
+        %tr
+          %th{ :witdh => '40px' }
+          %th Name
+          %th Qty
+          %th Price
+          %th Total
+        - table_event_fullitem(params[:id]).each do |ligne|
+          - if ( ligne[0].to_i == -4 )
+            %tr{ :style => "background: rgb(255,223,223)" }
+              %td{ :colspan => 4 }
+                %i
+                  = ligne[1]
+              %td{ :align => :right }
+                = ligne[4]
+          - elsif ( ligne[0].to_i == -3 )
+            %tr{ :style => "background: rgb(255,0,0); color: white; font-weight: bold" }
+              %td{ :colspan => 4 }
+                %i
+                  = ligne[1]
+              %td{ :align => :right }
+                = ligne[4]
+          - elsif ( ligne[0].to_i < 0 )
+            %tr
+              %td{ :colspan => 4, :style => "border-bottom: 1px solid red" }
+                %i
+                  = ligne[1]
+              %td{ :align => :right, :style => "border-bottom: 1px solid red" }
+                = ligne[4]
+          - else
+            %tr
+              %td
+              %td
                 = ligne[1]
-            %td{ :align => :right }
-              = ligne[4]
-        - elsif ( ligne[0].to_i == -3 )
-          %tr{ :style => "background: rgb(255,0,0); color: white; font-weight: bold" }
-            %td{ :colspan => 4 }
-              %i
-                = ligne[1]
-            %td{ :align => :right }
-              = ligne[4]
-        - elsif ( ligne[0].to_i < 0 )
-          %tr
-            %td{ :colspan => 4, :style => "border-bottom: 1px solid red" }
-              %i
-                = ligne[1]
-            %td{ :align => :right, :style => "border-bottom: 1px solid red" }
-              = ligne[4]
-        - else
-          %tr
-            %td
-            %td
-              = ligne[1]
-            %td{ :align => :right }
-              = ligne[2]
-            %td{ :align => :right }
-              = ligne[3]
-            %td{ :align => :right }
-              = ligne[4]
+              %td{ :align => :right }
+                = ligne[2]
+              %td{ :align => :right }
+                = ligne[3]
+              %td{ :align => :right }
+                = ligne[4]
 
-  - @refacs = @event.refacs
-  = render "refacs/list_refacs"
-        
+    - @refacs = @event.refacs
+    = render "refacs/list_refacs"
+          

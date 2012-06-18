@@ -1,19 +1,20 @@
 
 = render 'events/list'
 
-.contenu
+.main
   = render 'events/header', :selected_item => 'evitems'
 
-  
-  = render "list_evitems"
 
-  - unless params[:mode] == 'edit'
-    .lien_bas_de_page
-      = link_to '> Manage invoiced event item', event_evitems_path(params[:event_id], :mode => "edit")
-  - else
-    = render 'form'
-    .lien_bas_de_page
-      = link_to '> Back', event_evitems_path
-      - if params[:evitem_id].present?
-        |
-        = link_to '> Clear (create new)', event_evitems_path(:mode => 'edit') 
+  .section
+    = render "list_evitems"
+
+    - unless params[:mode] == 'edit'
+      .lien_bas_de_page
+        = link_to '> Manage invoiced event item', event_evitems_path(params[:event_id], :mode => "edit")
+    - else
+      = render 'form'
+      .lien_bas_de_page
+        = link_to '> Back', event_evitems_path
+        - if params[:evitem_id].present?
+          |
+          = link_to '> Clear (create new)', event_evitems_path(:mode => 'edit') 

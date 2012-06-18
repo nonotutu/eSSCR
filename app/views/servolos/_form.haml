@@ -1,9 +1,40 @@
-=# #TODO: checker si pas meilleure formule
-= simple_form_for ([@event, @service, @servolo ||= Servolo.new ]) do |f|
-  = f.association :volo, :collection => @all_active_volos, :input_html => { :size => 8 }, :include_blank => false
-  = f.input :starts_at
-  = f.input :ends_at
-  = f.input :service_id, :input_html => { :value => params[:service_id] }, :as => :hidden
-  = f.submit
 
-= link_to 'Clear', event_service_servolos_path(:mode => 'edit')
+= simple_form_for ([@event, @service, @servolo ||= Servolo.new ]) do |f|
+  = f.input :service_id, :input_html => { :value => params[:service_id] }, :as => :hidden
+  %table.formulaire
+    %tr
+      %td
+        %table{:style => 'border-collapse: collapse' }
+          %tr
+            %th{ :style => 'text-align: left' }
+              Volontaire :
+          %tr
+            %td
+              = f.association :volo, :collection => @all_active_volos, :input_html => { :size => 8 }, :include_blank => false, :label => false
+      %td{ :valign => 'top' }
+        %table
+          %tr
+            %th
+              Starts_at :
+            %td
+              = f.input :starts_at,
+                        :start_year => 2010,
+                        :end_year => Date.today.year+2,
+                        :minute_step => 5,
+                        :order => [:day, :month, :year],
+                        :default => @service.starts_at,
+                        :label => false
+          %tr
+            %th
+              Ends_at :
+            %td
+              = f.input :ends_at,
+                        :start_year => 2010,
+                        :end_year => Date.today.year+2,
+                        :minute_step => 5,
+                        :order => [:day, :month, :year],
+                        :default => @service.ends_at,
+                        :label => false
+          %tr
+            %td{ :colspan => 3, :align => "right" }
+              = f.submit

@@ -18,7 +18,7 @@
 
     .notice
       = flash[:notice]
-      = error
+      = flash[:alert]
     
     = render 'layouts/menu'
 
