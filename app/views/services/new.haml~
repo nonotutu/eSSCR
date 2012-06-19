@@ -13,4 +13,4 @@
 
   .lien_bas_de_page
     >
-    = link_to "Back", :back # TODO : à trouver mieux
+    = link_to "Back", event_services_path # TODO : à trouver mieux

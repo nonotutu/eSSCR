@@ -1,0 +1,88 @@
+
+table.empty
+  border-collapse: collapse
+  th
+    font-size: small
+    text-align: left
+    color: white
+    padding-left: 4px
+    padding-right: 4px
+    background: red
+  th:nth-child(1)
+    padding-left: 8px
+    border-radius: 4px 0 0 0
+  th:last-child
+    border-radius: 0 4px 0 0
+    padding-right: 8px
+  td
+    font-size: small
+    padding-left: 4px
+    padding-right: 4px
+  td:first-child
+    padding-left: 8px
+  td:last-child
+    padding-right: 8px
+  input
+    font-family: 'URW Gothic L'
+    padding: 0px
+    font-size: xx-small
+    margin: -4px
+    border: 1px solid gray
+    border-radius: 8px
+    background: white
+    &:hover
+      border: 1px solid red
+    &:active
+      background: red
+      color: white
+  a
+    @extend input
+    color: black
+    padding-top: 1px
+    padding-bottom: 1px
+    padding-right: 3px
+    padding-left: 3px
+    text-decoration: none
+    font-size: xx-small
+
+    
+table.generic
+  @extend table.empty
+  tr
+  tr:nth-child(2n+1)
+    background: rgb(255,207,207)
+  tr:nth-child(1)
+    background: none
+
+    
+table.invoiced_items
+  @extend table.generic
+  td:nth-child(2)
+    font-family: "mono"
+    text-align: right
+  td:nth-child(3)
+    font-family: "mono"
+    text-align: right
+  td:nth-child(4)
+    font-family: "mono"
+    text-align: right
+  tr:last-child
+    background: red
+    color: white
+    font-weight: bold
+    
+table.fullitems
+  @extend table.empty
+  td:nth-child(3)
+    font-family: "mono"
+    text-align: right
+  td:nth-child(4)
+    font-family: "mono"
+    text-align: right
+  td:nth-child(5)
+    font-family: "mono"
+    text-align: right
+  tr:last-child
+    background: red
+    color: white
+    font-weight: bold

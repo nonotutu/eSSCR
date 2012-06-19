@@ -95,7 +95,14 @@ module ApplicationHelper
     
   end  
 
-  
+# return : >=0 : erreur
+#           -1 : service
+#           -2 : seritem
+#           -3 : sstot service
+#           -4 : sstot services
+#           -5 : evitem
+#           -6 : total
+
   def table_event_fullitem(event_id)
     
     table = Array.new
@@ -108,11 +115,11 @@ module ApplicationHelper
     event.services.order('starts_at').each do |service|
       sstot = BigDecimal("0")
       ligne = Array.new
-      ligne << '-4' << ( service.starts_at.to_s(:cust_short) + " - " + service.relative_ends_at ) << nil << nil << nil
+      ligne << -1 << ( service.starts_at.to_s(:cust_short) + " - " + service.relative_ends_at )
       service.seritems.order('pos').each do |item|
         table << ligne
         ligne = Array.new
-        ligne << item.id
+        ligne << -2
         ligne << item.name
         if item.kind == 1
           montant = item.price * item.qty
@@ -129,17 +136,17 @@ module ApplicationHelper
       end
       total += sstot
       ligne = Array.new
-      ligne << -1 << 'Sous-total' << nil << nil << to_euro(sstot)
+      ligne << -3 << 'Sous-total' << to_euro(sstot)
       table << ligne
     end
     ligne = Array.new
-    ligne << -2 << 'Sous-total services' << nil << nil << to_euro(total)
+    ligne << -4 << 'Sous-total services' << to_euro(total)
     table << ligne
     
 
     event.evitems.order('pos').each do |item|
       ligne = Array.new
-      ligne << item.id
+      ligne << -5
       ligne << item.name
       if item.kind == 1
         montant = item.price * item.qty
@@ -155,7 +162,7 @@ module ApplicationHelper
       total += montant
     end
     ligne = Array.new
-    ligne << -3 << "Total" << nil << nil << to_euro(total)
+    ligne << -6 << "Total" << nil << nil << to_euro(total)
     table << ligne
     
     table
@@ -208,18 +215,6 @@ module ApplicationHelper
     
     table
   
-  end
-  
-  
-  def table_invoiced_items(tableau)
-    
-    # id > 0 / name / qte / price / total
-    # id < 0 / text / nil / nil   / total
-    
-    str = "caca"
-    
-    str
-        
   end
   
   

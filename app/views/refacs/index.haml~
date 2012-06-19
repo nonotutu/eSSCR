@@ -1,19 +1,23 @@
 
 = render 'events/list'
 
-.contenu
+.main
   = render 'events/header', :selected_item => 'refacs'
 
-  
-  = render "list_refacs"
-
-  - unless params[:mode] == 'edit'
-    .lien_bas_de_page
-      = link_to '> Manage refacs', event_refacs_path(:mode => "edit")
-  - else
-    = render 'form'
-    .lien_bas_de_page
-      = link_to '> Back', event_refacs_path
+  .section
+    
+    = render "list_refacs"
+    
+    - if params[:mode] == 'edit'
+      = render "form"
+    
+  .lien_bas_de_page
+    - unless params[:mode] == 'edit'
+      >
+      = link_to 'Manage refacturations', event_refacs_path(:mode => "edit")
+    - else
+      >
+      = link_to 'Back', event_refacs_path
       - if params[:refac_id].present?
         |
-        = link_to '> Clear (create new)', event_refacs_path(:mode => 'edit') 
+        = link_to 'Clear (create new)', event_refacs_path(:mode => 'edit') 

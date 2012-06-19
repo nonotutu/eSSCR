@@ -6,12 +6,21 @@
   = render 'header', :selected_item => 'show'
 
   .section
-    .info
-      %h6 Starts_at:
-      = @service.starts_at.to_s(:cust_long)
-    .info
-      %h6 Ends_at:
-      = @service.ends_at.to_s(:cust_long)
+    %dl
+      %dt Starts_at :
+      %dd= @service.starts_at.to_s(:cust_long)
+    %dl
+      %dt Ends_at :
+      %dd= @service.ends_at.to_s(:cust_long)
+    %dl
+      %dt Rdv :
+      %dd= @service.rdv
+    %dl
+      %dt Rdv_at :
+      %dd= @service.rdv_at
+    %dl
+      %dt Depart_at :
+      %dd= @service.depart_at
 
   .lien_bas_de_page
     >

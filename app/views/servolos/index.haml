@@ -8,10 +8,9 @@
   .section
     = render "list_volos"
 
-
-    - if params[:mode] == 'edit'
+  - if params[:mode] == 'edit'
+    .section
       = render "form"
-
     
   .lien_bas_de_page
     - unless params[:mode] == 'edit'

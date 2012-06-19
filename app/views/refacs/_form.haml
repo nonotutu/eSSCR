@@ -1,8 +1,21 @@
-= simple_form_for ([@event, @refac ||= Refac.new]) do |f|
-  = f.input :event_id, :input_html => { :value => params[:event_id] }, :as => :hidden
-  = f.input :kind
-  = f.input :price
-  = f.association :crentite, :collection => Crentite.all, :include_blank => false
-  = f.submit
-
-=# link_to 'Clear', event_refacs_path(:mode => 'edit')
+%table.formulaire
+  = simple_form_for ([@event, @refac ||= Refac.new]) do |f|
+    = f.input :event_id, :input_html => { :value => params[:event_id] }, :as => :hidden
+    %tr
+      %th Entité :
+      %td= f.association :crentite, :collection => Crentite.all, :include_blank => false, :label => false
+    %tr
+      %th Kind :
+      %td
+        = f.input :kind,
+                  :as => :radio,
+                  :collection => [['€', 1], ['%', 2]],
+                  :label_method => :first,
+                  :value_method => :last,
+                  :label => false
+    %tr
+      %th Price :
+      %td= f.input :price, :label => false, :input_html => { :size => 2 }
+    %tr
+      %th
+      %td{:align => 'right'}= f.submit

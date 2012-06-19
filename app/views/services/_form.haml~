@@ -26,7 +26,7 @@
       %td= f.input :rdv_at,        |
                    :label => false |
     %tr
-      %th Départ :
+      %th Depart_at :
       %td= f.input :depart_at,     |
                    :label => false |
     %tr

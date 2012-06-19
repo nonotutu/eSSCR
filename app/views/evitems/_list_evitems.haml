@@ -1,22 +1,21 @@
 - mode = params[:mode]
 - table = table_event_evitems(@event.id)
 
-.table_invoiced_items
-  %table
+%table.invoiced_items
+  %tr
+    %th Name
+    %th Qty
+    %th Price
+    %th Total
+  - table.each  do |ligne|
     %tr
-      %th Name
-      %th Qty
-      %th Price
-      %th Total
-    - table.each  do |ligne|
-      %tr
-        %td= ligne[1]
-        %td{:align => :right}= ligne[2]
-        %td{:align => :right}= ligne[3]
-        %td{:align => :right}= ligne[4]
-        - if ligne[0] && mode == 'edit'
-          %td= button_to '↑↑', :action => :move_up, :id=>ligne[0]
-          %td= button_to '↓↓', :action => :move_down, :id=>ligne[0]
-          =#%td= link_to 'edit', edit_event_evitem_path(params[:event_id], ligne[0], :mode => "edit") # TODO j'ai chié des boules
-          %td= link_to 'edit', event_evitems_path(params[:event_id], { :mode => "edit", :evitem_id => ligne[0] } ) #version sans la page edit, tout dans l'index
-          %td= button_to "×", { :action => :destroy, :id => ligne[0] }, :method => :delete
+      %td= ligne[1]
+      %td= ligne[2]
+      %td= ligne[3]
+      %td= ligne[4]
+      - if ligne[0] && mode == 'edit'
+        %td= button_to '↑↑', :action => :move_up, :id=>ligne[0]
+        %td= button_to '↓↓', :action => :move_down, :id=>ligne[0]
+        =#%td= link_to 'edit', edit_event_evitem_path(params[:event_id], ligne[0], :mode => "edit") # TODO j'ai chié des boules
+        %td= link_to 'edit', event_evitems_path(params[:event_id], { :mode => "edit", :evitem_id => ligne[0] } ) #version sans la page edit, tout dans l'index
+        %td= button_to "×", { :action => :destroy, :id => ligne[0] }, :method => :delete

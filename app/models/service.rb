@@ -1,7 +1,12 @@
 # coding: utf-8
 class Service < ActiveRecord::Base
   
-  attr_accessible :ends_at, :event_id, :starts_at
+  attr_accessible :event_id,
+                  :starts_at,
+                  :ends_at,
+                  :rdv,
+                  :rdv_at,
+                  :depart_at
 
   belongs_to :event
   has_many :seritems
@@ -13,9 +18,10 @@ class Service < ActiveRecord::Base
   validates :event_id, :presence => true
   validates :starts_at, :presence => true
   validates :ends_at, :presence => true
+  validate  :start_is_before_end
 
   before_destroy :prevent_destroy_unless_service_empty
-
+  
   def relative_ends_at
     diff = ends_at.to_i/86400 - starts_at.to_i/86400
     if ( diff == 0 )
@@ -32,8 +38,12 @@ class Service < ActiveRecord::Base
   def to_s
     self.starts_at.to_s(:cust_short) + " → " + self.relative_ends_at
   end
-  
-private
+
+  def start_is_before_end
+    self.starts_at < self.ends_at
+  end  
+
+  private
   def prevent_destroy_unless_service_empty
     self.errors.add :base, "Service not empty"
       unless ( self.seritems.empty? && self.volos.empty? && self.dispositifs.empty? )

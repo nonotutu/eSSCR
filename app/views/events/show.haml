@@ -9,20 +9,21 @@
       %hr
         Général
       %hr
-    .info
-      %h6 Catégorie :
-      = @event.category.name
-    .info
-      %h6 Nom :
-      = @event.name
-    .info
-      %h6 Client :
-      - if @event.customer != nil
-        - @event.customer.data.lines.each do |line|
-          = line
-          %br/
-      - else
-        %i no client
+    %dl
+      %dt Catégorie :
+      %dd= @event.category.name
+    %dl
+      %dt Nom :
+      %dd= @event.name
+    %dl
+      %dt Client :
+      %dd
+        - if @event.customer != nil
+          - @event.customer.data.lines.each do |line|
+            = line
+            %br
+        - else
+          %i no client
     %h4
       %hr
         Suivi

@@ -9,17 +9,18 @@
     = render "list_volos"
 
 
-    - if params[:mode] == 'edit'
+  - if params[:mode] == 'edit'
+    .section
       = render "form"
 
     
   .lien_bas_de_page
     - unless params[:mode] == 'edit'
-        >
-        = link_to "Manage volunteers", event_service_servolos_path(:mode =>'edit')
+      >
+      = link_to "Manage volunteers", event_service_servolos_path(:mode =>'edit')
     - else
-        >
-        = link_to "Back", event_service_servolos_path
+      >
+      = link_to "Back", event_service_servolos_path
       - if params[:servolo_id].present?
         |
         = link_to 'Clear (create new)', event_service_servolos_path(:mode => 'edit')
