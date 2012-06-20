@@ -115,7 +115,7 @@ module ApplicationHelper
     event.services.order('starts_at').each do |service|
       sstot = BigDecimal("0")
       ligne = Array.new
-      ligne << -1 << ( service.starts_at.to_s(:cust_short) + " - " + service.relative_ends_at ) << nil << nil << nil
+      ligne << -1 << ( service.starts_at.to_s(:cust_short) + " - " + service.relative_ends_at )
       service.seritems.order('pos').each do |item|
         table << ligne
         ligne = Array.new
@@ -136,11 +136,11 @@ module ApplicationHelper
       end
       total += sstot
       ligne = Array.new
-      ligne << -3 << 'Sous-total' << nil << nil << to_euro(sstot)
+      ligne << -3 << 'Sous-total' << to_euro(sstot)
       table << ligne
     end
     ligne = Array.new
-    ligne << -4 << 'Sous-total services' << nil << nil << to_euro(total)
+    ligne << -4 << 'Sous-total services' << to_euro(total)
     table << ligne
     
 
@@ -225,11 +225,11 @@ module ApplicationHelper
 #            4 string :  espace de la dernière heure à la fin
 #            5 boolean : espace du début à la première heure ?
   
-  def fct_calcul_tableau_heures(debut_service, fin_service)
+  def fct_calcul_tableau_heures(debut, fin_service)
 
-    duree_service = fin_service - debut_service
+    duree_service = fin_service - debut
     
-    # si durée négative, retourne nil
+    # si durée négative, retourne nil # TODO : nécessaire ?
     if ( duree_service <= 0 )
       nil
     end
@@ -237,10 +237,10 @@ module ApplicationHelper
     # TODO : améliorer
     # tableau de toutes les heures
     tableau = Array.new
-    i = debut_service
+    i = debut
     while i <= fin_service do
       if i%3600 == 0
-        tableau << i - debut_service
+        tableau << i - debut
       end
       i += 5.minutes
     end
@@ -259,24 +259,72 @@ module ApplicationHelper
 
   end
   
+  
+  def fct_calcul_tableau_horaire(fin, debut, surplace = nil, depart = nil)
 
+    if depart
+      duree = fin - depart
+    elsif surplace
+      duree = fin - surplace
+    else
+      duree = fin - debut
+    end
+    
+    # si durée négative, retourne nil # TODO : nécessaire ?
+    if ( duree <= 0 )
+      nil
+    end
+
+    d = Array.new
+    tableau = Array.new
+    
+    # TODO : optimiser
+    if depart && surplace
+      d0 = ( surplace - depart ).to_f / duree * 100
+      d1 = ( debut - surplace ).to_f / duree * 100
+    elsif depart && !surplace
+      d0 = ( debut - depart ).to_f / duree * 100
+    else # !depart && surplace
+      d1 = ( debut - surplace ).to_f / duree * 100
+    end
+
+    d2 = ( fin - debut ).to_f / duree * 100
+
+    tableau << ( d0 ? ( d0.to_s + "%" ) : nil )
+    tableau << ( d1 ? ( d1.to_s + "%" ) : nil )
+    tableau << d2.to_s + "%"
+
+    tableau
+    
+  end
+
+  
   def fct_calcul_tableau_servolos(service_id)
     
     service = Service.find(service_id)
-    duree_service = ( service.ends_at - service.starts_at ).to_i
+    
+    if service.depart_at
+      debut = service.depart_at
+    elsif service.surplace_at
+      debut = service.surplace_at
+    else
+      debut = service.starts_at
+    end
+    
+    duree_service = ( service.ends_at - debut ).to_i
     
     graphe = Array.new
     
     service.servolos.each do |servolo|
       ligne = Array.new
       ligne << servolo.volo.first_name
-      debut_servolo = ( servolo.starts_at - service.starts_at ).to_i
+      debut_servolo = ( servolo.starts_at - debut ).to_i
       if debut_servolo < 0
         ligne << 0
       else
         ligne << debut_servolo
       end
-      fin_servolo = ( servolo.ends_at - service.starts_at ).to_i
+      fin_servolo = ( servolo.ends_at - debut ).to_i
       if fin_servolo > duree_service
         ligne << duree_service
       else

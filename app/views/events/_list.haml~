@@ -80,7 +80,7 @@ service_id:
     %ul
       %li
         = link_to '→ New event', new_event_path
-      - Events.all.each do |event|
+      - Event.all.each do |event|
         %li
           - active = (event_id == event.id ? :active : nil)
           - evt = event.category.short_name + " - " + event.name

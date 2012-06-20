@@ -7,14 +7,22 @@
     = csrf_meta_tags
 
   %body
-    -#
-      %small
-        controller_name :
-        = controller_name
-        %br/
-        action_name :
-        = action_name
-        %br/
+    %small
+      controller_name :
+      = controller_name
+      |
+      action_name :
+      = action_name
+      |
+      id:
+      = params[:id]
+      |
+      event_id:
+      = params[:event_id]
+      |
+      service_id:
+      = params[:service_id]
+      |
 
     .notice
       = flash[:notice]

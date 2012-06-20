@@ -1,0 +1,61 @@
+
+- service = Service.find(service_id)
+
+- if ( service.ends_at - service.starts_at ).to_i <= 0
+  Erreur : Service à nulle ou négative
+- else
+
+  - horaire = fct_calcul_tableau_horaire(service.ends_at,    |
+                                         service.starts_at,   |
+                                         service.surplace_at,  |
+                                         service.depart_at)     |
+  
+  - if service.depart_at
+    - tableau_heures = fct_calcul_tableau_heures(service.depart_at.to_i, service.ends_at.to_i)
+  - elsif service.surplace_at
+    - tableau_heures = fct_calcul_tableau_heures(service.surplace_at.to_i, service.ends_at.to_i)
+  - else
+    - tableau_heures = fct_calcul_tableau_heures(service.starts_at.to_i, service.ends_at.to_i)
+
+    
+  - graphe = fct_calcul_tableau_servolos(service.id)
+
+  %table.graphe_volo
+
+    %tr
+      %td{ :style => "width: 1%" }
+      %td
+        %table
+          %tr{ :style => "height: 16px" }
+            - if tableau_heures[5]
+              %td{ :style => "width: " + tableau_heures[0] }
+            - heure = service.starts_at + ( 3600 *(tableau_heures[5] ? 1 : 0) )
+            - (tableau_heures[2] - 1).times do
+              %td{ :style => "width: " + tableau_heures[3] + "; border-left: 1px solid black; font-size: xx-small; padding-left: 4px" }
+                = heure.hour.to_s
+              - heure += 1.hour
+            - if tableau_heures[1]
+              %td{ :style => "width: " + tableau_heures[4] + "; border-left: 1px solid black" }
+            - else
+              %td{ :style => "width: 0%; border-right: 1px solid black" }
+    %tr
+      %th
+        %b Service :
+      %td
+        - if horaire[0]
+          %hr.dp{ :style => "width: " + horaire[0] }
+        - if horaire[1]
+          %hr.sp{ :style => "width: " + horaire[1] }
+        %hr.sv{ :style => "width: " + horaire[2] }
+    
+    - graphe.each do |ligne|
+      %tr
+        %th
+          = ligne[0]
+          \:
+        %td
+          - if ligne[1] > 0
+            %hr.a{ :style => "width: "+ligne[1].to_s+"%" }
+          %hr.p{ :style => "width: "+ligne[2].to_s+"%" }
+          - if ligne[4] < 100
+            %hr.a{ :style => "width: "+ligne[3].to_s+"%" }

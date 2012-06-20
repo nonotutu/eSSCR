@@ -4,9 +4,9 @@ class Service < ActiveRecord::Base
   attr_accessible :event_id,
                   :starts_at,
                   :ends_at,
-                  :rdv,
-                  :rdv_at,
-                  :depart_at
+                  :rendezvous,
+                  :depart_at,
+                  :surplace_at
 
   belongs_to :event
   has_many :seritems
@@ -18,9 +18,21 @@ class Service < ActiveRecord::Base
   validates :event_id, :presence => true
   validates :starts_at, :presence => true
   validates :ends_at, :presence => true
-  validate  :start_is_before_end
+  validate  :start_before_end
+  validate  :depart_before_surplace
+  validate  :depart_before_start
+  validate  :surplace_before_start
 
   before_destroy :prevent_destroy_unless_service_empty
+
+  def disposers_to_inline
+    str = nil
+    self.disposers.each do |dispo|
+      str += dispo.quantity.to_s + " × " + dispo.dispositif.name + " ; "
+    end
+    str = str.chomp(" ; ")
+  end
+  
   
   def relative_ends_at
     diff = ends_at.to_i/86400 - starts_at.to_i/86400
@@ -38,18 +50,44 @@ class Service < ActiveRecord::Base
   def to_s
     self.starts_at.to_s(:cust_short) + " → " + self.relative_ends_at
   end
-  
-private
+
+  private
   def prevent_destroy_unless_service_empty
-    self.errors.add :base, "Service not empty"
-      unless ( self.seritems.empty? && self.volos.empty? && self.dispositifs.empty? )
-        false 
-      end
+    unless ( self.seritems.empty? && self.volos.empty? && self.dispositifs.empty? )
+      self.errors.add :base, "Service not empty"
+    end
   end
 
-private
-  def start_is_before_end
-    self.starts_at < self.ends_at
+  def start_before_end
+    if ( self.starts_at && self.ends_at )
+      unless self.starts_at < self.ends_at
+        self.errors.add :base, "Starts_at not before ends_at"
+      end
+    end
+  end
+
+  def depart_before_surplace
+    if ( self.depart_at && self.surplace_at )
+      unless self.depart_at < self.surplace_at
+        self.errors.add :base, "Depart_at not before surplace_at"
+      end
+    end
+  end
+
+  def depart_before_start
+    if ( self.depart_at && self.starts_at )
+      unless self.depart_at < self.starts_at
+        self.errors.add :base, "Depart_at not before starts_at"
+      end
+    end
+  end
+
+  def surplace_before_start
+    if ( self.surplace_at && self.starts_at )
+      unless self.surplace_at < self.starts_at
+        self.errors.add :base, "Surplace_at not before starts_at"
+      end
+    end
   end
 
 end

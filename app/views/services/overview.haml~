@@ -3,17 +3,11 @@
 
 .main
   = render 'events/header', :selected_item => 'services'
-  = render 'header', :selected_item => 'overview'
+  = render 'services/header', :selected_item => 'overview'
 
   .section
-    %h4
-      %hr
-      Dispositif
-      %hr
-    @disposers = @service.disposers.all
-    = render "disposers/list_dispositifs"
-    %h4
-      %hr
-      Volontaires
-      %hr
-    = render "graph_volos", :service_id => @service.id
+    .info
+      -# @disposers = @service.disposers.all
+      = render "disposers/list_dispositifs"
+    .info
+      = render "servolos/graph_volos", :service_id => @service.id

@@ -1,0 +1,6 @@
+- unless @service.dispositifs.empty?
+  - service.dispositifs.each do |dispo|
+    = dispo.name
+    = ";" unless dispo == service.dispositifs.last 
+- else
+  %i no disposers

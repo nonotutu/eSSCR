@@ -71,6 +71,9 @@ body
         color: black
         i
           color: gray
+    .info
+      margin: 0
+      border: 1px solid blue
           
     margin: 8px
     h4
@@ -99,9 +102,6 @@ body
       float:left
       display: inline
       font-weight: bold
-    .info
-      margin: 0
-
 
 .notice
   float: right
@@ -164,44 +164,54 @@ table.graphe_volo
       background: lightgray
     &.p
       background: green
+    &.dp
+      background: rgb(255,191,191)
+    &.sp
+      background: rgb(255,159,159)
+    &.sv
+      background: rgb(255,127,127)
   th
     white-space: nowrap
     padding-right: 4px
-    font-size: small
+    font-size: x-small
     text-align: right
     font-weight: normal
     overflow: visible
+  tr
+    margin: 0
+    padding: 0
   td
     width: 100%
     padding: 0
   table
     width: 100%
     border-collapse: collapse
-      
-table.datadisplay
-  border: 1px solid red
-  border-radius: 4px
-  width: 1%
-  td.title
-    colspan: 2
-    text-align: center
-    font-size: large
-    background: red
-    color: white
-    text-shadow: 1px 1px rgb(255,127,127), 1px -1px rgb(255,127,127), -1px 1px rgb(255,127,127), -1px -1px rgb(255,127,127)
-    padding: 0
-    border-radius: 4px
-  th
-    width: 1px
-    white-space: nowrap
-    font-size: small
-    font-weight: normal
-    text-align: right
-    vertical-align: top
-    color: red
-    padding: 0
-    padding-left: 8px
-  td
-    white-space: nowrap
-    padding-right: 16px
-    padding-left: 8px
+
+//    
+//table.datadisplay
+//  border: 1px solid red
+//  border-radius: 4px
+//  width: 1%
+//  td.title
+//    colspan: 2
+//    text-align: center
+//    font-size: large
+//    background: red
+//    color: white
+//    text-shadow: 1px 1px rgb(255,127,127), 1px -1px rgb(255,127,127), -1px 1px rgb(255,127,127), -1px -1px rgb(255,127,127)
+//    padding: 0
+//    border-radius: 4px
+//  th
+//    width: 1px
+//    white-space: nowrap
+//    font-size: small
+//    font-weight: normal
+//    text-align: right
+//    vertical-align: top
+//    color: red
+//    padding: 0
+//    padding-left: 8px
+//  td
+//    white-space: nowrap
+//    padding-right: 16px
+//    padding-left: 8px

@@ -9,7 +9,6 @@
       = link_to 'Event data', event_path(@event), :class => active
 
     %li
-      -# active = controller_name == 'events' && action_name == 'overview' ? :active : nil
       - active = selected_item == 'overview' ? :active : nil
       = link_to 'Overview', event_overview_path(@event), :class => active
     

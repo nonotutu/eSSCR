@@ -1,9 +1,19 @@
 = simple_form_for ( [@event, @service, @disposer ||= Disposer.new] ) do |f|
-  = f.association :dispositif, :collection => Dispositif.all, :input_html => { :size => 8 }, :include_blank => false
-  = f.input :quantity, :input_html => {:size => 2}
   = f.input :service_id, :input_html => { :value => params[:service_id] }, :as => :hidden
-  = f.association :crentite, :collection => Crentite.all
-  = f.submit
-
-= link_to 'Clear', event_service_disposers_path(:mode => 'edit')
-
+  %table.formulaire
+    %tr
+      %th Dispositif :
+      %td
+        = f.association :dispositif, :collection => Dispositif.all, :input_html => { :size => 8 }, :include_blank => false, :label => false
+    %tr
+      %th Quantité :
+      %td
+        = f.input :quantity, :input_html => {:size => 2}, :label => false
+    %tr
+      %th Assuré par :
+      %td
+        = f.association :crentite, :collection => Crentite.all, :label => false
+    %tr
+      %th
+      %td{ :align => :right }
+        = f.submit

@@ -1,4 +1,4 @@
-%table
+%table.generic
   %tr
     %th Qty
     %th Name
@@ -16,5 +16,6 @@
         - if (disposer.crentite)
           = disposer.crentite.name
       - if params[:mode] == 'edit'
-        %td= link_to 'edit', event_service_dispositifs_path(params[:event_id], params[:service_id], :disposer_id => disposer.id, :mode => 'edit')
+        %td= link_to 'edit', event_service_disposers_path(:disposer_id => disposer.id, :mode => 'edit')
         %td= link_to 'remove', { :controller => :disposers, :action => :destroy, :id => disposer.id }, :method => :delete
+        

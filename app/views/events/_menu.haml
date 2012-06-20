@@ -25,11 +25,3 @@
     %li
       - active = selected_item == 'refacs' ? :active : nil
       = link_to "Refacturation", event_refacs_path(@event), :class => active
-
-      
-    -#
-      =# nesté
-      %li
-        -# active = :select == 'services' ? :active : nil
-        - active = selected_item == 'services' ? :active : nil
-        = link_to "Services(#{@event.services.count})", event_services_path(@event), :class => active

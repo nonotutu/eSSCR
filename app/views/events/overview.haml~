@@ -1,39 +1,19 @@
 = render 'events/list'
 
 .main
-  = render 'header', :selected_item => 'overview'
+  = render 'events/header', :selected_item => 'overview'
 
   .section
- 
-    - @event.services.order(:starts_at).each do |service|
-      .info
-        %h5
+    .info
+      - @event.services.order(:starts_at).each do |service|
+        %h6
           = service.to_s
-        = render "services/graph_volos", :service_id => service.id
-        %hr
+          ‧
+        %h6{ :style => "color: black; font-weight: normal" }
+          = temp = service.disposers_to_inline
+          - if temp.blank?
+            %i aucun dispositif
+        = render "servolos/graph_volos", :service_id => service.id
+    %hr
       
       
--#
-  %table.datadisplay
-    %tr
-      %td.title{ :colspan => '2' } Événement
-    %tr
-      %th Services:
-      %td= @event.services.count
-    %tr
-      %th Invoice number:
-      %td
-        - begin
-          = link_to @event.invoice.number, invoice_path(@event.invoice)
-        - rescue
-          %i no invoice
-    %tr
-      %th Price:
-      %td= to_euro(event_calcul_prix_total(@event.id))
-    %tr
-      %th Refac:
-      %td
-        - if (@event.refacs.count == 0)
-          non
-        - else
-          oui
