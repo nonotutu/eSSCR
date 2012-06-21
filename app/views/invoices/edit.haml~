@@ -1,0 +1,6 @@
+= render 'header', :selected_item => 'show'
+
+= render 'form'
+
+%hr
+= link_to "Back", invoice_path

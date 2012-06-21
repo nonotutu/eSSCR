@@ -1,0 +1,17 @@
+
+- if controller_name == 'invoices'
+  - invoice_id = params[:id].to_i
+- else
+  - invoice_id = params[:invoice_id].to_i
+
+.menu_gauche
+  
+  .menu_gauche_1
+    %ul
+      %li
+        = link_to '→ New invoice', new_invoice_path
+      - Invoice.all.each do |invoice|
+        %li
+          - active = (invoice_id == invoice.id ? :active : nil)
+          - inv = invoice.number + ( !invoice.customer_data.empty? ? ( " - " + invoice.customer_data.lines.first ) : "" )
+          = link_to inv, invoice_path(invoice.id), :class => active

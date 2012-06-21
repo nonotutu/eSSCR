@@ -1,5 +1,4 @@
-.title_active_element
-  Invoice:
-  = @invoice.number
+.title.one
+  = @invoice.number + ( @invoice.customer_data.present? ? ( " - " + @invoice.customer_data.lines.first ) : "" )
   
-= render 'menu', :selected_item => selected_item
+= render 'invoices/menu', :selected_item => selected_item

@@ -1,9 +1,7 @@
-= render 'invoices/list'
+
+= render 'invoices/header', :selected_item => 'overview'
 
 .main
-
-  = render 'invoices/header', :selected_item => 'overview'
-
   .section
     Customer_data:
     = @invoice.customer_data ? @invoice.customer_data : 'not filled yet'

@@ -1,6 +1,7 @@
 
 table.empty
   border-collapse: collapse
+  width: 100%
   th
     font-size: small
     text-align: left
@@ -74,12 +75,15 @@ table.invoiced_items
 table.fullitems
   @extend table.empty
   td:nth-child(2)
+    white-space: nowrap
     font-family: "monospace"
     text-align: right
   td:nth-child(3)
+    white-space: nowrap
     font-family: "monospace"
     text-align: right
   td:nth-child(4)
+    white-space: nowrap
     font-family: "monospace"
     text-align: right
   tr:last-child

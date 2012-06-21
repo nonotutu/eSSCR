@@ -6,7 +6,7 @@
   = render 'services/header', :selected_item => 'disposers'
 
   .section
-    = render "list_dispositifs"
+    = render "disposers/list"
     
     - if params[:mode] == 'edit'
       = render "disposers/form"

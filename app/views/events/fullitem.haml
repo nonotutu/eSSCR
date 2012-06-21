@@ -4,7 +4,8 @@
   = render 'header', :selected_item => 'fullitem'
 
   .section
-    .info{ :style => "width: 50%" }
+    .info
+      %h4 Facturation de l'événement
       %table.fullitems
         %tr
           %th Name
@@ -51,8 +52,8 @@
                 %td= ligne[3]
                 %td= ligne[4]
 
-    .info
+    .info{ :style => "width: 60%" }
+      %h4 Refacturation interne
     
       - @refacs = @event.refacs
       = render "refacs/list_refacs"
-            

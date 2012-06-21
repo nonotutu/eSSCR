@@ -1,0 +1,4 @@
+.title.one
+  = @invoice.number + " : " + @invoice.customer_data.lines.first
+  
+= render 'invoices/menu', :selected_item => selected_item

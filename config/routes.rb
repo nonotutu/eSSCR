@@ -18,6 +18,7 @@ ESSCR2::Application.routes.draw do
   
   match "invoices/:id/events"   => "invoices#events",   :as => :invoice_events
   match "invoices/:id/overview" => "invoices#overview", :as => :invoice_overview
+  match "invoices/:id/generate_pdf" => "invoices#generate_pdf", :as => :invoice_generate_pdf
 
   
   resources :categories

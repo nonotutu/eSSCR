@@ -2,6 +2,19 @@
 
 .main
   = render 'events/header', :selected_item => 'overview'
+  
+  .section
+    %dl
+      %dt Invoice :
+      %dd
+        - if @event.invoice
+          = @event.invoice.number
+        - else
+          %i not invoiced
+    %dl
+      %dt Price :
+      %dd= to_euro(event_calcul_prix_total(@event.id))
+        
 
   .section
     - @event.services.order(:starts_at).each do |service|
@@ -13,7 +26,5 @@
           = temp = service.disposers_to_inline
           - if temp.blank?
             %i aucun dispositif
-        = render "servolos/graph_volos", :service_id => service.id
-    %hr
-      
+        = render "servolos/graph_volos", :service_id => service.id      
       

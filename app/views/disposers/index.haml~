@@ -18,6 +18,6 @@
     - else
       >
       = link_to "Back", event_service_disposers_path
-      - if params[:mode] == 'edit'
+      - if params[:disposer_id].present?
         |
         = link_to 'Clear (create new)', event_service_disposers_path(:mode => 'edit')

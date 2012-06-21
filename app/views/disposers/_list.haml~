@@ -1,0 +1,11 @@
+%ul
+  - @disposers.each do |disposer|
+    %li
+      = disposer.quantity
+      &times;
+      = disposer.dispositif.name
+      =%b disposer.crentite.name if (disposer.crentite)
+      - if params[:mode] == 'edit'
+        %td= link_to 'edit', event_service_disposers_path(:disposer_id => disposer.id, :mode => 'edit')
+        %td= link_to 'remove', { :controller => :disposers, :action => :destroy, :id => disposer.id }, :method => :delete
+        

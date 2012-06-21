@@ -48,3 +48,6 @@ gem 'inherited_resources'
 
 # arno: railroady
 gem 'railroady', :group => :development
+
+# arno: pdf
+gem 'prawn'

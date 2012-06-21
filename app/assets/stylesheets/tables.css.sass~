@@ -1,6 +1,7 @@
 
 table.empty
   border-collapse: collapse
+  width: 100%
   th
     font-size: small
     text-align: left
@@ -58,13 +59,13 @@ table.generic
 table.invoiced_items
   @extend table.generic
   td:nth-child(2)
-    font-family: "mono"
+    font-family: "monospace"
     text-align: right
   td:nth-child(3)
-    font-family: "mono"
+    font-family: "monospace"
     text-align: right
   td:nth-child(4)
-    font-family: "mono"
+    font-family: "monospace"
     text-align: right
   tr:last-child
     background: red
@@ -73,14 +74,17 @@ table.invoiced_items
     
 table.fullitems
   @extend table.empty
+  td:nth-child(2)
+    white-space: no-wrap
+    font-family: "monospace"
+    text-align: right
   td:nth-child(3)
-    font-family: "mono"
+    white-space: no-wrap
+    font-family: "monospace"
     text-align: right
   td:nth-child(4)
-    font-family: "mono"
-    text-align: right
-  td:nth-child(5)
-    font-family: "mono"
+    white-space: no-wrap
+    font-family: "monospace"
     text-align: right
   tr:last-child
     background: red

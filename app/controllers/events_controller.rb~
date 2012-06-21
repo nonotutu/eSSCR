@@ -53,7 +53,7 @@ class EventsController < InheritedResources::Base
     if invoice.save
       redirect_to :back, :notice => 'Event added to invoice'
     else
-      redirect_to :back, :alert => 'Error adding event to invoice'
+      redirect_to :back, :error => 'Error adding event to invoice'
     end
   end
 
@@ -65,7 +65,7 @@ class EventsController < InheritedResources::Base
     if invoice.save
       redirect_to :back, :notice => 'Event removed from invoice'
     else
-      redirect_to :back, :alert => 'Error removing event from invoice'
+      redirect_to :back, :error => 'Error removing event from invoice'
     end
   end
 

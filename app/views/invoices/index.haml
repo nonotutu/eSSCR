@@ -1,16 +1,1 @@
-%p#notice= notice
-
-%table
-  %tr
-    %th Number
-    %th Name (from c_d)
-    %th
-  - @invoices.each do |invoice|
-    %tr
-      %td= invoice.number
-      %td= invoice.customer_data.lines.first
-      %td= link_to 'select', invoice_path(invoice)
-      =#%td= link_to 'destroy', event, confirm: 'Are you sure?', method: :delete
-
-%hr
-= link_to 'New invoice', new_invoice_path
+= render "invoices/list"

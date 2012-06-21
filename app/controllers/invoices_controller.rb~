@@ -14,12 +14,4 @@ class InvoicesController < InheritedResources::Base
     @invoice.number = begin Invoice.order(:number).last.number.next rescue "2010-001" end
   end
   
-  def generate_pdf
-    require "prawn"
-
-    Prawn::Document.generate("hello.pdf") do
-      text "Hello World!"
-    end
-  end
-  
 end
