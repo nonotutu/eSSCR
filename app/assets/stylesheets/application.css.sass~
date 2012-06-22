@@ -133,7 +133,6 @@ body
     li
       ul
         li
-          color : red
           padding-left: 16px
   a
     color: black
@@ -143,6 +142,8 @@ body
       color: red
     &.active
       font-weight: bold
+      color: red
+    &.active light
       color: red
   height: 300px
       

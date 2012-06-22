@@ -48,6 +48,7 @@
 
 :ruby
   services = Service.where("starts_at > '2012-06-09'").order(:starts_at).all
+  services = Service.order(:starts_at).all
 
   #  case(session[:tri_ordre])
   #    when '1'
