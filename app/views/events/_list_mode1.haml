@@ -47,50 +47,53 @@
 
 
 :ruby
-  services = Service.where("starts_at > '2012-06-09'").order(:starts_at).all
-  services = Service.order(:starts_at).all
+  events = Event
 
-  #  case(session[:tri_ordre])
-  #    when '1'
-  #   else
-  # end
+  case(session[:tri_ordre])
+  
+    when '1'
+      events = events.all
 
-  #  if ( session[:tri_annee].present? )
-  #    unless ( session[:tri_annee] == 'all' )
-  #      events = Event.joins(:services).where("SUBSTR(starts_at,1,4) = ?", session[:tri_annee])
-  #    end
-  #  end
+    when '2'
+      events = events.all.reverse
+  
+    when '3'
+      events = events.order('name')
+
+    when '4'
+      events = events.order('name').reverse
+      
+    else
+      events = events.all
+      
+  end
+
+  if ( session[:tri_annee].present? )
+    unless ( session[:tri_annee] == 'all' )
+      events = Event.joins(:services).where("SUBSTR(starts_at,1,4) = ?", session[:tri_annee])
+    end
+  end
+
 
 .menu_gauche
-  .menu_gauche_3
-    = render "events/test", :services => services, :service_id => service_id
-
--#
-  .menu_gauche_3
+  
+  .menu_gauche_1
     %ul
-      %li= link_to '→ New event', new_event_path
-      - services.group_by(&:event).each do |event, servicess|
+      %li
+        = link_to '→ New event', new_event_path
+      - events.each do |event|
         %li
-          = event.category.short_name + " - " + event.name
-          %ul
-          - servicess.each do |service|
-            %li= service.to_s
-
--#
-  - active = (service_id == service.id ? :active : nil)
-  = 
-  %br
-  = link_to ("----" + service.to_s), event_service_path(service.event.id, service.id), :class => active
+          - active = (event_id == event.id ? :active : nil)
+          - evt = event.category.short_name + " - " + event.name
+          = link_to evt, event_path(event.id), :class => active
           
-  %ul
-    %li= link_to '→ New event', new_event_path
-    - services.each do |service|
-      - if service.event.id == last_event_id
-        = service.to_s
+  .menu_gauche_2
+    - if ( params[:id].present? || params[:event_id].present? )
+      %ul
         %li
-      - else
-        %li
-          = service.event.category.short_name + " - " + service.event.name
-          %ul
-            %li
-      - last_event_id = service.event.id
+          = link_to '→ New service', new_event_service_path(event_id) 
+        - Event.find(event_id).services.order(:starts_at).each do |service|
+          %li
+            - active = (service_id == service.id ? :active : nil)
+            - ser = service.starts_at.to_s(:cust_short) + " → " + service.relative_ends_at
+            = link_to ser, event_service_path(service.event.id, service.id), :class => active

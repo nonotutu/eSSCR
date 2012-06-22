@@ -1,0 +1,10 @@
+<ul>
+  <li>
+    <%=link_to '→ New event', new_event_path%>
+
+    <!--- services.group_by(&:event).each do |event, servicess|
+        %li
+          = event.category.short_name + " - " + event.name
+          %ul
+          - servicess.each do |service|
+            %li= service.to_s-->

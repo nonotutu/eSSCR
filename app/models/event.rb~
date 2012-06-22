@@ -1,9 +1,10 @@
 class Event < ActiveRecord::Base
   
-  attr_accessible :invoice_id, :category_id, :name
+  attr_accessible :invoice_id, :category_id, :customer_id, :name
   
   belongs_to :invoice
   belongs_to :category
+  belongs_to :customer
   
   has_many :services
   has_many :evitems

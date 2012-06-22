@@ -16,6 +16,8 @@ class Event < ActiveRecord::Base
 
   before_destroy :prevent_destroy_unless_event_empty, :notice => "caca"
 
+  #scope :avenir, (:where => 
+  
 private
   def prevent_destroy_unless_event_empty
     self.errors.add :base, "Event not empty"

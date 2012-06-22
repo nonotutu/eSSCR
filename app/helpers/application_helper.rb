@@ -114,30 +114,34 @@ module ApplicationHelper
     
     event.services.order('starts_at').each do |service|
       sstot = BigDecimal("0")
-      ligne = Array.new
-      ligne << -1 << ( service.starts_at.to_s(:cust_short) + " - " + service.relative_ends_at )
-      service.seritems.order('pos').each do |item|
-        table << ligne
+      if service.seritems.count > 0
         ligne = Array.new
-        ligne << -2
-        ligne << item.name
-        if item.kind == 1
-          montant = item.price * item.qty
-          ligne << item.qty
-          ligne << to_euro(item.price)
-        elsif item.kind == 2
-          montant = sstot * item.price / 100.0
-          ligne << nil
-          ligne << to_percent(item.price)
+        ligne << -1 << ( service.starts_at.to_s(:cust_short) + " - " + service.relative_ends_at )
+        service.seritems.order('pos').each do |item|
+          table << ligne
+          ligne = Array.new
+          ligne << -2
+          ligne << item.name
+          if item.kind == 1
+            montant = item.price * item.qty
+            ligne << item.qty
+            ligne << to_euro(item.price)
+          elsif item.kind == 2
+            montant = sstot * item.price / 100.0
+            ligne << nil
+            ligne << to_percent(item.price)
+          end
+          ligne << to_euro(montant)
+          table << ligne
+          sstot += montant
         end
-        ligne << to_euro(montant)
-        table << ligne
-        sstot += montant
       end
       total += sstot
-      ligne = Array.new
-      ligne << -3 << 'Sous-total' << to_euro(sstot)
-      table << ligne
+      if service.seritems.count > 1
+        ligne = Array.new
+        ligne << -3 << 'Sous-total' << to_euro(sstot)
+        table << ligne
+      end
     end
     ligne = Array.new
     ligne << -4 << 'Sous-total services' << to_euro(total)

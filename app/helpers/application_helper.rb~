@@ -114,8 +114,10 @@ module ApplicationHelper
     
     event.services.order('starts_at').each do |service|
       sstot = BigDecimal("0")
-      ligne = Array.new
-      ligne << -1 << ( service.starts_at.to_s(:cust_short) + " - " + service.relative_ends_at )
+      if service.seritems.count > 0
+        ligne = Array.new
+        ligne << -1 << ( service.starts_at.to_s(:cust_short) + " - " + service.relative_ends_at )
+      end
       service.seritems.order('pos').each do |item|
         table << ligne
         ligne = Array.new
@@ -135,9 +137,11 @@ module ApplicationHelper
         sstot += montant
       end
       total += sstot
-      ligne = Array.new
-      ligne << -3 << 'Sous-total' << to_euro(sstot)
-      table << ligne
+      if service.seritems.count > 1
+        ligne = Array.new
+        ligne << -3 << 'Sous-total' << to_euro(sstot)
+        table << ligne
+      end
     end
     ligne = Array.new
     ligne << -4 << 'Sous-total services' << to_euro(total)
@@ -284,7 +288,7 @@ module ApplicationHelper
       d1 = ( debut - surplace ).to_f / duree * 100
     elsif depart && !surplace
       d0 = ( debut - depart ).to_f / duree * 100
-    else # !depart && surplace
+    elsif !depart && surplace
       d1 = ( debut - surplace ).to_f / duree * 100
     end
 
