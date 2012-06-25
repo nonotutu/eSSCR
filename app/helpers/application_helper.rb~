@@ -37,6 +37,7 @@ module ApplicationHelper
   def event_calcul_prix_total(event_id)
 
     total = event_calcul_prix_services(event_id)
+    total = 0
 
     event = Event.find(event_id)
     
@@ -46,7 +47,7 @@ module ApplicationHelper
       elsif item.kind == 2
         montant = total * ( item.price / 100.0 )
       end
-      total += montant
+      total += 0#montant
     end
 
     total
@@ -117,24 +118,24 @@ module ApplicationHelper
       if service.seritems.count > 0
         ligne = Array.new
         ligne << -1 << ( service.starts_at.to_s(:cust_short) + " - " + service.relative_ends_at )
-      end
-      service.seritems.order('pos').each do |item|
-        table << ligne
-        ligne = Array.new
-        ligne << -2
-        ligne << item.name
-        if item.kind == 1
-          montant = item.price * item.qty
-          ligne << item.qty
-          ligne << to_euro(item.price)
-        elsif item.kind == 2
-          montant = sstot * item.price / 100.0
-          ligne << nil
-          ligne << to_percent(item.price)
+        service.seritems.order('pos').each do |item|
+          table << ligne
+          ligne = Array.new
+          ligne << -2
+          ligne << item.name
+          if item.kind == 1
+            montant = item.price * item.qty
+            ligne << item.qty
+            ligne << to_euro(item.price)
+          elsif item.kind == 2
+            montant = sstot * item.price / 100.0
+            ligne << nil
+            ligne << to_percent(item.price)
+          end
+          ligne << to_euro(montant)
+          table << ligne
+          sstot += montant
         end
-        ligne << to_euro(montant)
-        table << ligne
-        sstot += montant
       end
       total += sstot
       if service.seritems.count > 1

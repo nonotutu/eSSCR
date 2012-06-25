@@ -1,96 +1,80 @@
-
-- if controller_name == 'events'
-  - event_id = params[:id].to_i
-- else
-  - event_id = params[:event_id].to_i
-
-- if controller_name == 'services'
-  - service_id = params[:id].to_i
-- else
-  - service_id = params[:service_id].to_i
-
-- if (params[:tri_ordre].present?)
-  - session[:tri_ordre] = params[:tri_ordre]
-
-- if (params[:tri_annee].present?)
-  - session[:tri_annee] = params[:tri_annee]
-
-  
-- liste_ordre = []
-- liste_ordre << { :value => '1', :name => 'croissant' }
-- liste_ordre << { :value => '2', :name => 'décroissant' }
-- liste_ordre << { :value => '3', :name => 'alphabétique' }
-- liste_ordre << { :value => '4', :name => 'désalphabétique' }
-
-
-- liste_annee = []
-- liste_annee << { :value => 'all', :name => 'toutes' }
-- liste_annee << { :value => '2010', :name => '2010' }
-- liste_annee << { :value => '2011', :name => '2011' }
-- liste_annee << { :value => '2012', :name => '2012' }
-
-
-%form{:action => '', :method => :get}
-  Order by : 
-  %select{:name => 'tri_ordre'}
-    = liste_ordre.each do |item|
-      -  selected = ( item[:value] == session[:tri_ordre] ? 'selected' : nil )
-      %option{ :value => item[:value], :selected => selected }= item[:name]
-  %br/
-  Year : 
-  %select{:name => 'tri_annee'}
-    = liste_annee.each do |item|
-      - selected = ( item[:value] == session[:tri_annee] ? 'selected' : nil )
-      %option{ :value => item[:value], :selected => selected }= item[:name]
-  %input{:type => :submit}
-
-
-
 :ruby
-  services = Service.where("starts_at > '2012-06-09'").order(:starts_at).all
-  services = Service.order(:starts_at).all
 
-  #  case(session[:tri_ordre])
-  #    when '1'
-  #   else
-  # end
+  if controller_name == 'events'
+    event_id = params[:id].to_i
+  else
+    event_id = params[:event_id].to_i
+  end
 
-  #  if ( session[:tri_annee].present? )
-  #    unless ( session[:tri_annee] == 'all' )
-  #      events = Event.joins(:services).where("SUBSTR(starts_at,1,4) = ?", session[:tri_annee])
-  #    end
-  #  end
+  if controller_name == 'services'
+    service_id = params[:id].to_i
+  else
+    service_id = params[:service_id].to_i
+  end
 
+
+  if (params[:tri_sens].present?)
+    session[:tri_sens] = params[:tri_sens]
+  end
+
+  if (params[:tri_type].present?)
+    session[:tri_type] = params[:tri_type]
+  end
+
+  if (params[:tri_annee].present?)
+    session[:tri_annee] = params[:tri_annee]
+  end
+
+
+  liste_sens = []
+  liste_sens << { :value => '1', :name => 'croissant' }
+  liste_sens << { :value => '2', :name => 'décroissant' }
+  liste_sens << { :value => '3', :name => 'alphabétique' }
+
+  liste_type = []
+  liste_type << { :value => '1', :name => 'all' }
+  liste_type << { :value => '2', :name => 'à venir' }
+  liste_type << { :value => '3', :name => 'à facturer' }
+  
+  liste_cat = []
+  liste_cat << { :value => '1', :name => 'APS' }
+
+  liste_annee = []
+  liste_annee << { :value => 'all', :name => 'toutes' }
+  liste_annee << { :value => '2010', :name => '2010' }
+  liste_annee << { :value => '2011', :name => '2011' }
+  liste_annee << { :value => '2012', :name => '2012' }
+ 
+ 
 .menu_gauche
-  .menu_gauche_3
-    = render "events/test", :services => services, :event_id => event_id, :service_id => service_id
 
--#
-  .menu_gauche_3
-    %ul
-      %li= link_to '→ New event', new_event_path
-      - services.group_by(&:event).each do |event, servicess|
-        %li
-          = event.category.short_name + " - " + event.name
-          %ul
-          - servicess.each do |service|
-            %li= service.to_s
+  %form{:action => '', :method => :get}
+    Sens : 
+    %select{:name => 'tri_sens'}
+      = liste_sens.each do |item|
+        -  selected = ( item[:value] == session[:tri_sens] ? 'selected' : nil )
+        %option{ :value => item[:value], :selected => selected }= item[:name]
+    %br/
+    Année : 
+    %select{:name => 'tri_annee'}
+      = liste_annee.each do |item|
+        - selected = ( item[:value] == session[:tri_annee] ? 'selected' : nil )
+        %option{ :value => item[:value], :selected => selected }= item[:name]
+    %br/
+    Type : 
+    %select{:name => 'tri_type'}
+      = liste_type.each do |item|
+        - selected = ( item[:value] == session[:tri_type] ? 'selected' : nil )
+        %option{ :value => item[:value], :selected => selected }= item[:name]
+    %br/
+    Catégorie : 
+    %select{:name => 'tri_cat'}
+      = liste_cat.each do |item|
+        - selected = ( item[:value] == session[:tri_cat] ? 'selected' : nil )
+        %option{ :value => item[:value], :selected => selected }= item[:name]
+    %input{:type => :submit}
 
--#
-  - active = (service_id == service.id ? :active : nil)
-  = 
-  %br
-  = link_to ("----" + service.to_s), event_service_path(service.event.id, service.id), :class => active
-          
-  %ul
-    %li= link_to '→ New event', new_event_path
-    - services.each do |service|
-      - if service.event.id == last_event_id
-        = service.to_s
-        %li
-      - else
-        %li
-          = service.event.category.short_name + " - " + service.event.name
-          %ul
-            %li
-      - last_event_id = service.event.id
+  - if session[:tri_sens] == '3'
+    = render "events/list_mode1", :event_id => event_id, :service_id => service_id
+  - else
+    = render "events/list_mode2", :event_id => event_id, :service_id => service_id
