@@ -1,58 +1,24 @@
 = render 'events/list'
+- table = generate_table_event_full(params[:id])
 
 .main
   = render 'header', :selected_item => 'fullitem'
 
-  .section
-    .info{ :style => "width: 50%" }
-      %table.fullitems{ :style => "width: 100%"}
-        %tr
-          %th Name
-          %th Qty
-          %th Price
-          %th Total
-        - table_event_fullitem(params[:id]).each do |ligne|
-          - case ligne[0]
-            - when -1
-              %tr{ :style => "background: rgb(255,207,207)" }
-                %td{ :colspan => 4 }
-                  %i= ligne[1]
-            - when -2
-              %tr
-                %td{ :style => "padding-left: 40px" }
-                  = ligne[1]
-                %td= ligne[2]
-                %td= ligne[3]
-                %td= ligne[4]
-            - when -3
-              %tr
-                %td{ :style => "padding-left: 40px" }
-                  %i= ligne[1]
-                %td
-                %td
-                %td
-                  %i= ligne[2]
-            - when -4
-              %tr{ :style => "background: rgb(255,207,207); font-weight: bold" }
-                %td= ligne[1]
-                %td
-                %td
-                %td= ligne[2]
-            - when -5
-              %tr
-                %td= ligne[1]
-                %td= ligne[2]
-                %td= ligne[3]
-                %td= ligne[4]
-            - when -6
-              %tr
-                %td= ligne[1]
-                %td= ligne[2]
-                %td= ligne[3]
-                %td= ligne[4]
-
-    .info
-    
-      - @refacs = @event.refacs
-      = render "refacs/list_refacs"
-            
+  %table.invoiced_items
+    %tr
+      %th Name
+      %th Qty
+      %th Price
+      %th Total
+    - table.each do |ligne|
+      %tr
+        %td= ligne[2]
+        %td= ligne[3]
+        %td= ligne[4]
+        %td= ligne[5]
+          
+  .info{ :style => "width: 60%" }
+    %h4 Refacturation interne
+      
+    - @refacs = @event.refacs
+    = render "refacs/list_refacs"

@@ -118,7 +118,7 @@ body
 .menu_gauche // mettre des s et regrouper
   float: left
 
-.menu_gauche_1
+.menu_gauche_0
   background: lightgray
   width: 300px
   overflow-y: auto
@@ -134,6 +134,10 @@ body
       ul
         li
           padding-left: 16px
+  hr
+    margin: 2px
+    background: white
+    border: none
   a
     color: black
     &:link
@@ -142,23 +146,32 @@ body
       color: red
     &.active
       font-weight: bold
-      //color: red
       border: 1px solid black
       padding-right: 3px
       padding-left: 2px
+      padding-top: 1px
     &.active_light
-      border: 1px solid black
-      padding-right: 3px
-      padding-left: 2px
+      font-weight: bold
+  
+.menu_gauche_1
+  @extend .menu_gauche_0
   height: 300px
       
 .menu_gauche_2
-  @extend .menu_gauche_1
+  @extend .menu_gauche_0
   height: 150px
   
 .menu_gauche_3
-  @extend .menu_gauche_1
+  @extend .menu_gauche_0
   height: 450px
+  
+.menu_gauche_options
+  @extend .menu_gauche_0
+  font-size: small
+  table
+    tr
+      td
+        align: top
 
 .lien_bas_de_page
   font-size: small

@@ -1,0 +1,20 @@
+- mode = params[:mode]
+- table = generate_table_nositems(@invoice.id)
+
+%table.invoiced_items
+  %tr
+    %th Name
+    %th Qty
+    %th Price
+    %th Total
+  - table.each do |ligne|
+    %tr
+      %td= ligne[2]
+      %td= ligne[3]
+      %td= ligne[4]
+      %td= ligne[5]
+      - if ligne[0] == 1 && mode == 'edit'
+        %td= button_to '↑↑', :action => :move_up, :id=>ligne.id
+        %td= button_to '↓↓', :action => :move_down, :id=>ligne.id
+        %td= link_to 'edit', invoice_nositems_path(params[:invoice_id], { :mode => "edit", :nositem_id => ligne[0] } )
+        %td= button_to "×", { :action => :destroy, :id => ligne.id }, :method => :delete

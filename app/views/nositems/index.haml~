@@ -1,0 +1,19 @@
+
+= render 'invoices/list'
+
+.main
+  = render 'invoices/header', :selected_item => 'nositems'
+
+  .section
+    %table
+      %tr
+        %th Name
+        %th Qty
+        %th Kind
+        %th Price
+        - @invoice.nositems.each do |nositem|
+          %tr
+            %td= nositem.name
+            %td= nositem.qty
+            %td= nositem.kind
+            %td= nositem.price

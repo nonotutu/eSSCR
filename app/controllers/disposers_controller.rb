@@ -6,8 +6,8 @@ class DisposersController < InheritedResources::Base
     @event = Event.find(params[:event_id])
     @service = Service.find(params[:service_id])
     # pour éditer un evitem sans la page edit, s'il est dans les params
-    @disposers = @service.disposers.all
     @disposer = begin Disposer.find(params[:disposer_id]) rescue nil end
+    #@disposers = @service.disposers.all
   end
   
   

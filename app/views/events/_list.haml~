@@ -13,68 +13,119 @@
   end
 
 
-  if (params[:tri_sens].present?)
-    session[:tri_sens] = params[:tri_sens]
+  if (params[:events_liste_sens].present?)
+    session[:events_liste_sens] = params[:events_liste_sens]
   end
 
-  if (params[:tri_type].present?)
-    session[:tri_type] = params[:tri_type]
+  if (params[:events_liste_type].present?)
+    session[:events_liste_type] = params[:events_liste_type]
   end
 
-  if (params[:tri_annee].present?)
-    session[:tri_annee] = params[:tri_annee]
+  if (params[:events_liste_filtre].present?)
+    session[:events_liste_filtre] = params[:events_liste_filtre]
   end
 
+  if (params[:events_liste_annee].present?)
+    session[:events_liste_annee] = params[:events_liste_annee]
+  end
 
-  liste_sens = []
-  liste_sens << { :value => '1', :name => 'croissant' }
-  liste_sens << { :value => '2', :name => 'décroissant' }
-  liste_sens << { :value => '3', :name => 'alphabétique' }
 
   liste_type = []
-  liste_type << { :value => '1', :name => 'all' }
-  liste_type << { :value => '2', :name => 'à venir' }
-  liste_type << { :value => '3', :name => 'à facturer' }
+  liste_type << { :value => '1', :name => 'séparé' }
+  liste_type << { :value => '2', :name => 'imbriqué' }
+
+  liste_sens = []
+  liste_sens << { :value => '1', :name => '↑↑' }
+  liste_sens << { :value => '2', :name => '↓↓' }
+  liste_sens << { :value => '3', :name => 'αβ' }
+  liste_sens << { :value => '4', :name => '!αβ' }
+
+  liste_filtre = []
+  liste_filtre << { :value => '1', :name => 'toutes' }
+  liste_filtre << { :value => '2', :name => 'à venir' }
+  liste_filtre << { :value => '3', :name => 'à facturer' }
   
   liste_cat = []
-  liste_cat << { :value => '1', :name => 'APS' }
+  Category.all.each do |categ|
+    liste_categ << { :value => categ.id, :name => categ.short_name }
+  end
 
   liste_annee = []
   liste_annee << { :value => 'all', :name => 'toutes' }
-  liste_annee << { :value => '2010', :name => '2010' }
-  liste_annee << { :value => '2011', :name => '2011' }
-  liste_annee << { :value => '2012', :name => '2012' }
- 
- 
+  2010.upto ( event_last_year() ) { |i| 
+    liste_annee << { :value => i.to_s, :name => i.to_s } }
+
+
+  services = Service
+  
+  if ( session[:events_liste_annee].present? )
+    unless ( session[:events_liste_annee] == 'all' )
+      services = services.only_year(session[:events_liste_annee])
+    end
+  end
+
+  case( session[:events_liste_filtre] )
+    when '1'
+      services = services
+    when '2'
+      services = services.only_future
+    when '3'
+      services = services.only_not_invoiced
+  end
+
+  case( session[:events_liste_sens] )
+    when '1'
+      services = services.by_date
+    when '2'
+      services = services.by_date.reverse_order
+    when '3'
+      services = services.by_name
+    when '4'
+      services = services.by_name.reverse_order
+  end
+
 .menu_gauche
 
-  %form{:action => '', :method => :get}
-    Sens : 
-    %select{:name => 'tri_sens'}
-      = liste_sens.each do |item|
-        -  selected = ( item[:value] == session[:tri_sens] ? 'selected' : nil )
-        %option{ :value => item[:value], :selected => selected }= item[:name]
-    %br/
-    Année : 
-    %select{:name => 'tri_annee'}
-      = liste_annee.each do |item|
-        - selected = ( item[:value] == session[:tri_annee] ? 'selected' : nil )
-        %option{ :value => item[:value], :selected => selected }= item[:name]
-    %br/
-    Type : 
-    %select{:name => 'tri_type'}
-      = liste_type.each do |item|
-        - selected = ( item[:value] == session[:tri_type] ? 'selected' : nil )
-        %option{ :value => item[:value], :selected => selected }= item[:name]
-    %br/
-    Catégorie : 
-    %select{:name => 'tri_cat'}
-      = liste_cat.each do |item|
-        - selected = ( item[:value] == session[:tri_cat] ? 'selected' : nil )
-        %option{ :value => item[:value], :selected => selected }= item[:name]
-    %input{:type => :submit}
+  .menu_gauche_options
+    %form{:action => '', :method => :get}
+      %table{:style => 'border-collapse: collapse; width: 100%'}
+        %tr
+          %td
+            Filtre : 
+            %select{:name => 'events_liste_filtre'}
+              - liste_filtre.each do |item|
+                - selected = ( item[:value] == session[:events_liste_filtre] ? 'selected' : nil )
+                %option{ :value => item[:value], :selected => selected }= item[:name]
+          %td{:style => 'text-align: right'}
+            Sens :
+            %select{:name => 'events_liste_sens'}
+              - liste_sens.each do |item|
+                - selected = ( item[:value] == session[:events_liste_sens] ? 'selected' : nil )
+                %option{ :value => item[:value], :selected => selected }= item[:name]
+      %table{:style => 'border-collapse: collapse; width: 100%'}
+        %tr
+          %td
+            Année : 
+            %select{:name => 'events_liste_annee'}
+              - liste_annee.each do |item|
+                - selected = ( item[:value] == session[:events_liste_annee] ? 'selected' : nil )
+                %option{ :value => item[:value], :selected => selected }= item[:name]
+          %td{:style => 'text-align: right'}
+            Catégorie :
+            %select{:name => 'events_liste_cat'}
+              - liste_cat.each do |item|
+                - selected = ( item[:value] == session[:events_liste_cat] ? 'selected' : nil )
+                %option{ :value => item[:value], :selected => selected }= item[:name]
+      %table{:style => 'border-collapse: collapse; width: 100%'}
+        %tr
+          %td
+            Liste :
+            %button{ :name=>"events_liste_type", :value=>'1'} séparées
+            %button{ :name=>"events_liste_type", :value=>'2'} imbriquées
+          %td{:style => 'text-align: right'}
+            %input{:type => :submit, :value => 'go'}
 
-  - if session[:tri_sens] == '3'
-    = render "events/list_mode1", :event_id => event_id, :service_id => service_id
+  - if session[:events_liste_type] == '1'
+    = render "events/list_mode1", :event_id => event_id, :service_id => service_id, :services => services
   - else
-    = render "events/list_mode2", :event_id => event_id, :service_id => service_id
+    = render "events/list_mode2", :event_id => event_id, :service_id => service_id, :services => services

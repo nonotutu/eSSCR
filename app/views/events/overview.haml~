@@ -12,8 +12,11 @@
         - else
           %i not invoiced
     %dl
-      %dt Price :
-      %dd= event_calcul_prix_total(@event.id)
+      %dt Prix :
+      %dd= to_euro(calcul_prix_event(@event.id))
+    %dl
+      %dt Prix sur facture:
+      %dd= to_euro(calcul_prix_event_included(@event.id))
         
 
   .section
@@ -26,5 +29,5 @@
           = temp = service.disposers_to_inline
           - if temp.blank?
             %i aucun dispositif
-        = render "servolos/graph_volos", :service_id => service.id      
+        = render "servolos/graph_volos", @service => service
       

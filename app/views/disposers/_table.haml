@@ -1,0 +1,23 @@
+%table.generic
+  %tr
+    %th Qty
+    %th Name
+    %th Entité
+    - if params[:mode] == 'edit'
+      %th
+  - @disposers.each do |disposer|
+    %tr
+      %td{:align => :right}
+        = disposer.quantity
+        &times;
+      %td
+        = disposer.dispositif.name
+      %td
+        - if (disposer.crentite)
+          = disposer.crentite.name
+        - else
+          %i Uccle
+      - if params[:mode] == 'edit'
+        %td= link_to 'edit', event_service_disposers_path(:disposer_id => disposer.id, :mode => 'edit')
+        %td= link_to 'remove', { :controller => :disposers, :action => :destroy, :id => disposer.id }, :method => :delete
+        

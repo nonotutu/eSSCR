@@ -2,10 +2,6 @@ class EvitemsController < InheritedResources::Base
 
   # nestage
   belongs_to :event
-
-#   def index
-#     @template_all = TemplateInvoicedItem.all
-#   end
   
   def index
     @event = Event.find(params[:event_id])

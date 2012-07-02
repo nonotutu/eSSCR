@@ -6,10 +6,12 @@
   = render 'services/header', :selected_item => 'servolos'
 
   .section
-    = render "list_volos"
+    = render "graph"
+    %hr
+    = render "table"
+    %hr
 
-  - if params[:mode] == 'edit'
-    .section
+    - if params[:mode] == 'edit'
       = render "form"
     
   .lien_bas_de_page

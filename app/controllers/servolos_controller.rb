@@ -7,7 +7,6 @@ class ServolosController < InheritedResources::Base
     @event = Event.find(params[:event_id])
     @service = Service.find(params[:service_id])
     # pour éditer un evitem sans la page edit, s'il est dans les params
-    @servolos = @service.servolos.all
     @servolo = begin Servolo.find(params[:servolo_id]) rescue nil end
   end
 

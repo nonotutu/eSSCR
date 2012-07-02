@@ -2,15 +2,23 @@
   %ul
     %li= link_to '(Home)'
 
-    - active = controller_name == 'events'    | 
-	      || controller_name == 'evitems'        |
-	      || controller_name == 'services'      | 
-        || controller_name == 'seritems'     |  
-        || controller_name == 'refacs'        | 
-        || controller_name == 'servolos'       |
-        || controller_name == 'disposers'     | 
-	      ? :active : nil                      |  
+    - active = controller_name == 'events'   |
+	      || controller_name == 'evitems'      |
+	      || controller_name == 'services'     |
+        || controller_name == 'seritems'     |
+        || controller_name == 'refacs'       |
+        || controller_name == 'servolos'     |
+        || controller_name == 'disposers'    |
+	      ? :active : nil                      |
     %li= link_to 'Events', events_path, :class => active
 
-    - active = controller_name == 'invoices' ? :active : nil
+    - active = controller_name == 'invoices' |
+        || controller_name == 'nositems'     |
+        ? :active : nil                      |
     %li= link_to 'Invoices', invoices_path, :class => active
+    
+    - active = controller_name == 'tools'    |
+        || controller_name == 'customers'    |
+        || controller_name == 'templitems'     |
+        ? :active : nil                      |
+    %li= link_to 'Tools', tools_path, :class => active

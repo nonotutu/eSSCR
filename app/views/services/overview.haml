@@ -6,8 +6,15 @@
   = render 'services/header', :selected_item => 'overview'
 
   .section
-    .info
-      - @disposers = @service.disposers.all
-      = render "disposers/list_dispositifs"
-    .info
-      = render "servolos/graph_volos", :service_id => @service.id
+    %h4 Data
+    = render "data"
+    %hr
+    %h4 Dispositif
+    = render "disposers/list"
+    %hr
+    %h4 Personnel
+    = render "servolos/graph"
+    %hr
+    %h4 Facturation
+    = render "seritems/table"
+    %hr

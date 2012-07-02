@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120619173612) do
+ActiveRecord::Schema.define(:version => 20120628000930) do
 
   create_table "categories", :force => true do |t|
     t.string   "name"
@@ -68,12 +68,35 @@ ActiveRecord::Schema.define(:version => 20120619173612) do
     t.datetime "updated_at", :null => false
   end
 
+  create_table "invitems", :force => true do |t|
+    t.integer  "invoiceable_id"
+    t.string   "invoiceable_type"
+    t.integer  "pos"
+    t.string   "name"
+    t.decimal  "qty"
+    t.decimal  "price"
+    t.integer  "kind"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
+  end
+
   create_table "invoices", :force => true do |t|
     t.string   "number"
     t.text     "customer_data"
     t.date     "sent_at"
     t.datetime "created_at",    :null => false
     t.datetime "updated_at",    :null => false
+  end
+
+  create_table "nositems", :force => true do |t|
+    t.integer  "invoice_id"
+    t.integer  "pos"
+    t.string   "name"
+    t.decimal  "qty"
+    t.decimal  "price"
+    t.integer  "kind"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "refacs", :force => true do |t|
@@ -116,7 +139,7 @@ ActiveRecord::Schema.define(:version => 20120619173612) do
     t.timestamp "ends_at"
   end
 
-  create_table "template_invoiced_items", :force => true do |t|
+  create_table "templitems", :force => true do |t|
     t.integer  "pos"
     t.string   "name"
     t.integer  "kind"

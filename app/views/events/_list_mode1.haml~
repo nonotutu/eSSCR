@@ -1,0 +1,28 @@
+.menu_gauche_1
+  %ul
+    - services.group(:event_id).each do |service|
+      %li
+        - active = (event_id == service.event.id ? :active : nil)
+        - evt = service.event.category.short_name + " - " + service.event.name
+        = link_to evt, event_path(service.event.id), :class => active
+    - unless Event.only_without_services.empty?
+      %hr
+      - Event.only_without_services.each do |event|
+        %li
+          - active = (event_id == event.id ? :active : nil)
+          - evt = event.category.short_name + " - " + event.name
+          = link_to evt, event_path(event.id), :class => active
+      %hr
+    %li
+      = link_to '→ New event', new_event_path
+        
+.menu_gauche_2
+  - if ( params[:id].present? || params[:event_id].present? )
+    %ul
+      %li
+        = link_to '→ New service', new_event_service_path(event_id)
+      - services.where("event_id = ?", event_id).each do |service|
+        %li
+          - active = (service_id == service.id ? :active : nil)
+          - ser = service.starts_at.to_s(:cust_short) + " → " + service.relative_ends_at
+          = link_to ser, event_service_path(service.event.id, service.id), :class => active

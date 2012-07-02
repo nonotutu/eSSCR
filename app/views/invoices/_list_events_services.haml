@@ -1,28 +1,9 @@
-%table
-  %tr
-    %th Name
-    %th Qty
-    %th Price 
-  - locals[:invoice].events.each do |event|
+%table.empty
+  - @invoice.events.each do |event|
     %tr
-      %td{ :colspan => 3 }
-        %small
-          = event.name
-    - event.services.each do |service|
-      %tr
-        %td{ :colspan => 4 }
-          %small
-            from
-            = service.starts_at
-            to
-            = service.ends_at
-      - service.seritems.each do |seritem|
-        %tr
-          %td= seritem.name
-          %td= seritem.qty
-          %td= seritem.price
-    - event.evitems.each do |evitem|
-      %tr
-        %td= evitem.name
-        %td= evitem.qty
-        %td= evitem.price
+      %td
+        = event.name
+      %td
+        = calcul_prix_event(event.id)
+
+  = render "nositems/list_nositems"

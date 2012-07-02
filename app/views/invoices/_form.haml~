@@ -1,6 +1,37 @@
-= simple_form_for @invoice do |f|
-  = f.input :number, :input_html => { :size => 8 } 
-  = f.input :customer_data, :input_html => { :rows => 3, :cols => 40 } 
-  = f.input :sent_at, :start_year => 2010, :end_year => Date.today.year, :include_blank => true
-  = f.submit
+:ruby
+  c_id = params[:customer_id]
+  if c_id.present?
+    cust_data = Customer.find(c_id).data
+  end
   
+  
+=# formulaire mis en page
+%table.formulaire
+  %tr
+    %th
+      %i
+        Customer :
+    %td{ :colspan => '5' }
+      %form{ :method => :get }
+        %select{ :name => :customer_id }
+          %option{ :value => '' }
+          = Customer.all.each do |cust|
+            - selected = ( ( c_id.present? && cust.id.to_s == params[:customer_id]) ? 'selected' : nil )
+            %option{ :value => cust.id, :selected => selected }
+              = cust.data.lines.first
+        %input{ :type => :hidden, :name => 'mode', :value => 'edit' }
+        %input{ :type => :submit, :value => 'Use' }
+  %tr
+    = simple_form_for @invoice do |f|
+    %th Numéro :
+    %td
+      = f.input :number, :input_html => { :size => 8 }, :label => false
+    %th Client :
+    %td
+      = f.input :customer_data, :input_html => { :rows => 3, :cols => 40, :value => cust_data}, :label => false
+    %th Payée le :
+    %td
+      = f.input :sent_at, :start_year => 2010, :end_year => Date.today.year, :include_blank => true, :label => false
+    %th
+    %td{:align => 'right'}
+      = f.submit

@@ -1,0 +1,27 @@
+
+.main
+  = render 'tools/header', :selected_item => 'templitems'
+  
+  .section
+
+    %dl
+      %dt Position :
+      %dd= @templitem.pos
+    %dl
+      %dt Dénomination :
+      %dd= @templitem.name
+    %dl
+      %dt Type :
+      %dd= @templitem.kind_to_long_s
+    %dl
+      %dt Valeur :
+      %dd= @templitem.price
+  
+    .lien_bas_de_page
+      >
+      = link_to 'Edit', edit_templitem_path(@templitem.id)
+      |
+      = link_to 'Destroy', templitem_path(@templitem.id), :method => :delete
+      |
+      = link_to 'Back', templitems_path
+      

@@ -1,0 +1,12 @@
+
+.main
+  = render 'tools/header', :selected_item => 'templitems'
+  
+  .section
+
+    = render "templitems/form"
+  
+    .lien_bas_de_page
+      >
+      = link_to 'Back', templitems_path
+      

@@ -1,7 +1,7 @@
 ESSCR2::Application.routes.draw do
 
-  match "seritems/:id/move_up"   => "seritems#move_up"   #, :as => :seritem_move_up
-  match "seritems/:id/move_down" => "seritems#move_down" #, :as => :seritem_move_down
+  match "seritems/:id/move_up"   => "seritems#move_up"
+  match "seritems/:id/move_down" => "seritems#move_down"
   #match "seritems/:id/destroy"   => "seritems#destroy",   :as => :seritem_destroy
   
   match "events/:id/overview"            => "events#overview"           , :as => :event_overview
@@ -9,20 +9,29 @@ ESSCR2::Application.routes.draw do
   match "events/:id/add_to_invoice"      => "events#add_to_invoice"
   match "events/:id/remove_from_invoice" => "events#remove_from_invoice"
 
-  match "events/:event_id/services/:id/overview"    => "services#overview",    :as => :event_service_overview
-  #match "events/:event_id/services/:service_id/dispositifs" => "services#dispositifs", :as => :event_service_dispositifs
+  match "events/:event_id/services/:id/overview"    => "services#overview",    :as => :event_service
 
   match "evitems/:id/move_up"   => "evitems#move_up"
   match "evitems/:id/move_down" => "evitems#move_down"
-  #match "evitems/:id/destroy"   => "evitems#destroy",   :as => :evitem_destroy
+
+  match "nositems/:id/move_up"   => "nositems#move_up"
+  match "nositems/:id/move_down" => "nositems#move_down"
   
   match "invoices/:id/events"   => "invoices#events",   :as => :invoice_events
   match "invoices/:id/overview" => "invoices#overview", :as => :invoice_overview
+  match "invoices/:id/generate_pdf" => "invoices#generate_pdf", :as => :invoice_generate_pdf
 
+  match "tools" => "tools#index", :as => :tools
+  scope "/tools" do
+    resources :templitems, :customers
+  end
   
   resources :categories
   resources :invoice_item_templates
-  resources :invoices
+
+  resources :invoices do
+    resources :nositems
+  end
 
   resources :events do
     resources :evitems
@@ -35,9 +44,6 @@ ESSCR2::Application.routes.draw do
   end
 
   resources :volos
-  #resources :servolos
-  
-  #resources :disposers
   resources :dispositifs
 
 

@@ -1,0 +1,13 @@
+%table.generic
+  %tr
+    %th Who
+    %th When
+  - @servolos.each do |servolo|
+    %tr
+      %td
+        = servolo.volo.first_name
+        = servolo.volo.last_name
+      %td= servolo.fromto
+      - if params[:mode] == 'edit'
+        %td= link_to 'edit', event_service_servolos_path(:servolo_id => servolo.id, :mode => 'edit')
+        %td= link_to "remove", { :action => :destroy, :id => servolo.id }, :method => :delete

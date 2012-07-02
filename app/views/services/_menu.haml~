@@ -1,18 +1,14 @@
 .menu
 
   %ul
-    -#
-      %li
-        = link_to "All services", event_services_path(@event)
 
     %li
-      -# active = controller_name == 'services' && ( action_name == 'show' || action_name == 'edit' ? :active : nil )
       - active = selected_item == 'show' ? :active : nil
       = link_to "Service data", event_service_path(@event, @service), :class => active
 
     %li
       - active = selected_item == 'overview' ? :active : nil
-      = link_to "Overview", event_service_overview_path(@event), :class => active
+      = link_to "Overview", event_service_overview_path(@event, @service), :class => active
 
     =# nesté
     %li

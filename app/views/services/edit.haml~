@@ -1,0 +1,13 @@
+
+= render 'events/list'
+
+.main
+  = render 'events/header', :selected_item => 'services'
+  = render 'header', :selected_item => 'show'
+
+  .section
+    = render 'form'
+
+  .lien_bas_de_page
+    >
+    = link_to 'Back', event_service_path

@@ -1,0 +1,24 @@
+
+= render 'invoices/list'
+
+.main
+  = render 'invoices/header', :selected_item => 'nositems'
+
+
+  .section
+    = render "list_nositems"
+
+    - if params[:mode] == 'edit'
+      .section
+        = render "form"
+        
+  .lien_bas_de_page
+    - unless params[:mode] == 'edit'
+      >
+      = link_to 'Manage invoiced nosscr items', invoice_nositems_path(params[:invoice_id], :mode => "edit")
+    - else
+      >
+      = link_to 'Back', invoice_nositems_path
+      - if params[:nositem_id].present?
+        |
+        = link_to 'Clear (create new)', invoice_nositems_path(:mode => 'edit') 

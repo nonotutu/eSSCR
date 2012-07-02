@@ -1,0 +1,11 @@
+
+.main
+  = render 'tools/header', :selected_item => 'customers'
+  
+  .section
+
+    = render 'customers/form'
+    
+    .lien_bas_de_page
+      >
+      = link_to 'Back', customer_path(@customer.id)

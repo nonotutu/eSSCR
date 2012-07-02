@@ -5,14 +5,17 @@
   = render 'invoices/header', :selected_item => 'overview'
 
   .section
-    Customer_data:
-    = @invoice.customer_data ? @invoice.customer_data : 'not filled yet'
-    %br/
-
-    Sent at:
-    = @invoice.sent_at ? @invoice.sent_at : 'not filled yet'
-    %br/
-
-    %hr
+    %dl
+      %dt Customer_data:
+      %dd
+        - if @invoice.customer_data != nil
+          - @invoice.customer_data.lines.each do |line|
+            = line
+            %br
+        - else
+          %i no client
+    %dl
+      %dt Sent at:
+      %dd= @invoice.sent_at ? @invoice.sent_at : 'not filled yet'
 
     = render 'list_events_services', :locals => { :invoice => @invoice }

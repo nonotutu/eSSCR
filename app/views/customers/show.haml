@@ -1,0 +1,28 @@
+
+.main
+  = render 'tools/header', :selected_item => 'customers'
+  
+  .section
+
+    %ul
+      %li
+        = @customer.data
+  
+    .lien_bas_de_page
+      >
+      = link_to 'Back', customers_path
+      |
+      = link_to 'Edit', edit_customer_path(@customer.id)
+      |
+      = link_to 'Destroy', customer_path(@customer.id), :method => :delete
+      
+  .section
+  
+    %ul
+      - @customer.events.each do |event|
+        %li
+          = event.name
+          (
+          = event.services.count
+          )
+      

@@ -1,6 +1,6 @@
 :ruby
   # remplir les champs avec les données du template_invoiced_item_id si passé en paramètre
-  t_id = params[:template_invoiced_item_id]
+  t_id = params[:templitem_id]
   if t_id.present?
     template      = TemplateInvoicedItem.find(t_id)
     item          = Evitem.new
@@ -19,9 +19,9 @@
         Template :
     %td{ :colspan => '5' }
       %form{ :method => :get }
-        %select{ :name => :template_invoiced_item_id }
+        %select{ :name => :templitem_id }
           %option{ :value => '' }
-          = TemplateInvoicedItem.all.each do |item|
+          = Templitem.all.each do |item|
             - selected = ( ( t_id.present? && template.pos == item.pos ) ? 'selected' : nil )
             %option{ :value => item.id, :selected => selected }
               = item.name

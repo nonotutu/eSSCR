@@ -1,0 +1,25 @@
+- mode = params[:mode]
+- table = generate_table_seritems(@service.id)
+
+- unless @service.seritems.empty?
+
+  %table.invoiced_items
+    %tr
+      %th Name
+      %th Qty
+      %th Price
+      %th Total
+    - table.each do |ligne|
+      %tr
+        %td= ligne[2]
+        %td= ligne[3]
+        %td= ligne[4]
+        %td= ligne[5]
+        - if ligne[0] == 1 && mode == 'edit'
+          %td= button_to '↑↑', :action => :move_up, :id=>ligne[1]
+          %td= button_to '↓↓', :action => :move_down, :id=>ligne[1]
+          %td= link_to 'edit', event_service_seritems_path( :mode => "edit", :seritem_id => ligne[1] )
+          %td= button_to "×", { :action => :destroy, :id => ligne[1] }, :method => :delete
+
+- else
+  %i no seritems

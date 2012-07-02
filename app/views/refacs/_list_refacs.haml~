@@ -3,7 +3,7 @@
 %table.generic
   %tr
     %th Entité
-    %th \%
+    %th %
     %th Montant
   - if @refacs.empty?
     %tr

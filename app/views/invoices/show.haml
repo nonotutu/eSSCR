@@ -7,7 +7,13 @@
   .section
     %dl
       %dt Customer_data :
-      %dd= @invoice.customer_data ? @invoice.customer_data : 'not filled yet'
+      %dd
+        - if @invoice.customer_data != nil
+          - @invoice.customer_data.lines.each do |line|
+            = line
+            %br
+        - else
+          %i no client
     %dl
       %dt Sent at :
       %dd= @invoice.sent_at ? @invoice.sent_at : 'not filled yet'

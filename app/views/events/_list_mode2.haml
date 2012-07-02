@@ -1,25 +1,2 @@
-:ruby
-  services = Service
-
-  case(session[:tri_sens])
-    when '1'
-      services = services.order("starts_at ASC")
-    when '2'
-      services = services.order("starts_at DESC")
-  end
-
-  case(session[:tri_type])
-    when '1'
-      services = services
-    when '2'
-      services = services.where("starts_at > '2012-06-09'")
-  end
-
-  if ( session[:tri_annee].present? )
-    unless ( session[:tri_annee] == 'all' )
-      services = services.where("SUBSTR(starts_at,1,4) = ?", session[:tri_annee])
-    end
-  end
-
 .menu_gauche_3
   = render "events/list_mode2b", :services => services.all, :event_id => event_id, :service_id => service_id

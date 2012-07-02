@@ -17,14 +17,13 @@
       %dd= @event.name
     %dl
       %dt Client :
-      
-      - if @event.customer != nil
-        %dd
+      %dd
+        - if @event.customer != nil
           - @event.customer.data.lines.each do |line|
             = line
             %br
-      - else
-        %i no client
+        - else
+          %i no client
     %h4
       %hr
         Suivi

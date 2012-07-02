@@ -1,0 +1,30 @@
+
+.main
+  = render 'tools/header', :selected_item => 'templitems'
+  
+  .section
+
+    %table.generic
+      %tr
+        %th Position
+        %th Dénomination
+        %th Prix
+      - Templitem.order(:pos).all.each do |item|
+        %tr
+          %td
+            = item.pos
+          %td
+            = item.name
+          %td
+            - if item.kind == 1
+              = to_euro(item.price)
+            - elsif item.kind == 2
+              = to_percent(item.price)
+          %td
+            = link_to 'show', templitem_path(item.id)
+    
+    .lien_bas_de_page
+      >
+      = link_to 'New templitem', new_templitem_path
+        
+  

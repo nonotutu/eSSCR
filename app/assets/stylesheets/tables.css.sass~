@@ -45,7 +45,6 @@ table.empty
     padding-left: 3px
     text-decoration: none
     font-size: xx-small
-
     
 table.generic
   @extend table.empty
@@ -54,7 +53,6 @@ table.generic
     background: rgb(255,207,207)
   tr:nth-child(1)
     background: none
-
     
 table.invoiced_items
   @extend table.generic
@@ -75,18 +73,24 @@ table.invoiced_items
 table.fullitems
   @extend table.empty
   td:nth-child(2)
-    white-space: no-wrap
+    white-space: nowrap
     font-family: "monospace"
     text-align: right
   td:nth-child(3)
-    white-space: no-wrap
+    white-space: nowrap
     font-family: "monospace"
     text-align: right
   td:nth-child(4)
-    white-space: no-wrap
+    white-space: nowrap
     font-family: "monospace"
     text-align: right
   tr:last-child
     background: red
     color: white
     font-weight: bold
+    
+ul.empty
+  background: blue
+  margin: 0
+  font-size: small
+  li

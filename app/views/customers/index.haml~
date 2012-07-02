@@ -1,0 +1,35 @@
+
+.main
+  = render 'tools/header', :selected_item => 'customers'
+  
+  .section
+
+    %table.generic
+      %tr
+        %th Nom
+        %th Adresse
+        %th # E/S
+      - Customer.all.each do |cust|
+        %tr
+          %td
+            = cust.data.lines.first
+          %td
+            - cust.data.lines.each do |ligne|
+              = ligne
+              %br
+          %td
+            - s = 0
+            - cust.events.each do |c|
+              - s += c.services.count
+            = cust.events.count
+            /
+            = s
+              
+          %td
+            = link_to 'show', customer_path(cust.id)
+
+    .lien_bas_de_page
+      >
+      = link_to 'New customer', new_customer_path
+        
+  

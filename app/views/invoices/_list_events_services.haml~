@@ -1,0 +1,13 @@
+%table.empty
+  - @invoice.events.each do |event|
+    %tr
+      %td
+        = event.name
+      %td
+        = calcul_prix_event(event.id)
+    - event.services.each do |service|
+      %tr
+        %td
+          = service.to_s
+        %td
+          = calcul_prix_service(service.id)

@@ -3,27 +3,13 @@
 
 .main
   = render 'events/header', :selected_item => 'services'
-  = render 'header', :selected_item => 'show'
+  = render 'services/header', :selected_item => 'show'
 
   .section
-    %dl
-      %dt Starts_at :
-      %dd= @service.starts_at.to_s(:cust_long)
-    %dl
-      %dt Ends_at :
-      %dd= @service.ends_at.to_s(:cust_long)
-    %dl
-      %dt Rendezvous :
-      %dd= @service.rendezvous
-    %dl
-      %dt Depart_at :
-      %dd= @service.depart_at
-    %dl
-      %dt Surplace_at :
-      %dd= @service.surplace_at
-
+    = render "data"
+  
   .lien_bas_de_page
-    >
+    ‣
     = link_to "Edit", edit_event_service_path(@event, @service)
     |
     = link_to "Destroy", { :action => :destroy, :id => @service.id }, :method => :delete
