@@ -1,0 +1,30 @@
+- total_facture = calcul_prix_event(@event.id)
+
+- unless @event.refacs.empty?
+
+  %table.generic
+    %tr
+      %th Entité
+      %th %
+      %th Montant
+    - @event.refacs.each do |refac|
+      %tr
+        %td
+          = refac.crentite.name
+        - if refac.kind == 1
+          %td
+          %td{:align => :right, :style => 'font-family: mono'}
+            = to_euro(refac.price)
+        -elsif refac.kind == 2
+          %td{:align => :right, :style => 'font-family: mono'}
+            = to_percent(refac.price)
+            →
+          %td{:align => :right, :style => 'font-family: mono'}
+            = to_euro(total_facture * refac.price / 100.0)
+        
+        - if params[:mode] == 'edit'
+          %td= link_to 'edit', event_refacs_path( { :mode => "edit", :refac_id => refac.id } )
+          %td= button_to "remove", { :action => :destroy, :id => refac.id }, :method => :delete
+
+- else
+  %i ─ no refacs ─

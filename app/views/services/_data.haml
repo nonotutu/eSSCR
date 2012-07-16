@@ -1,15 +1,22 @@
 %dl
-  %dt Starts_at :
+  %dt Début :
   %dd= @service.starts_at.to_s(:cust_long)
 %dl
-  %dt Ends_at :
+  %dt Fin :
   %dd= @service.ends_at.to_s(:cust_long)
 %dl
-  %dt Rendezvous :
+  %dt Rendez-vous :
   %dd= @service.rendezvous
 %dl
-  %dt Depart_at :
-  %dd= @service.depart_at
+  %dt Départ :
+  %dd
+    - if @service.depart_at.present?
+      = @service.depart_at.to_s(:cust_long)
 %dl
-  %dt Surplace_at :
-  %dd= @service.surplace_at
+  %dt Sur place :
+  %dd
+    - if @service.surplace_at.present?
+      = @service.surplace_at.to_s(:cust_long)
+%dl
+  %dt Volos nécessaires :
+  %dd= @service.volness

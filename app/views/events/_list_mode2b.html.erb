@@ -11,7 +11,7 @@
         <% else %>
             </ul>
             <li>
-              <%= link_to service.event.category.short_name + " - " + service.event.name, event_path(service.event_id), :class => (event_id == service.event.id ? :active_light : nil) %>
+              <%= link_to service.event.category.short_name + " - " + service.event.name, event_overview_path(service.event_id), :class => (event_id == service.event.id ? :active_light : nil) %>
                 <ul>
                   <li><%= link_to service.to_s, event_service_overview_path(service.event.id, service.id), :class => (service_id == service.id ? :active : nil) %></li>
         <% end %>

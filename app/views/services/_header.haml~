@@ -1,4 +1,4 @@
-.title_active_element_2
+.title.two
   = @service.starts_at.to_s(:cust_short)
   →
   = @service.relative_ends_at

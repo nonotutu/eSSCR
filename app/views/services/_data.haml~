@@ -1,15 +1,22 @@
-    %dl
-      %dt Starts_at :
-      %dd= @service.starts_at.to_s(:cust_long)
-    %dl
-      %dt Ends_at :
-      %dd= @service.ends_at.to_s(:cust_long)
-    %dl
-      %dt Rendezvous :
-      %dd= @service.rendezvous
-    %dl
-      %dt Depart_at :
-      %dd= @service.depart_at
-    %dl
-      %dt Surplace_at :
-      %dd= @service.surplace_at
+%dl
+  %dt Début :
+  %dd= @service.starts_at.to_s(:cust_long)
+%dl
+  %dt Fin :
+  %dd= @service.ends_at.to_s(:cust_long)
+%dl
+  %dt Rendez-vous :
+  %dd= @service.rendezvous
+%dl
+  %dt Départ :
+  %dd
+    - if @service.depart_at.present?
+      = @service.depart_at.to_s(:cust_long)
+%dl
+  %dt Sur place :
+  %dd
+    - if @service.surplace_at.present?
+      = @service.surplace_at.to_s(:cust_long)
+%dl
+  %dt Volontaires nécessaires :
+  %dd= @service.volness

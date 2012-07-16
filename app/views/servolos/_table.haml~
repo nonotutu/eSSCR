@@ -1,13 +1,24 @@
-%table.generic
-  %tr
-    %th Who
-    %th When
-  - @servolos.each do |servolo|
+
+- unless @service.servolos.empty?
+
+  %table.generic
     %tr
-      %td
-        = servolo.volo.first_name
-        = servolo.volo.last_name
-      %td= servolo.fromto
-      - if params[:mode] == 'edit'
-        %td= link_to 'edit', event_service_servolos_path(:servolo_id => servolo.id, :mode => 'edit')
-        %td= link_to "remove", { :action => :destroy, :id => servolo.id }, :method => :delete
+      %th Who
+      %th When
+      %th Where
+    - @service.servolos.by_first_name.each do |servolo|
+      %tr
+        - selection = (if params[:mode] == 'edit' && @servolo && @servolo.id == servolo.id)?"color:red;font-weight:bold":nil
+        %td{:style => selection}
+          = servolo.volo.first_name
+          = servolo.volo.last_name
+        %td{:style => selection}
+          = servolo.fromto
+        %td{:style => selection}
+          = servolo.rendezvous_to_s
+        - if params[:mode] == 'edit'
+          %td{:width => '1%'}= link_to 'edit', event_service_servolos_path(:servolo_id => servolo.id, :mode => 'edit')
+          %td{:width => '1%'}= link_to "remove", { :action => :destroy, :id => servolo.id }, :method => :delete
+
+- else
+  %i ─ no servolos ─

@@ -15,28 +15,21 @@
 body
   font-family: "URW Gothic L"
 
-.menu
+hr.intrasection
+  height: 2px
+  border: none
+  background: red
+  border-top: 2px dashed red
+  margin: 4px
+  padding: 0
+
+hr.intrasection_light
+  height: 2px
+  border: none
   background: rgb(255,127,127)
-  border-radius: 4px
-  float : top
-  ul
-    list-style: none
-    margin: 0
-    padding: 0
-  li
-    display: inline
-    padding-left: 40px
-  a
-    font-size: medium
-    color: white
-    &:link
-      text-decoration: none
-    &:hover
-      color: red
-    &.active
-      font-weight: bold
-      color: red
-      text-shadow: -1px 0 3px white, 0 1px 3px white, 1px 0 3px white, 0 -1px 3px white
+  border-top: 2px dashed rgb(255,127,127)
+  margin: 4px
+  padding: 0
 
 .main
   overflow: auto
@@ -49,8 +42,7 @@ body
     &.two
       font-size: x-large
       padding-left: 120px
-  .section
-    //    border: 1px solid green
+  .section     
     margin: 8px
     dl
       margin: 0
@@ -73,19 +65,21 @@ body
         color: black
         i
           color: gray
-    .info
-      //      border: 1px solid blue
-      margin: 8px
-      h4
-        margin: 0
-        margin-left: 20px
-        //        border: 1px solid yellow
-        font-size: large
-        color: black
-        font-weight: bold
+    table.insection
+      border-collapse: collapse
+      tr
+        td.left
+        td.right
+          vertical-align: bottom
+          width: 1%
+          a
+            color: black
+            text-decoration: none
+            font-size: x-large
+          a:hover
+            color: red
     h4
       margin: 0
-      //      border: 1px solid yellow
       font-size: large
       color: black
       margin-left: 120px
@@ -96,9 +90,8 @@ body
         margin-left: -120px
         color: red
         border: 0
-        background: red //rgb(255,127,127)
-        height: 1px // 2px
-        //border-bottom: 1px solid rgb(255,127,127)
+        background: red
+        height: 1px
     h5
       margin: 0
       font-size: small
@@ -107,7 +100,7 @@ body
       margin: 0
       font-size: small
       color: red
-      float:left
+      float: left
       display: inline
       font-weight: bold
 
@@ -168,10 +161,6 @@ body
 .menu_gauche_options
   @extend .menu_gauche_0
   font-size: small
-  table
-    tr
-      td
-        align: top
 
 .lien_bas_de_page
   font-size: small
@@ -195,15 +184,21 @@ table.graphe_volo
     height: 16px
     float: left
     &.a
-      background: lightgray
+      background: rgb(223,223,223)
     &.p
-      background: green
+      background: lightgreen
     &.dp
       background: rgb(255,191,191)
     &.sp
       background: rgb(255,159,159)
     &.sv
       background: rgb(255,127,127)
+    &.totaabs
+      background: red
+    &.totpres
+      background: green
+    &.partpres
+      background: lightgreen
   th
     white-space: nowrap
     padding-right: 4px

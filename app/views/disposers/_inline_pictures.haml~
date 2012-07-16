@@ -1,0 +1,12 @@
+- unless params[:icon_size]
+  - params[:icon_size] = 1
+
+- unless @service.disposers.empty?
+  - @service.disposers.each do |dispo|
+    - selection = (@disposer && @disposer.id==dispo.id)?"background:red":nil
+    - src = "/icons/icon" + dispo.dispositif.pos.to_s + "_s" + params[:icon_size].to_s + ".png"
+    - alt = dispo.dispositif.name
+    - dispo.quantity.times do
+      %img{:src => src, :alt => alt, :style => "margin: 0",  :title => alt}
+- else
+  %i ─ no disposers ─

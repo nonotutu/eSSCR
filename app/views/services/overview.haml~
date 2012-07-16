@@ -6,13 +6,16 @@
   = render 'services/header', :selected_item => 'overview'
 
   .section
-    %h4 Dispositif
-    - @disposers = @service.disposers.all
-    = render "disposers/list"
-    %hr
-    %h4 Personnel
+
+    = render "/table_titre_intrasection", :params => { :titre => "Général", :link_to_edit => event_service_path(@event, @service) }
+    = render "data_short"
+    =# link_to "⌨", event_service_path(@event, @service)
+   
+    = render "/table_titre_intrasection", :params => { :titre => "Dispositif", :link_to_edit => event_service_disposers_path(@event, @service) }
+    = render "disposers/inline_pictures", :params => {:icon_size => "4"}
+
+    = render "/table_titre_intrasection", :params => { :titre => "Volontaires", :link_to_edit => event_service_servolos_path(@event, @service) }
     = render "servolos/graph"
-    %hr
-    %h4 Facturation
+
+    = render "/table_titre_intrasection", :params => { :titre => "Facturation", :link_to_edit => event_service_seritems_path(@event, @service) }
     = render "seritems/table"
-    %hr

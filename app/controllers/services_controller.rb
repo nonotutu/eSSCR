@@ -1,6 +1,5 @@
 class ServicesController < InheritedResources::Base
 
-  # nestage
   belongs_to :event
   
   

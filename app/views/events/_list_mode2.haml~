@@ -1,2 +1,2 @@
 .menu_gauche_3
-  = render "events/list_mode2b", :services => events_n_services.all, :event_id => event_id, :service_id => service_id
+  = render "events/list_mode2b", :services => services.by_date.all, :event_id => event_id, :service_id => service_id

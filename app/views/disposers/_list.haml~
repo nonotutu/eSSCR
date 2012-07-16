@@ -1,11 +1,17 @@
-%ul.empty
-  - @service.disposers.each do |disposer|
-    %li
-      = disposer.quantity
-      &times;
-      = disposer.dispositif.name
-      %b= disposer.crentite.name if (disposer.crentite)
-      - if params[:mode] == 'edit'
-        %td= link_to 'edit', event_service_disposers_path(:disposer_id => disposer.id, :mode => 'edit')
-        %td= link_to 'remove', { :controller => :disposers, :action => :destroy, :id => disposer.id }, :method => :delete
-        
+
+- unless @service.disposers.empty?
+
+  %ul.empty
+    - @service.disposers.each do |disposer|
+      - selection = (params[:mode]=='edit' && @disposer && @disposer.id==disposer.id)?"color:red;font-weight:bold":nil
+      %{:style => selection}
+        = disposer.quantity
+        &times;
+        = disposer.dispositif.name
+        %b= disposer.crentite.name if (disposer.crentite)
+        - if params[:mode] == 'edit'
+          %td= link_to 'edit', event_service_disposers_path(:disposer_id => disposer.id, :mode => 'edit')
+          %td= link_to 'remove', { :controller => :disposers, :action => :destroy, :id => disposer.id }, :method => :delete
+
+- else
+  %i ─ no disposers ─

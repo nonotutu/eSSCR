@@ -11,7 +11,7 @@
         %li
           - active = (event_id == event.id ? :active : nil)
           - evt = event.category.short_name + " - " + event.name
-          = link_to evt, event_path(event.id), :class => active
+          = link_to evt, event_overview_path(event.id), :class => active
       %hr
     %li
       = link_to '→ New event', new_event_path

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120628000930) do
+ActiveRecord::Schema.define(:version => 20120708191531) do
 
   create_table "categories", :force => true do |t|
     t.string   "name"
@@ -128,6 +128,7 @@ ActiveRecord::Schema.define(:version => 20120628000930) do
     t.string   "rendezvous"
     t.datetime "surplace_at"
     t.datetime "depart_at"
+    t.integer  "volness"
   end
 
   create_table "servolos", :force => true do |t|
@@ -137,6 +138,7 @@ ActiveRecord::Schema.define(:version => 20120628000930) do
     t.integer   "volo_id"
     t.timestamp "starts_at"
     t.timestamp "ends_at"
+    t.string    "rendezvous"
   end
 
   create_table "templitems", :force => true do |t|

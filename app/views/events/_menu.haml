@@ -1,15 +1,14 @@
 .menu
   %ul
 
-    %li    
-      - active = selected_item == 'show' ? :active : nil
-      = link_to 'Event data', event_path(@event), :class => active
-
     %li
       - active = selected_item == 'overview' ? :active : nil
-      = link_to 'Overview', event_overview_path(@event), :class => active
+      = link_to 'Event', event_overview_path(@event), :class => active
+
+    %li    
+      - active = selected_item == 'show' ? :active : nil
+      = link_to 'Data', event_path(@event), :class => active
     
-    =# nesté
     %li
       - active = selected_item == 'evitems' ? :active : nil
       = link_to "Invoiced event items(#{@event.evitems.count})", event_evitems_path(@event), :class => active

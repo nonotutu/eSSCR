@@ -1,5 +1,15 @@
 = simple_form_for (@event) do |f|
-  = f.association :category
-  = f.input       :name
-  = f.association :customer
-  = f.button      :submit
+  %table.formulaire
+    %tr
+      %th Catégorie :
+      %td= f.association :category, :label => false
+    %tr
+      %th Nom :
+      %td= f.input       :name,     :label => false
+    %tr
+      %th Client :
+      %td= f.association :customer, :label => false
+    %tr
+      %th
+      %td{:align => :right}
+        = f.button      :submit

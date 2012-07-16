@@ -1,0 +1,24 @@
+
+%table.white
+  %tr
+    %th
+      %font Catégorie
+    %th
+      %font Client
+    %th
+      %font Lieu
+    %th
+      %font Adresse
+  %tr
+    %td
+      %font= @event.category.short_name
+    %td
+      %font
+        - if @event.customer
+          - @event.customer.data.lines.each do |line|
+            = line
+            %br
+    %td
+      %font
+    %td
+      %font

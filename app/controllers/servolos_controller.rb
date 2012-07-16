@@ -1,4 +1,6 @@
 class ServolosController < InheritedResources::Base
+
+  #before_filter :heures_auto, :only => [:create]
   
   # l'ordre a une importance, car double-nesté
   belongs_to :event, :service
@@ -13,9 +15,9 @@ class ServolosController < InheritedResources::Base
   
   # nécessaire pour overrider les redirect_to par défaut
   def create
-  
+
     @servolo = Servolo.new(params[:servolo])
-   
+
     if @servolo.save
       redirect_to :back, :notice => "Servolo created (Volunteer added to service)"
     else
@@ -52,5 +54,19 @@ class ServolosController < InheritedResources::Base
     
   end
   
+  def heures_auto
   
+#   if heures_auto // TODO : rajouter dans le servolos/form // TODO : tester
+    @servolo = Servolo.new(params[:servolo])
+    
+    @servolo.starts_at = @servolo.service.debut
+    @servolo.ends_at = @servolo.service.ends_at
+    if @servolo.service.debut == @servolo.service.depart_at
+      @servolo.rendezvous = "1"
+    else
+      @servolo.rendezvous = "2"
+    end
+
+  end
+
 end

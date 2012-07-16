@@ -5,29 +5,7 @@
   = render 'header', :selected_item => 'show'
 
   .section
-    %h4
-      %hr
-        Général
-      %hr
-    %dl
-      %dt Catégorie :
-      %dd= @event.category.name
-    %dl
-      %dt Nom :
-      %dd= @event.name
-    %dl
-      %dt Client :
-      %dd
-        - if @event.customer != nil
-          - @event.customer.data.lines.each do |line|
-            = line
-            %br
-        - else
-          %i no client
-    %h4
-      %hr
-        Suivi
-      %hr
+    = render "data"
 
   .lien_bas_de_page
     ‣

@@ -7,7 +7,10 @@
 
   .section
     = render "disposers/list"
-    
+    %hr.intrasection
+    = render "disposers/inline_pictures", :params => { :icon_size => 4 }
+    %hr.intrasection
+
     - if params[:mode] == 'edit'
       = render "disposers/form"
   

@@ -3,7 +3,8 @@
 
   %ul.empty
     - @service.disposers.each do |disposer|
-      %li
+      - selection = (params[:mode]=='edit' && @disposer && @disposer.id==disposer.id)?"color:red;font-weight:bold":nil
+      %li{:style => selection}
         = disposer.quantity
         &times;
         = disposer.dispositif.name

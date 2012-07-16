@@ -1,10 +1,39 @@
+:ruby
+  #heures_from_début_to_fin = Array.new
+  #(@service.début..@service.ends_at).step(5*60).each do |h|
+  #  duo = Array.new
+  #  duo << h.to_s(:jtime)
+  #  duo << h
+  #  heures_from_début_to_fin << duo
+  #end
+  heures_from_début_to_fin = Array.new
+  deb = @service.début
+  fin = @service.ends_at
+  while deb <= fin
+    duo = Array.new
+    case deb
+      when @service.depart_at
+        duo << "Départ : " + deb.to_s(:cust_jtime)
+      when @service.surplace_at
+        duo << "Sur place : " + deb.to_s(:cust_jtime)
+      when @service.starts_at
+        duo << "Opérationnel : " + deb.to_s(:cust_jtime)
+      else
+        duo << deb.to_s(:cust_jtime)
+    end
+      
+    duo << deb
+    heures_from_début_to_fin << duo
+    deb += 5*60
+  end
+
 
 = simple_form_for ([@event, @service, @servolo ||= Servolo.new ]) do |f|
   = f.input :service_id, :input_html => { :value => params[:service_id] }, :as => :hidden
   %table.formulaire
     %tr
       %td
-        %table
+        %table{:style => 'border-collapse: collapse' }
           %tr
             %th{ :style => 'text-align: left' }
               Volontaire :
@@ -15,25 +44,31 @@
         %table
           %tr
             %th
-              Starts_at :
+              De :
             %td
               = f.input :starts_at,
-                        :start_year => 2010,
-                        :end_year => Date.today.year+2,
-                        :minute_step => 5,
-                        :order => [:day, :month, :year],
-                        :default => @service.starts_at,
+                        :collection => heures_from_début_to_fin,
+                        :selected => @servolo.starts_at ||= @service.début,
+                        :include_blank => false,                        
                         :label => false
           %tr
             %th
-              Ends_at :
+              À :
             %td
               = f.input :ends_at,
-                        :start_year => 2010,
-                        :end_year => Date.today.year+2,
-                        :minute_step => 5,
-                        :order => [:day, :month, :year],
-                        :default => @service.ends_at,
+                        :collection => heures_from_début_to_fin,
+                        :selected => @servolo.ends_at ||= @service.ends_at,
+                        :include_blank => false,
+                        :label => false
+          %tr
+            %th
+              Rendez-vous :
+            %td
+              = f.input :rendezvous,
+                        :as => :radio,
+                        :collection => [['Départ', 1], ['Sur place', 2]],
+                        :label_method => :first,
+                        :value_method => :last,
                         :label => false
           %tr
             %td{ :colspan => 3, :align => "right" }

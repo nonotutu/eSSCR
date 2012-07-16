@@ -1,0 +1,71 @@
+
+%table.white
+  %tr
+    %th
+      %font
+        date
+    %th
+      %font
+        ⌖ rendez-vous
+    %th
+      %font
+        ⌚ départ
+    %th
+      %font
+        ⌚ sur place
+    %th
+      %font
+        ⌚ début
+    %th
+      %font
+        ⌚ fin
+    %th
+      %font
+        ⌛ durée
+  %tr
+    %td
+      %font
+        ⤷
+        = @service.starts_at.to_s(:cust_jdate)
+    %td
+      %font
+        ⤷
+        = @service.rendezvous
+    %td
+      %font
+        ⤷
+        = @service.relative_depart_at
+    %td
+      %font
+        ⤷
+        = @service.relative_surplace_at
+    %td
+      %font
+        ⤷
+        = @service.starts_at.to_s(:cust_time)
+    %td
+      %font
+        ⤷
+        = @service.relative_ends_at
+    %td
+      %font
+        ⤷
+        = @service.durée_to_human_readable
+
+=#%hr{:style => "width: 10%; margin: 2px", :align => "left"}
+=#%hr{:style => "margin: 2px; height: 1px; border-bottom: 1px dotted black"}
+=#%hr
+
+%hr{:style => "height: 4px; padding: 0; margin: 0; border: none"}
+
+%table.white
+  %tr
+    %th
+      %font
+        volontaires
+  %tr
+    %td
+      %font
+        ⤷
+        - (@service.volness ||= 0).times do
+          %img{:src => "/icons/volo_s2.png", :alt => "❖ "}

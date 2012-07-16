@@ -6,7 +6,8 @@ class Service < ActiveRecord::Base
                   :ends_at,
                   :rendezvous,
                   :depart_at,
-                  :surplace_at
+                  :surplace_at,
+                  :volness
 
   belongs_to :event
   has_many :seritems
@@ -32,30 +33,75 @@ class Service < ActiveRecord::Base
   scope :by_date, order(:starts_at)
   scope :by_name, joins(:event).order(:name)
   
+  def début
+    return self.depart_at ||= self.surplace_at ||= self.starts_at
+  end
+
   def disposers_to_inline
-    str = ""
-    self.disposers.each do |dispo|
-      str += dispo.quantity.to_s + " × " + dispo.dispositif.name + " ; "
+    if self.disposers.count > 0
+      str = ""
+      self.disposers.each do |dispo|
+        str += dispo.quantity.to_s + " × " + dispo.dispositif.name + " ; "
+      end
+      str = str.chomp(" ; ")
+    else
+      "─ no disposers ─"
     end
-    str = str.chomp(" ; ")
+  end
+
+  def relative_depart_at
+    if depart_at.present?
+      diff = depart_at.to_i/86400 - starts_at.to_i/86400
+      if ( diff == 0 )
+        self.depart_at.to_s(:cust_time)
+      elsif ( diff > 0 )
+        self.depart_at.to_s(:cust_time) + " (+" + diff.to_s + ")"
+      else
+        self.depart_at.to_s(:cust_time) + " (" + diff.to_s + ")"
+      end
+    end
+  end
+
+  def durée_to_seconds
+    self.ends_at - self.début
   end
   
-  
+  def durée_to_human_readable
+    h = (durée_to_seconds.to_i)/1.hour
+    m = (durée_to_seconds.to_i-h*1.hour)/1.minute
+    str = h.to_s + " h " + m.to_s + " m"
+  end
+
+  def relative_surplace_at
+    if surplace_at.present?
+      diff = surplace_at.to_i/86400 - starts_at.to_i/86400
+      if ( diff == 0 )
+        self.surplace_at.to_s(:cust_time)
+      elsif ( diff > 0 )
+        self.surplace_at.to_s(:cust_time) + " (+" + diff.to_s + ")"
+      else
+        self.surplace_at.to_s(:cust_time) + " (" + diff.to_s + ")"
+      end
+    end
+  end
+
   def relative_ends_at
     diff = ends_at.to_i/86400 - starts_at.to_i/86400
     if ( diff == 0 )
       self.ends_at.to_s(:cust_time)
-    else
+    elsif ( diff > 0 )
       self.ends_at.to_s(:cust_time) + " (+" + diff.to_s + ")"
+    else
+      self.ends_at.to_s(:cust_time) + " (" + diff.to_s + ")"
     end
   end
   
-  def fromto
-    self.to_s
-  end
+#   def fromto
+#     self.to_s
+#   end
   
   def to_s
-    self.starts_at.to_s(:cust_short) + " → " + self.relative_ends_at
+    self.starts_at.to_s(:cust_jdate) + " - " + self.starts_at.to_s(:cust_time) + " → " + self.relative_ends_at
   end
 
   private

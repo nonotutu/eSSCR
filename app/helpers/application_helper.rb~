@@ -1,5 +1,10 @@
+#encoding: utf-8
 module ApplicationHelper
 
+  
+  def humanize_time_range(secs)
+    return (secs/1.hour).to_s + "h"
+  end
   
   def event_last_year()
     begin Service.order(:ends_at).last.ends_at.year rescue 2010 end
@@ -410,7 +415,7 @@ module ApplicationHelper
     i = debut
     while i <= fin_service do
       if i%3600 == 0
-        tableau << i - debut - 1
+        tableau << i - debut
       end
       i += 5.minutes
     end
@@ -485,7 +490,7 @@ module ApplicationHelper
     
     graphe = Array.new
     
-    service.servolos.each do |servolo|
+    service.servolos.by_first_name.each do |servolo|
       ligne = Array.new
       ligne << servolo.volo.first_name
       debut_servolo = ( servolo.starts_at - debut ).to_i
@@ -523,4 +528,183 @@ module ApplicationHelper
 
   end
 
+
+
+  def string_total_servolos(service_id)
+    
+    table = Array.new
+    
+    total = total_servolos(service_id)
+    
+    service = Service.find(service_id)
+    
+#     i = 0
+#     max = -1
+#     while i < total.count-1
+#       if max < total[i+2]
+#         max = total[i+2]
+#       end
+#       i += 3
+#     end
+    
+    max = service.volness ||= 0
+    i = 0
+    while i < total.count-1
+      if max > total[i+2]
+        table << "De " +
+            (service.début + total[i].seconds).to_s(:cust_short) +
+            " à " +
+            (service.début + total[i+1].seconds).to_s(:cust_short) +
+            " : " +
+            (max - total[i+2]).to_s +
+            " volontaire" +
+            ((max-total[i+2])>1?"s":"")
+      end
+      i += 3
+    end
+    
+    return table
+
+  end
+  
+  
+  
+  def tableau_total_servolos(service_id)
+        
+    ligne7 = total_servolos(service_id)
+    
+    service = Service.find(service_id)
+    duree = service.ends_at - (service.depart_at ||= service.surplace_at ||= service.starts_at)
+    
+    ligne8 = Array.new
+    
+#     max = -1
+    i = 0
+    fin = true
+    while fin
+      
+#       if max < ligne7[i+2]
+#         max = ligne7[i+2]
+#       end
+
+      ligne8 << ligne7[i+2] << (ligne7[i+1] - ligne7[i]) / duree.to_f * 100.0
+
+      i += 3
+      if i >= ( ligne7.count)
+        fin = false
+      end
+    end
+    
+#     ligne8 << max
+    
+    return ligne8
+    
+  end
+
+
+  
+  def total_servolos(service_id)
+    
+    service = Service.find(service_id)
+    
+    table = Array.new
+    ligne1 = Array.new
+    ligne2 = Array.new
+    ligne3 = Array.new
+    ligne4 = Array.new
+    ligne5 = Array.new
+    ligne6 = Array.new
+    ligne7 = Array.new
+    
+    debut = service.depart_at ||= service.surplace_at ||= service.starts_at
+    duree = service.ends_at - debut
+       
+    service.servolos.each do |servolo|
+      ligne1 << servolo.starts_at - debut
+      ligne2 << servolo.ends_at - debut
+    end
+
+    ligne1.sort!
+    ligne2.sort!
+    
+    i = 0
+    j = 0
+    v = 0
+    while ( i < ligne1.count && j < ligne2.count )
+       if ligne1[i] > ligne2[j]
+         ligne3 << ligne2[j]
+         ligne4 << v -= 1
+         j += 1
+       else
+         ligne3 << ligne1[i]
+         i += 1
+         ligne4 << v += 1
+       end
+    end
+        
+    if i >= ligne1.count
+      for k in j..ligne2.count-1
+        ligne3 << ligne2[k]
+        ligne4 << v -= 1
+      end
+    else
+      for k in i..ligne1.count-1
+        ligne3 << ligne1[k]
+        ligne4 << v += 1
+      end
+    end
+
+    
+    # si le premier volo commence au début du service
+    if ligne3[0] != 0.0
+      ligne3.insert(0,0.0)
+      ligne4.insert(0,0)
+    end
+    
+    
+    for i in 0..ligne4.count
+      unless ligne3[i] == ligne3[i+1]
+        ligne5 << ligne3[i]
+        ligne6 << ligne4[i]
+      end
+    end
+
+    # si le dernier volo termine à la fin du service
+    if ligne5.last != (service.ends_at - debut)
+      ligne5 << (service.ends_at - debut)
+    else
+      ligne6.delete_at(ligne6.count-1)
+    end
+    
+    # table des intervalles
+    for i in 0..ligne6.count-1
+      ligne7 << ligne5[i]
+      ligne7 << ligne5[i+1]
+      ligne7 << ligne6[i]
+    end
+    
+#   0    1  2    3    4  5    ... 
+# début fin nb début fin nb ...
+    
+    fin = true
+    i = 0
+    while fin
+      if ligne7[i+2] == ligne7[i+5]
+        ligne7.delete_at(i+1)
+        ligne7.delete_at(i+1)
+        ligne7.delete_at(i+1)
+      else
+        i += 3
+      end
+
+      if i >= ( ligne7.count - 3 )
+        fin = false
+      end
+      
+    end
+    
+    return ligne7
+    
+  end
+  
 end

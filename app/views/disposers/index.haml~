@@ -6,8 +6,11 @@
   = render 'services/header', :selected_item => 'disposers'
 
   .section
-    = render "list_dispositifs"
-    
+    = render "disposers/list"
+    %hr.intrasection
+    = render "disposers/inline_pictures"
+    %hr.intrasection
+
     - if params[:mode] == 'edit'
       = render "disposers/form"
   

@@ -21,7 +21,56 @@ class ServicesController < InheritedResources::Base
   end
   
   def update
-     
+
+    datizer
+    
+     @service = Service.find(params[:id])
+  
+       if @service.update_attributes(params[:service])
+         redirect_to event_service_path, :notice => "Service updated"
+       else
+         redirect_to :back, :alert => "Error updating service" + @service.errors.messages.to_s
+       end
+    
+  end
+  
+  def create
+
+    datizer
+    
+    @service = Service.new(params[:service])
+    @service.event_id = params[:event_id]
+    
+    depart_at   = datizer_2(@service.starts_at, @service.depart_at)
+    surplace_at = datizer_2(@service.starts_at, @service.surplace_at)
+    
+    if depart_at
+      @service.depart_at = depart_at
+    end
+      
+    if surplace_at
+      @service.surplace_at = surplace_at
+    end
+    
+    if @service.save
+      redirect_to event_service_path(@service.event, @service), :notice => 'Service created'
+    else
+	    redirect_to :back, :alert => 'Error creating service' + @service.errors.messages.to_s
+    end
+ 
+  end
+
+  def overview
+    # nécessaires pour les menus
+    @service = Service.find(params[:id])
+    @event = @service.event
+  end
+
+
+private
+  
+  def datizer
+    
     params[:service]['depart_at(1i)'] = ""
     params[:service]['depart_at(2i)'] = ""
     params[:service]['depart_at(3i)'] = ""
@@ -66,57 +115,9 @@ class ServicesController < InheritedResources::Base
       params[:service]['surplace_at(4i)'] = surplace_at.hour.to_s
       params[:service]['surplace_at(5i)'] = surplace_at.minute.to_s   
     end
-  
-     @service = Service.find(params[:id])
-  
-       if @service.update_attributes(params[:service])
-         redirect_to event_service_path, :notice => "Service updated"
-       else
-         redirect_to :back, :alert => "Error updating service" + @service.errors.messages.to_s
-       end
     
   end
-  
-  def create
 
-    params[:service]['depart_at(1i)'] = ""
-    params[:service]['depart_at(2i)'] = ""
-    params[:service]['depart_at(3i)'] = ""
-    params[:service]['surplace_at(1i)'] = ""
-    params[:service]['surplace_at(2i)'] = ""
-    params[:service]['surplace_at(3i)'] = ""
-
-    @service = Service.new(params[:service])
-    @service.event_id = params[:event_id]
-    
-    depart_at   = datizer_2(@service.starts_at, @service.depart_at)
-    surplace_at = datizer_2(@service.starts_at, @service.surplace_at)
-    
-    if depart_at
-      @service.depart_at = depart_at
-    end
-      
-    if surplace_at
-      @service.surplace_at = surplace_at
-    end
-    
-    if @service.save
-      redirect_to event_service_path(@service.event, @service), :notice => 'Service created'
-    else
-	    redirect_to :back, :alert => 'Error creating service' + @service.errors.messages.to_s
-    end
- 
-  end
-
-  def overview
-    # nécessaires pour les menus
-    @service = Service.find(params[:id])
-    @event = @service.event
-  end
-
-
-private
-  
   # assigne le YYYYMMDD de 'start' à 'depart'
   # retire un jour à 'depart' s'il est après 'start'
   def datizer_2(start, depart)

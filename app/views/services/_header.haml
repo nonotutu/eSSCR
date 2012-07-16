@@ -1,6 +1,4 @@
 .title.two
-  = @service.starts_at.to_s(:cust_short)
-  →
-  = @service.relative_ends_at
+  = @service.to_s
     
 = render 'services/menu', :selected_item => selected_item
