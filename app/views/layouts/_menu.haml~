@@ -19,6 +19,7 @@
     
     - active = controller_name == 'tools'    |
         || controller_name == 'customers'    |
-        || controller_name == 'templitems'     |
+        || controller_name == 'dispositifs'    |
+        || controller_name == 'templitems'   |
         ? :active : nil                      |
     %li= link_to 'Tools', tools_path, :class => active

@@ -7,9 +7,9 @@ class Dispositif < ActiveRecord::Base
   
   validates :name, :presence => true
   validates :pos, :uniqueness => true
-  validates :image_s1_content_type, :inclusion => { :in => [nil, "image/png"] }
-  validates :image_s2_content_type, :inclusion => { :in => [nil, "image/png"] }
-  validates :image_s4_content_type, :inclusion => { :in => [nil, "image/png"] }
+  validates :image_s1_content_type, :inclusion => { :in => ["image/png"] }
+  validates :image_s2_content_type, :inclusion => { :in => ["image/png"] }
+  validates :image_s4_content_type, :inclusion => { :in => ["image/png"] }
 
   before_destroy :prevent_destroy_if_dispositif_in_use, :notice => "Dispositif in use"
   

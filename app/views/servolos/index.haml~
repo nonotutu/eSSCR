@@ -10,12 +10,11 @@
     %hr.intrasection
     = render "table"
     %hr.intrasection
-    - unless (str = string_total_servolos(@service.id))
-      %ul.empty
-        - str.each do |ligne|
-          %li
-            = ligne
-      %hr.intrasection
+    %ul.empty
+      - string_total_servolos(@service.id).each do |ligne|
+        %li
+          = ligne
+        %hr.intrasection
 
 
     - if params[:mode] == 'edit'

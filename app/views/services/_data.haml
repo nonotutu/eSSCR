@@ -10,12 +10,12 @@
 %dl
   %dt Départ :
   %dd
-    - if @service.depart_at.present?
+    - if @service.depart_at
       = @service.depart_at.to_s(:cust_long)
 %dl
   %dt Sur place :
   %dd
-    - if @service.surplace_at.present?
+    - if @service.surplace_at
       = @service.surplace_at.to_s(:cust_long)
 %dl
   %dt Volos nécessaires :

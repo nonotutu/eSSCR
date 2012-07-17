@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120708191531) do
+ActiveRecord::Schema.define(:version => 20120716234452) do
 
   create_table "categories", :force => true do |t|
     t.string   "name"
@@ -44,8 +44,17 @@ ActiveRecord::Schema.define(:version => 20120708191531) do
   create_table "dispositifs", :force => true do |t|
     t.integer  "pos"
     t.string   "name"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",            :null => false
+    t.datetime "updated_at",            :null => false
+    t.binary   "image_s1_binary_data"
+    t.binary   "image_s2_binary_data"
+    t.string   "image_s1_content_type"
+    t.string   "image_s1_filename"
+    t.binary   "image_s4_binary_data"
+    t.string   "image_s4_content_type"
+    t.string   "image_s4_filename"
+    t.string   "image_s2_content_type"
+    t.string   "image_s2_filename"
   end
 
   create_table "events", :force => true do |t|
@@ -55,6 +64,8 @@ ActiveRecord::Schema.define(:version => 20120708191531) do
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
     t.integer  "customer_id"
+    t.string   "place"
+    t.text     "address"
   end
 
   create_table "evitems", :force => true do |t|

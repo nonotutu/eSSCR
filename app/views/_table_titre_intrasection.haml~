@@ -1,16 +1,20 @@
 %table.titre_intrasection
   %tr
-    %td{:style => "border-bottom: 2px solid red; width: 5%"}
+    %td{:style => "border-bottom: 2px solid gray; width: 5%"}
     %td{:rowspan => 2, :style => "width: 8px"}
     %td{:rowspan => 2, :style => "width: 1%"}
       %font
         = params[:titre]
-    %td{:rowspan => 2, :style => "width: 8px"}
     - if params[:link_to_edit]
+      %td{:rowspan => 2, :style => "width: 4px"}
       %td{:rowspan => 2, :style => "width: 1%"}
         = link_to "⚙", params[:link_to_edit]
-      %td{:rowspan => 2, :style => "width: 8px"}
-    %td{:style => "border-bottom: 2px solid red"}
+    - if params[:link_to_show]
+      %td{:rowspan => 2, :style => "width: 4px"}
+      %td{:rowspan => 2, :style => "width: 1%"}
+        = link_to "⇶⇉", params[:link_to_show]
+    %td{:rowspan => 2, :style => "width: 8px"}
+    %td{:style => "border-bottom: 2px solid gray"}
   %tr
     %td
     %td

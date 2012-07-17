@@ -69,7 +69,7 @@ class Service < ActiveRecord::Base
   def durée_to_human_readable
     h = (durée_to_seconds.to_i)/1.hour
     m = (durée_to_seconds.to_i-h*1.hour)/1.minute
-    str = h.to_s + " h " + m.to_s + " m"
+    str = h.to_s + " h " + ((m>0)?(m.to_s+" m"):"")
   end
 
   def relative_surplace_at

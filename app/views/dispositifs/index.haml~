@@ -1,0 +1,31 @@
+.main
+  = render 'tools/header', :selected_item => 'dispositifs'
+  
+  .section
+
+    %table.generic
+      %tr
+        %th Position
+        %th Dénomination
+        %th Image 1
+        %th Image 2
+        %th Image 4
+      - Dispositif.order(:pos).all.each do |dispo|
+        %tr
+          %td
+            = dispo.pos
+          %td
+            = dispo.name
+          %td
+            = image_tag("/dispositifs/code_image_s1/#{dispo.id}", :alt => "☒")
+          -#
+            %td
+              = image_tag("/dispositifs/code_image_s2/#{dispo.id}", :alt => "☒")
+            %td
+              = image_tag("/dispositifs/code_image_s4/#{dispo.id}", :alt => "☒")
+          %td
+            = link_to 'show', dispositif_path(dispo.id)
+    
+    .lien_bas_de_page
+      >
+      = link_to 'New', new_dispositif_path

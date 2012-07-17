@@ -9,7 +9,6 @@
 
     = render "/table_titre_intrasection", :params => { :titre => "Général", :link_to_edit => event_service_path(@event, @service) }
     = render "data_short"
-    =# link_to "⌨", event_service_path(@event, @service)
    
     = render "/table_titre_intrasection", :params => { :titre => "Dispositif", :link_to_edit => event_service_disposers_path(@event, @service) }
     = render "disposers/inline_pictures", :params => {:icon_size => "4"}

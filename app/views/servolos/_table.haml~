@@ -8,7 +8,7 @@
       %th Where
     - @service.servolos.by_first_name.each do |servolo|
       %tr
-        - selection = (if params[:mode] == 'edit' && @servolo && @servolo.id == servolo.id)?"color:red;font-weight:bold":nil
+        - selection = (params[:mode]=='edit' && @servolo && @servolo.id==servolo.id)?"color:red;font-weight:bold":nil
         %td{:style => selection}
           = servolo.volo.first_name
           = servolo.volo.last_name

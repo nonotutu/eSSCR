@@ -6,17 +6,21 @@
   %dd= @service.ends_at.to_s(:cust_long)
 %dl
   %dt Rendez-vous :
-  %dd= @service.rendezvous
+  %dd= @service.rendezvous || "∅"
 %dl
   %dt Départ :
   %dd
-    - if @service.depart_at.present?
+    - if @service.depart_at
       = @service.depart_at.to_s(:cust_long)
+    - else
+      = "∅"
 %dl
   %dt Sur place :
   %dd
-    - if @service.surplace_at.present?
+    - if @service.surplace_at
       = @service.surplace_at.to_s(:cust_long)
+    - else
+      = "∅"
 %dl
-  %dt Volontaires nécessaires :
-  %dd= @service.volness
+  %dt Volos nécessaires :
+  %dd= @service.volness || "∅"

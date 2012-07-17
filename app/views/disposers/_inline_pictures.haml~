@@ -3,10 +3,8 @@
 
 - unless @service.disposers.empty?
   - @service.disposers.each do |dispo|
-    - selection = (@disposer && @disposer.id==dispo.id)?"background:red":nil
-    - src = "/icons/icon" + dispo.dispositif.pos.to_s + "_s" + params[:icon_size].to_s + ".png"
-    - alt = dispo.dispositif.name
+    - selection = (@disposer && @disposer.id==dispo.id)?"background:lightred; border: 1px dotted red":nil
     - dispo.quantity.times do
-      %img{:src => src, :alt => alt, :style => "margin: 0",  :title => alt}
+      = image_tag("/dispositifs/code_image_s#{params[:icon_size]}/#{dispo.dispositif.id}", :alt => "☒", :title => dispo.dispositif.name, :style => selection)
 - else
-  %i ─ no disposers ─
+  %i ─ aucun dispositif ─

@@ -14,10 +14,10 @@ class Event < ActiveRecord::Base
   validates :category_id, :presence => true
   validates :name,        :presence => true
 
-  before_destroy :prevent_destroy_unless_event_empty, :notice => "caca"
+  before_destroy :prevent_destroy_unless_event_empty, :notice => "Event not empty"
 
   scope :only_without_services, lambda { includes(:services) - Event.joins(:services) }
-  
+
 private
   def prevent_destroy_unless_event_empty
     self.errors.add :base, "Event not empty"

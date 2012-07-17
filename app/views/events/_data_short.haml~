@@ -17,8 +17,14 @@
         - if @event.customer
           - @event.customer.data.lines.each do |line|
             = line
-            %br        
+            %br
+        - else
+          ∅
+    %td
+      %font= @event.place || "∅"
     %td
       %font
-    %td
-      %font
+        - if @event.address
+          - @event.address.lines.each do |line|
+            = line
+            %br

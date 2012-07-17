@@ -77,8 +77,8 @@
           - else
             %hr.totpres{ :style => "width: "+totalsv[i+1].to_s+"%" }
           - i += 2
-      
+  -#
     - if @service.servolos.empty?
       %tr
-        %td{:colspan => 2, :align => 'center'}
-          %i ─ no servolos ─
+        %td{:colspan => 2, :align => 'left'}
+          %i ─ aucun volontaire ─

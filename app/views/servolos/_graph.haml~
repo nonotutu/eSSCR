@@ -1,14 +1,15 @@
 
 - service = @service
 
+
 - if ( service.ends_at - service.starts_at ).to_i <= 0
   Erreur : Service à durée nulle ou négative
 - else
 
   - horaire = fct_calcul_tableau_horaire(service.ends_at,    |
-                                         service.starts_at,   |
-                                         service.surplace_at,  |
-                                         service.depart_at)     |
+                                        service.starts_at,   |
+                                        service.surplace_at,  |
+                                        service.depart_at)     |
   
   - if service.depart_at
     - tableau_heures = fct_calcul_tableau_heures(service.depart_at.to_i, service.ends_at.to_i)
@@ -19,7 +20,7 @@
 
     
   - graphe = fct_calcul_tableau_servolos(service.id)
-
+    
   %table.graphe_volo
 
     %tr
@@ -39,6 +40,7 @@
               %td{ :style => "width: " + tableau_heures[4] + "; border-left: 1px solid black" }
             - else
               %td{ :style => "width: 0%; border-right: 1px solid black" }
+
     %tr
       %th
         %b Service :
@@ -60,3 +62,23 @@
           %hr.p{ :style => "width: "+ligne[2].to_s+"%" }
           - if ligne[4] < 100
             %hr.a{ :style => "width: "+ligne[3].to_s+"%" }
+
+    - totalsv = tableau_total_servolos(service.id)
+    %tr
+      %th
+        %b Total :
+      %td
+        - i = 0
+        - while i < totalsv.count-1
+          - if totalsv[i] == 0
+            %hr.totabs{ :style => "width: "+totalsv[i+1].to_s+"%" }
+          - elsif totalsv[i] < service.volness ||= 0
+            %hr.partpres{ :style => "width: "+totalsv[i+1].to_s+"%" }
+          - else
+            %hr.totpres{ :style => "width: "+totalsv[i+1].to_s+"%" }
+          - i += 2
+      
+    - if @service.servolos.empty?
+      %tr
+        %td{:colspan => 2, :align => 'left'}
+          %i ─ aucun volontaire ─

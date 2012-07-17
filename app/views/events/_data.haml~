@@ -7,9 +7,20 @@
 %dl
   %dt Client :
   %dd
-    - if @event.customer != nil
+    - if @event.customer
       - @event.customer.data.lines.each do |line|
         = line
         %br
     - else
-      %i no client
+      ∅
+%dl
+  %dt Lieu :
+  %dd= @event.place ||= "∅"
+%dl
+  %dt Adresse :
+  %dd
+    - if @event.address
+      - @event.address.lines.each do |line|
+        = line
+        %br
+

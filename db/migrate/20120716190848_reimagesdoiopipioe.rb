@@ -1,0 +1,10 @@
+class Reimagesdoiopipioe < ActiveRecord::Migration
+
+  def change
+    rename_column :dispositifs, :image_s2, :image_s2_binary_data
+    remove_column :dispositifs, :image_s4
+    add_column    :dispositifs, :image_s2_content_type, :string
+    add_column    :dispositifs, :image_s2_filename, :string
+  end
+
+end

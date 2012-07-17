@@ -4,8 +4,9 @@
   = render 'events/header', :selected_item => 'overview'
 
   .section
-    
-    %table.white
+
+    -#
+      %table.white
       %tr
         %th Client :
         %th Invoice :
@@ -27,11 +28,15 @@
         %td
           = to_euro(calcul_prix_event_included(@event.id))
 
+    = render "data_short"
     
     - @event.services.order(:starts_at).each do |service|
-      = render "/table_titre_intrasection", :params => { :titre => service.to_s }
-      - (service.volness ||= 0).times do
-        %img{:src => "/icons/volo_s2.png", :alt => "❖ "}
+      = render "/table_titre_intrasection", :params => { :titre => service.to_s, :link_to_show => event_service_overview_path(@event.id, service.id) }
+      - if service.volness && service.volness > 0
+        - (service.volness).times do
+          %img{:src => "/icons/volo_s2.png", :alt => "❖ "}
+      - else
+        ─ aucun volontaire nécessaire ─
       &nbsp &nbsp &nbsp
       - @service = service
       = render "disposers/inline_pictures", :params => { :icon_size => 2 }

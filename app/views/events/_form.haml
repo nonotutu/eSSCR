@@ -2,13 +2,19 @@
   %table.formulaire
     %tr
       %th Catégorie :
-      %td= f.association :category, :label => false
+      %td= f.association :category,   :label => false
     %tr
       %th Nom :
-      %td= f.input       :name,     :label => false
+      %td= f.input        :name,      :label => false
     %tr
       %th Client :
-      %td= f.association :customer, :label => false
+      %td= f.association  :customer,  :label => false
+    %tr
+      %th Lieu :
+      %td= f.input        :place,     :label => false
+    %tr
+      %th Adresse :
+      %td= f.input        :address,   :label => false,  :input_html => {:rows => 4, :columns => 20}
     %tr
       %th
       %td{:align => :right}

@@ -9,7 +9,12 @@ ESSCR2::Application.routes.draw do
   match "events/:id/add_to_invoice"      => "events#add_to_invoice"
   match "events/:id/remove_from_invoice" => "events#remove_from_invoice"
 
-  match "events/:event_id/services/:id/overview"    => "services#overview",    :as => :event_service
+    # image plein écran
+  #match "dispositifs/:id" => "dispositifs#code_image"
+    # image inline
+  match "dispositifs/code_image/:id" => "dispositifs#code_image"
+
+  match "events/:event_id/services/:id/overview"    => "services#overview",    :as => :event_service_overview
 
   match "evitems/:id/move_up"   => "evitems#move_up"
   match "evitems/:id/move_down" => "evitems#move_down"
