@@ -16,10 +16,12 @@
   
   .lien_bas_de_page
     - unless params[:mode] == 'edit'
-      >
-      = link_to "Manage dispositifs", event_service_disposers_path(:mode =>'edit')
+      ➤
+      = link_to "Manage", event_service_disposers_path(:mode =>'edit')
+      |
+      = link_to "Back", event_service_overview_path(@event, @service)
     - else
-      >
+      ➤
       = link_to "Back", event_service_disposers_path
       - if params[:disposer_id].present?
         |

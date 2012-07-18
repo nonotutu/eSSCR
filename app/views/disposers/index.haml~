@@ -8,7 +8,7 @@
   .section
     = render "disposers/list"
     %hr.intrasection
-    = render "disposers/inline_pictures"
+    = render "disposers/inline_pictures", :params => { :icon_size => 4 }
     %hr.intrasection
 
     - if params[:mode] == 'edit'
@@ -16,10 +16,10 @@
   
   .lien_bas_de_page
     - unless params[:mode] == 'edit'
-      >
-      = link_to "Manage dispositifs", event_service_disposers_path(:mode =>'edit')
+      ➤
+      = link_to "Manage", event_service_disposers_path(:mode =>'edit')
     - else
-      >
+      ➤
       = link_to "Back", event_service_disposers_path
       - if params[:disposer_id].present?
         |

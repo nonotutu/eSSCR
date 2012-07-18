@@ -1,8 +1,42 @@
+:ruby
+  if @event.ref
+    ref_year   = @event.ref[0..3]
+    ref_number = @event.ref[5..7]
+    ref_type   = @event.ref[8]
+  else
+    last_ref = Event.order(:ref).last.ref
+    ref_year   = last_ref[0..3]
+    ref_number = last_ref[5..7].next
+    ref_type   = "A"
+  end
+
 = simple_form_for (@event) do |f|
   %table.formulaire
     %tr
       %th Catégorie :
       %td= f.association :category,   :label => false
+    -#
+      %tr
+      %th Référence :
+      %td= f.input        :ref,       :label => false,  :input_html => { :size => 8 }
+    %tr
+      %th Référence :
+      %td
+        %table{:style => "border-collapse: collapse"}
+          %tr
+            %td
+              = f.input :attr, :input_html => { :name => "ref_year", :value => ref_year, :size => "4" }, :label => false
+            %td
+              = f.input :attr, :input_html => { :name => "ref_number", :value => ref_number, :size => "3" }, :label => false
+            %td
+              = f.input :attr, :input_html => { :name => "ref_type", :value => ref_type, :size => "1" }, :label => false
+            %td{:style => "font-size: x-small"}
+              loc
+              %b>A
+              l - en&nbsp 
+              %b>R
+              enfort - renfort
+              %b>S
     %tr
       %th Nom :
       %td= f.input        :name,      :label => false

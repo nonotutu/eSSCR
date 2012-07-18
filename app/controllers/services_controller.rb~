@@ -1,6 +1,6 @@
+# coding: utf-8
 class ServicesController < InheritedResources::Base
 
-  # nestage
   belongs_to :event
   
   
@@ -24,13 +24,40 @@ class ServicesController < InheritedResources::Base
 
     datizer
     
-     @service = Service.find(params[:id])
-  
-       if @service.update_attributes(params[:service])
-         redirect_to event_service_path, :notice => "Service updated"
-       else
-         redirect_to :back, :alert => "Error updating service" + @service.errors.messages.to_s
-       end
+    @service = Service.find(params[:id])
+    
+    new_depart_at = create_date_from_params(params[:service]['depart_at(1i)'],
+                                            params[:service]['depart_at(2i)'],
+                                            params[:service]['depart_at(3i)'],
+                                            params[:service]['depart_at(4i)'],
+                                            params[:service]['depart_at(5i)'])
+
+    new_surplace_at = create_date_from_params(params[:service]['surplace_at(1i)'],
+                                              params[:service]['surplace_at(2i)'],
+                                              params[:service]['surplace_at(3i)'],
+                                              params[:service]['surplace_at(4i)'],
+                                              params[:service]['surplace_at(5i)'])
+    
+    new_starts_at = create_date_from_params(params[:service]['starts_at(1i)'],
+                                            params[:service]['starts_at(2i)'],
+                                            params[:service]['starts_at(3i)'],
+                                            params[:service]['starts_at(4i)'],
+                                            params[:service]['starts_at(5i)'])
+                                            
+    # corrige les heures des servolos : avance ceux du début
+    if @service.depart_at != new_depart_at
+      servolos = Servolo.where("service_id = ? AND starts_at < ?", @service.id, new_depart_at || new_surplace_at || new_starts_at)
+      servolos.each do |servolo|
+        servolo.starts_at = new_depart_at || new_surplace_at || new_starts_at
+        servolo.save
+      end
+    end
+
+    if @service.update_attributes(params[:service])
+      redirect_to event_service_path, :notice => "Service updated"
+    else
+      redirect_to :back, :alert => "Error updating service" + @service.errors.messages.to_s
+    end
     
   end
   
@@ -69,6 +96,14 @@ class ServicesController < InheritedResources::Base
 
 private
   
+  def create_date_from_params(i1,i2,i3,i4,i5)
+    
+    if ( i1 != "" && i2 != "" && i3 != "" && i4 != "" && i5 != "" )
+      DateTime.new( i1.to_i, i2.to_i, i3.to_i, i4.to_i, i5.to_i )
+    end
+    
+  end
+
   def datizer
     
     params[:service]['depart_at(1i)'] = ""
@@ -89,7 +124,7 @@ private
                               params[:service]['starts_at(3i)'].to_i,
                               params[:service]['depart_at(4i)'].to_i,
                               params[:service]['depart_at(5i)'].to_i)
-      depart_at   = datizer_2(starts_at, depart_at)
+      depart_at = datizer_2(starts_at, depart_at)
     end
     if ( !params[:service]['surplace_at(4i)'].blank? && !params[:service]['surplace_at(5i)'].blank? )
       surplace_at = DateTime.new(params[:service]['starts_at(1i)'].to_i,

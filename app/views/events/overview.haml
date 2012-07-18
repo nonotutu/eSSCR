@@ -27,7 +27,7 @@
           = to_euro(calcul_prix_event(@event.id))
         %td
           = to_euro(calcul_prix_event_included(@event.id))
-
+    = render "/table_titre_intrasection", :params => { :titre => "Général", :link_to_edit => event_path(@event) }
     = render "data_short"
     
     - @event.services.order(:starts_at).each do |service|

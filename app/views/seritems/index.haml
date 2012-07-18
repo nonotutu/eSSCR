@@ -7,14 +7,17 @@
 
   .section
     = render "table"
+    %hr.intrasection
 
     - if params[:mode] == 'edit'
       = render "form"
 
   .lien_bas_de_page
     - unless params[:mode] == 'edit'
-      >
-      = link_to 'Manage invoiced service item', event_service_seritems_path(:mode => "edit")
+      ➤
+      = link_to "Manage", event_service_seritems_path(:mode => "edit")
+      |
+      = link_to "Back", event_service_overview_path(@event, @service)
     - else
       >
       = link_to 'Back', event_service_seritems_path

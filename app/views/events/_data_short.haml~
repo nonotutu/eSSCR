@@ -4,6 +4,8 @@
     %th
       %font Catégorie
     %th
+      %font Référence
+    %th
       %font Client
     %th
       %font Lieu
@@ -11,9 +13,16 @@
       %font Adresse
   %tr
     %td
-      %font= @event.category.short_name
+      %font
+        ⤷
+        = @event.category.short_name
     %td
       %font
+        ⤷
+        = @event.ref
+    %td
+      %font
+        ⤷
         - if @event.customer
           - @event.customer.data.lines.each do |line|
             = line
@@ -21,9 +30,12 @@
         - else
           ∅
     %td
-      %font= @event.place || "∅"
+      %font
+        ⤷
+        = @event.place
     %td
       %font
+        ⤷
         - if @event.address
           - @event.address.lines.each do |line|
             = line

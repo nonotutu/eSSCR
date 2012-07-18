@@ -6,16 +6,16 @@
   = render 'services/header', :selected_item => 'seritems'
 
   .section
-    = render "list_seritems"
+    = render "table"
+    %hr.intrasection
 
-  - if params[:mode] == 'edit'
-    .section
+    - if params[:mode] == 'edit'
       = render "form"
 
   .lien_bas_de_page
     - unless params[:mode] == 'edit'
       >
-      = link_to 'Manage invoiced service item', event_service_seritems_path(params[:event_id], params[:service_id], :mode => "edit")
+      = link_to 'Manage invoiced service item', event_service_seritems_path(:mode => "edit")
     - else
       >
       = link_to 'Back', event_service_seritems_path

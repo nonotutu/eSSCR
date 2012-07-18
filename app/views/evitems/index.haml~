@@ -6,19 +6,21 @@
 
 
   .section
-    = render "list"
+    = render "list_evitems"
+    %hr.intrasection
 
     - if params[:mode] == 'edit'
-      .section
-        = render "form"
+      = render "form"
         
   .lien_bas_de_page
     - unless params[:mode] == 'edit'
-      >
-      = link_to 'Manage invoiced event items', event_evitems_path(params[:event_id], :mode => "edit")
+      ➤
+      = link_to "Manage", event_evitems_path(params[:event_id], :mode => "edit")
+      |
+      = link_to "Back", event_overview_path(@event)
     - else
       >
-      = link_to 'Back', event_evitems_path
+      = link_to "Back", event_evitems_path
       - if params[:evitem_id].present?
         |
         = link_to 'Clear (create new)', event_evitems_path(:mode => 'edit') 

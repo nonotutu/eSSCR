@@ -7,7 +7,7 @@ class Customer < ActiveRecord::Base
   validates :data, :presence => true
   
   def to_s
-    self.data.first
+    self.data.lines.first
   end
   
 end

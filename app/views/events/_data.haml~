@@ -15,7 +15,7 @@
       ∅
 %dl
   %dt Lieu :
-  %dd= @event.place ||= "∅"
+  %dd= @event.place
 %dl
   %dt Adresse :
   %dd

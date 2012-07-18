@@ -7,16 +7,19 @@
   .section
     
     = render "table"
+    %hr.intrasection
     
     - if params[:mode] == 'edit'
       = render "form"
     
   .lien_bas_de_page
     - unless params[:mode] == 'edit'
-      >
-      = link_to 'Manage refacs', event_refacs_path(:mode => "edit")
+      ➤
+      = link_to 'Manage', event_refacs_path(:mode => "edit")
+      |
+      = link_to "Back", event_overview_path(@event)
     - else
-      >
+      ➤
       = link_to 'Back', event_refacs_path
       - if params[:refac_id].present?
         |

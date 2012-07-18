@@ -8,8 +8,12 @@
   .section
     = render "data"
   
+    %hr.intrasection
+  
   .lien_bas_de_page
-    ‣
+    ➤
     = link_to "Edit", edit_event_service_path(@event, @service)
     |
     = link_to "Destroy", { :action => :destroy, :id => @service.id }, :method => :delete
+    |
+    = link_to "Back", event_service_overview_path(@event, @service)

@@ -1,6 +1,6 @@
 class Event < ActiveRecord::Base
   
-  attr_accessible :invoice_id, :category_id, :customer_id, :name, :place, :address
+  attr_accessible :invoice_id, :category_id, :customer_id, :name, :place, :address, :ref
   
   belongs_to :invoice
   belongs_to :category
@@ -13,7 +13,9 @@ class Event < ActiveRecord::Base
   
   validates :category_id, :presence => true
   validates :name,        :presence => true
-
+  validates :ref,         :presence => true
+  validates :ref,         :format => { :with => /^[2][0][012][0-9][-][0-9][0-9][0-9][ARS]$/ }
+  
   before_destroy :prevent_destroy_unless_event_empty, :notice => "Event not empty"
 
   scope :only_without_services, lambda { includes(:services) - Event.joins(:services) }

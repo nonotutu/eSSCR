@@ -29,6 +29,10 @@
     session[:events_liste_annee] = params[:events_liste_annee]
   end
 
+  if (params[:events_liste_categ].present?)
+    session[:events_liste_categ] = params[:events_liste_categ]
+  end
+
 
   liste_type = []
   liste_type << { :value => '1', :name => 'séparé' }
@@ -46,6 +50,7 @@
   liste_filtre << { :value => '3', :name => 'à facturer' }
   
   liste_categ = []
+  liste_categ << { :value => "all", :name => "<all>" }
   Category.all.each do |categ|
     liste_categ << { :value => categ.id, :name => categ.short_name }
   end
@@ -60,7 +65,13 @@
   
   if ( session[:events_liste_annee].present? )
     unless ( session[:events_liste_annee] == 'all' )
-      services = services.only_year(session[:events_liste_annee])
+      services = services.only_year(session[:events_liste_annee].to_i)
+    end
+  end
+
+  if ( session[:events_liste_categ].present? )
+    unless ( session[:events_liste_categ] == 'all' )
+      services = services.only_categ(session[:events_liste_categ])
     end
   end
 
@@ -83,6 +94,7 @@
     when '4'
       services = services.by_name.reverse_order
   end
+
 
 .menu_gauche
 
@@ -114,7 +126,7 @@
             Catégorie :
             %select{:name => 'events_liste_categ'}
               - liste_categ.each do |item|
-                - selected = ( item[:value] == session[:events_liste_categ] ? 'selected' : nil )
+                - selected = ( item[:value] == session[:events_liste_categ].to_i ? 'selected' : nil )
                 %option{ :value => item[:value], :selected => selected }= item[:name]
       %table{:style => 'border-collapse: collapse; width: 100%'}
         %tr

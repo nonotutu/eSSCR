@@ -14,7 +14,7 @@
       - string_total_servolos(@service.id).each do |ligne|
         %li
           = ligne
-        %hr.intrasection
+    %hr.intrasection
 
 
     - if params[:mode] == 'edit'

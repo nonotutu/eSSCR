@@ -6,8 +6,11 @@
   = render 'header', :selected_item => 'show'
 
   .section
+    = render 'data'
+    %hr.intrasection
     = render 'form'
-
+    %hr.intrasection
+    
   .lien_bas_de_page
-    >
+    ➤
     = link_to 'Back', event_service_path

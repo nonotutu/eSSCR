@@ -26,7 +26,8 @@ class Service < ActiveRecord::Base
 
   before_destroy :prevent_destroy_unless_service_empty
 
-  scope :only_year, lambda { |year| where("SUBSTR(starts_at,1,4) = ?", year) unless year.nil? }
+  scope :only_year, lambda  { |year| where("SUBSTR(starts_at,1,4) = ?", year) unless year.nil? }
+  scope :only_categ, lambda { |categ| includes(:event).where("events.category_id = ?", categ) unless categ.nil? }
   scope :only_not_invoiced, includes(:event).where("events.invoice_id IS NULL")
   scope :only_future, where("starts_at > ?", '2012-06-11')
 

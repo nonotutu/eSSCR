@@ -24,14 +24,31 @@ class EventsController < InheritedResources::Base
   
 
   def create
+   
+    @event = Event.new(params[:event])   
 
-    @event = Event.new(params[:event])
-  
+    @event.ref = params[:ref_year] + "-" + params[:ref_number] + params[:ref_type]
+
     if @event.save
-      redirect_to event_path(@event), :notice => 'Event created'
-    else
-      redirect_to :back, :error => 'Error creating event'
-    end
+       redirect_to event_path(@event), :notice => 'Event created'
+     else
+       redirect_to :back, :error => 'Error creating event'
+     end
+ 
+  end
+
+  
+  def update
+   
+    @event = Event.find(params[:id])
+    
+    @event.ref = params[:ref_year] + "-" + params[:ref_number] + params[:ref_type]
+
+    if @event.update_attributes(params[:event])
+       redirect_to event_path(@event), :notice => 'Event updated'
+     else
+       redirect_to :back, :error => 'Error updating event'
+     end
  
   end
 
@@ -68,6 +85,5 @@ class EventsController < InheritedResources::Base
       redirect_to :back, :alert => 'Error removing event from invoice'
     end
   end
-
 
 end

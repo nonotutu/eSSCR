@@ -4,11 +4,12 @@ table.titre_intrasection
   margin-top: 4px
   margin-bottom: 4px
   font
-    border: 2px solid black
+    border: 2px solid gray
     padding: 0 4px 0 4px
     border-radius: 4px
-    background: black
+    background: gray
     color: white
+    text-shadow: 0 0 4px black
     font-weight: bold
     font-size: small
     white-space: nowrap
@@ -22,13 +23,14 @@ table.titre_intrasection
 
 table.white
   border-collapse: collapse
-  width: 100%
-  table-layout: fixed
+  width: 1%
+  /*table-layout: fixed*/
   th
     font-size: small
     text-align: left
     color: black
     font-weight: normal
+    text-shadow: 0 0 2px white
     font
       border-radius: 4px
       padding: 0 4px 0 4px
