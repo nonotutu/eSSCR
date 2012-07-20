@@ -1,8 +1,34 @@
 = render "invoices/list"
 
 .main
+  %br
+  %br
   .section
-    %ul
+    %table.ligne
+      %tr
+        %th Numéro
+        %th Client
+        %th Montant
+        %th Events
+        %th Envoyée
+        %th Payée
+        %th Status
+        %th.au_centre ✔/✘
       - Invoice.all.each do |invoice|
-        %li= invoice.to_s
-        
+        %tr
+          %td
+            = invoice.number
+          %td{:title => invoice.customer_data}
+            = invoice.customer_data_to_s
+          %td.a_droite
+            = to_euro(calcul_prix_invoice(invoice.id))
+          %td.a_droite
+            = invoice.events.count
+          %td.a_droite
+            = invoice.sent_at
+          %td.a_droite
+            = invoice.paid_at
+          %td
+            = invoice.status(1)
+          %td.au_centre
+            = invoice.status(2)

@@ -21,13 +21,27 @@ table.titre_intrasection
     &:hover
       color: red
 
-table.white
+table.base
   border-collapse: collapse
   width: 100%
-  /*table-layout: fixed*/
   th
     font-size: small
     text-align: left
+    &.a_droite
+      text-align: right
+    &.au_centre
+      text-align: center
+  td
+    font-size: small
+    text-align: left
+    &.a_droite
+      text-align: right
+    &.au_centre
+      text-align: center
+
+table.white
+  @extend table.base
+  th
     color: black
     font-weight: normal
     text-shadow: 0 0 2px white
@@ -36,37 +50,137 @@ table.white
       padding: 0 4px 0 4px
       background: lightgray
   td
-    font-size: small
-    text-align: left
     color: black
     font-weight: bold
     vertical-align: top
 
-table.empty
-  border-collapse: collapse
-  width: 100%
+table.base_with_rounded_th_coins
+  @extend table.base
+  tr:first-child
+    th:first-child
+      border-radius: 8px 0 0 0
+    th:last-child
+      border-radius: 0 8px 0 0
+  tr:last-child
+    th:first-child
+      border-radius: 0 0 0 8px
+    th:last-child
+      border-radius: 0 0 8px 0
+
+table.base_with_rounded_coins
+  @extend table.base
+  tr:first-child
+    th:first-child
+      border-radius: 8px 0 0 0
+    th:last-child
+      border-radius: 0 8px 0 0
+    td:first-child
+      border-radius: 8px 0 0 0
+    td:last-child
+      border-radius: 0 8px 0 0
+  tr:last-child
+    th:first-child
+      border-radius: 0 0 0 8px
+    th:last-child
+      border-radius: 0 0 8px 0
+    td:first-child
+      border-radius: 0 0 0 8px
+    td:last-child
+      border-radius: 0 0 8px 0
+    
+table.base_with_padding
+  @extend table.base
   th
-    font-size: small
-    text-align: left
-    color: white
-    padding-left: 4px
-    padding-right: 4px
-    background: rgb(255,127,127)
-  th:nth-child(1)
+    padding: 0
     padding-left: 8px
+    padding-right: 8px
+  th:first-child
+    padding-left: 16px
+  th:last-child
+    padding-right: 16px
+  td
+    padding: 0
+    padding-left: 8px
+    padding-right: 8px
+  td:first-child
+    padding-left: 16px
+  td:last-child
+    padding-right: 16px
+
+$c-red: 0
+$c-green: 0
+$c-blue: 1
+
+table.ligne
+  @extend table.base_with_padding
+  @extend table.base_with_rounded_th_coins
+  @extend table.base_with_href
+
+  th
+    color: black
+    height: 24px
+  td
+    color: black
+    height: 24px
+
+  tr:nth-child(2n+1)
+    th
+      background: rgb( 127+$c-red*128 , 127+$c-green*128 , 127+$c-blue*128 )
+    td
+      background: rgb( 191+$c-red*64 , 191+$c-green*64 , 191+$c-blue*64 )
+  tr:nth-child(2n)
+    td
+      background: white
+    th
+      background: rgb( 191+$c-red*64 , 191+$c-green*64 , 191+$c-blue*64 )
+
+table.base_with_href
+  @extend table.base
+  a
+    text-decoration: none
+    color: black
+    &:hover
+      color: rgb( $c-red*255 , $c-green*255 , $c-blue*255 )
+    
+table.grille
+  @extend table.base_with_padding
+  @extend table.base_with_rounded_th_coins
+
+  /* tous */
+  th
+    color: black
+  td
+    color: black
+
+  /* couleur grille */
+  tr:nth-child(2n+1)
+    th:nth-child(2n+1)
+      background: rgb( 127+$c-red*128 , 127+$c-green*128 , 127+$c-blue*128 )
+    td:nth-child(2n+1)
+      background: rgb( 191+$c-red*64 , 191+$c-green*64 , 191+$c-blue*64 )
+    th:nth-child(2n)
+      background: rgb( 159+$c-red*96 , 159+$c-green*96 , 159+$c-blue*96 )
+    td:nth-child(2n)
+      background: rgb( 223+$c-red*32 , 223+$c-green*32 , 223+$c-blue*32 )
+  tr:nth-child(2n)
+    td:nth-child(2n)
+      background: white
+    th:nth-child(2n)
+      background: rgb( 191+$c-red*64 , 191+$c-green*64 , 191+$c-blue*64 )
+    td:nth-child(2n+1)
+      background: rgb( 223+$c-red*32 , 223+$c-green*32 , 223+$c-blue*32 )
+    th:nth-child(2n+1)
+      background: rgb( 159+$c-red*96 , 159+$c-green*96 , 159+$c-blue*96 )
+        
+table.empty
+  @extend table.base_with_padding
+  th
+    color: white
+    background: rgb(127,127,127)
+  th:nth-child(1)
     border-radius: 4px 0 0 0
   th:last-child
     border-radius: 0 4px 0 0
-    padding-right: 8px
-  td
-    font-size: small
-    padding: 0px
-    padding-left: 4px
-    padding-right: 4px
-  td:first-child
-    padding-left: 8px
-  td:last-child
-    padding-right: 8px
   input
     font-family: 'URW Gothic L'
     padding: 0px

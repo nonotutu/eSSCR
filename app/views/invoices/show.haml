@@ -5,25 +5,12 @@
   = render 'invoices/header', :selected_item => 'show'
 
   .section
-    .dl_deux_colonnes_base
-      %dl
-        %dt Client (papier) :
-        %dd
-          - if @invoice.customer_data != nil
-            - @invoice.customer_data.lines.each do |line|
-              = line
-              %br
-          - else
-            %i no client
-      %dl
-        %dt Envoyée le :
-        %dd= @invoice.sent_at
-      %dl
-        %dt Payée le :
-        %dd= @invoice.paid_at
-
+    = render "data"
+    
+    %hr.intrasection
+  
   .lien_bas_de_page
-    >
+    ➤
     = link_to "Generate PDF", invoice_generate_pdf_path(@invoice)
     |
     = link_to "Edit", edit_invoice_path

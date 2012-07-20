@@ -35,8 +35,8 @@
   liste_filtre << { :value => '3', :name => 'attente paiement' }
 
   liste_categ = []
-  liste_categ << { :value => '1', :name => 'SSCR' }
-  liste_categ << { :value => '2', :name => 'non-SSCR' }
+  liste_categ << { :value => '1', :name => 'Event related' }
+  liste_categ << { :value => '2', :name => 'Nonevent related' }
   
   liste_annee = []
   liste_annee << { :value => 'all', :name => 'toutes' }
@@ -72,7 +72,7 @@
                 - selected = ( item[:value] == session[:invoices_liste_annee] ? 'selected' : nil )
                 %option{ :value => item[:value], :selected => selected }= item[:name]
           %td{:style => 'text-align: right'}
-            Catégorie :
+            Cat :
             %select{:name => 'invoices_liste_categ'}
               - liste_categ.each do |item|
                 - selected = ( item[:value] == session[:invoices_liste_categ] ? 'selected' : nil )

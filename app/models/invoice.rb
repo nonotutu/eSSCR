@@ -18,24 +18,62 @@ class Invoice < ActiveRecord::Base
   scope :only_without_events
   
   def to_s
-    self.number + ( self.customer_data.present? ? ( " - " + self.customer_data.lines.first ) : "" )
+    self.number + ( self.customer_data_to_s ? ( " - " + self.customer_data_to_s ) : "" )
   end
   
-  def status
-    
+  def customer_data_to_s
+    ( self.customer_data.present? ? ( self.customer_data.lines.first ) : "" )
+  end
+  
+# ✔✘
+  def status(type)
     if self.paid_at.present?
       if self.paid_at > DateTime.now
-        return "erreur"
+        case type
+        when 1
+          return "erreur"
+        else
+          return "⚠"
+        end
       end
-      return "payée"
+      if self.sent_at.present?
+        case type
+        when 1
+          return "payée ↔ " + (self.paid_at - self.sent_at).to_i.to_s + " jours"
+        else
+          return "✔"
+        end
+      else
+        case type
+        when 1
+          return "erreur"
+        else
+          return "⚠"
+        end
+      end
     else
       if (self.sent_at.present?)
         if self.sent_at > DateTime.now
-          return "erreur"
+          case type
+          when 1
+            return "erreur"
+          else
+            return "⚠"
+          end
         end
-        return "envoyée - attente paiement"
+        case type
+        when 1
+          return "attente paiement ↶ " + ((DateTime.now - self.sent_at)).to_i.to_s + " jours"
+        else
+          return "⌛"
+        end
       else
-        return "à envoyer"
+        case type
+        when 1
+          return "à envoyer"
+        else
+          return "✉"
+        end
       end
     end
   end

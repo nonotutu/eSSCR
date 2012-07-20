@@ -3,7 +3,7 @@ module ApplicationHelper
 
   
   def humanize_time_range(secs)
-    return (secs/1.hour).to_s + "h"
+    (secs/1.hour).to_s + "h"
   end
   
   def event_last_year()
@@ -130,6 +130,39 @@ module ApplicationHelper
     
   end
 
+  
+  def calcul_prix_invoice(invoice_id)
+    
+    invoice = Invoice.find(invoice_id)
+    
+    total = BigDecimal("0.0")
+    
+    invoice.events.each do |event|
+      event.services.each do |service|
+        total += calcul_prix_service(service.id)
+      end
+      event.evitems.each do |evitem|
+        if evitem.kind == 1
+          total += evitem.price
+        elsif evitem.kind == 2
+          total += total * evitem.price / BigDecimal.new("100.0")
+        end
+      end
+    end
+    
+    invoice.nositems.each do |nositem|
+      if nositem.kind == 1
+        total += nositem.price
+      elsif nositem.kind == 2
+        total += total * nositem.price / BigDecimal.new("100.0")
+      end
+    end
+    
+    total
+    
+  end
+        
+    
   
 #   [0]   1 : item
 #         2 : sous-total

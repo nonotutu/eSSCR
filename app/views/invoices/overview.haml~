@@ -5,14 +5,8 @@
   = render 'invoices/header', :selected_item => 'overview'
 
   .section
-    Customer_data:
-    = @invoice.customer_data ? @invoice.customer_data : 'not filled yet'
-    %br/
+    = render "/table_titre_intrasection", :params => {:titre => "Général"}
+    = render "data"
 
-    Sent at:
-    = @invoice.sent_at ? @invoice.sent_at : 'not filled yet'
-    %br/
-
-    %hr
-
-    = render 'list_events_services', :locals => { :invoice => @invoice }
+    = render "/table_titre_intrasection", :params => {:titre => "Events"}
+    = render "list_events_services", :locals => { :invoice => @invoice }

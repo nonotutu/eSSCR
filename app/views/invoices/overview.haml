@@ -1,21 +1,12 @@
-= render 'invoices/list'
+= render "invoices/list"
 
 .main
 
-  = render 'invoices/header', :selected_item => 'overview'
+  = render "invoices/header", :selected_item => "overview"
 
   .section
-    %dl
-      %dt Customer_data:
-      %dd
-        - if @invoice.customer_data != nil
-          - @invoice.customer_data.lines.each do |line|
-            = line
-            %br
-        - else
-          %i no client
-    %dl
-      %dt Sent at:
-      %dd= @invoice.sent_at ? @invoice.sent_at : 'not filled yet'
+    = render "/table_titre_intrasection", :params => {:titre => "Général"}
+    = render "data"
 
-    = render 'list_events_services', :locals => { :invoice => @invoice }
+    = render "/table_titre_intrasection", :params => {:titre => "Events"}
+    = render "list_events_services", :locals => { :invoice => @invoice }

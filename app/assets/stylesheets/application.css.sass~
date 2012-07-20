@@ -24,11 +24,11 @@ hr.intrasection
   background: blue
   margin: 0
   margin-top: 8px
-  margin-bottom :8px
+  margin-bottom: 8px
   padding: 0
 
 hr.intrasection_light
-  @extend .intrasection_light
+  @extend hr.intrasection_light
   background: rgb(255,127,127)
 
 .dl_deux_colonnes_base

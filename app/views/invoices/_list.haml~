@@ -35,8 +35,8 @@
   liste_filtre << { :value => '3', :name => 'attente paiement' }
 
   liste_categ = []
-  liste_categ << { :value => '1', :name => 'SSCR' }
-  liste_categ << { :value => '2', :name => 'non-SSCR' }
+  liste_categ << { :value => '1', :name => 'Event related' }
+  liste_categ << { :value => '2', :name => 'Nonevent related' }
   
   liste_annee = []
   liste_annee << { :value => 'all', :name => 'toutes' }
@@ -92,5 +92,4 @@
       - invoices.all.each do |invoice|
         %li
           - active = (invoice_id == invoice.id ? :active_light : nil)
-          - inv = invoice.number + ( invoice.customer_data.present? ? ( " - " + invoice.customer_data.lines.first ) : "" )
-          = link_to inv, invoice_path(invoice.id), :class => active
+          = link_to invoice.to_s, invoice_path(invoice.id), :class => active
