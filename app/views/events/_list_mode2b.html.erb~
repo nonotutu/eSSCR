@@ -1,11 +1,8 @@
 <% last_event_id = nil %>
 
 <ul>
-  <li>
-    <%= link_to '→ New event', new_event_path %>
-  </li>
     <ul>
-      <% services.by_date do |service| %>
+      <% services.each do |service| %>
         <% if service.event.id == last_event_id %>
           <li><%= link_to service.to_s, event_service_overview_path(service.event.id, service.id), :class => (service_id == service.id ? :active : nil) %></li>
         <% else %>
@@ -18,5 +15,8 @@
         <% last_event_id = service.event.id %>
       <% end %>
     </ul>
+  </li>
+  <li>
+    <%= link_to '→ New event', new_event_path %>
   </li>
 </ul>

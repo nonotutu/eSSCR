@@ -23,7 +23,7 @@ table.titre_intrasection
 
 table.white
   border-collapse: collapse
-  width: 1%
+  width: 100%
   /*table-layout: fixed*/
   th
     font-size: small
@@ -144,4 +144,5 @@ table.fullitems
 ul.empty
   margin: 0
   font-size: small
+  list-style: "-"
   li

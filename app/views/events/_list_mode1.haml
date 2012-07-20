@@ -1,39 +1,45 @@
 .menu_gauche_1
   %ul
-    %font{:style => "font-size: x-small; font-weight: bold; color: white; text-shadow: 0px 0px 4px black"}
+    -#
+      %li
+        = link_to '→ New event', new_event_path
+      %hr
+    %li.matching_results_line
       ――
       = services.count
       = "service" + (services.count>1?"s":"") + " matching"
       ――
     - services.group(:event_id).each do |service|
       %li
-        - active = (event_id == service.event.id ? :active : nil)
+        - active = (event_id == service.event.id ? :active_light : nil)
         - evt = service.event.category.short_name + " - " + service.event.name
-        = link_to evt, event_path(service.event.id), :class => active
+        = link_to evt, event_overview_path(service.event.id), :class => active
     - unless Event.only_without_services.empty?
       - if Event.only_without_services.count > 0
-        =#%hr
-        %font{:style => "font-size: x-small; font-weight: bold; color: white; text-shadow: 0px 0px 4px black"}
+        %li.matching_results_line
           ――
           = Event.only_without_services.count
           = "event" + (Event.only_without_services.count>1?"s":"") + " without services"
           ――
       - Event.only_without_services.each do |event|
         %li
-          - active = (event_id == event.id ? :active : nil)
+          - active = (event_id == event.id ? :active_light : nil)
           - evt = event.category.short_name + " - " + event.name
           = link_to evt, event_overview_path(event.id), :class => active
       %hr
-    %li
-      = link_to '→ New event', new_event_path
+      %li
+        %font{:style => "font-family: HeydingsIconsRegular"} +
+        = link_to "New event", new_event_path
         
 .menu_gauche_2
   - if ( params[:id].present? || params[:event_id].present? )
     %ul
-      %li
-        = link_to '→ New service', new_event_service_path(event_id)
       - services.where("event_id = ?", event_id).each do |service|
         %li
-          - active = (service_id == service.id ? :active : nil)
-          - ser = service.starts_at.to_s(:cust_short) + " → " + service.relative_ends_at
+          - active = (service_id == service.id ? :active_light : nil)
+          - ser = service.to_s
           = link_to ser, event_service_overview_path(service.event.id, service.id), :class => active
+      %hr
+      %li
+        %font{:style => "font-family: HeydingsIconsRegular"} +
+        = link_to "New service", new_event_service_path(@event)

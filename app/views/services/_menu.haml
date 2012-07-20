@@ -22,3 +22,8 @@
     %li
       - active = selected_item == 'seritems' ? :active : nil
       = link_to "Seritems(#{@service.seritems.count})", event_service_seritems_path(@event, @service), :class => active
+      
+    -#
+      %li.font_icon{:title => "New service"}
+      - active = selected_item == 'new' ? :active : nil
+      = link_to "+", new_event_service_path(@event), :class => active

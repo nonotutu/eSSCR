@@ -1,1 +1,8 @@
 = render "invoices/list"
+
+.main
+  .section
+    %ul
+      - Invoice.all.each do |invoice|
+        %li= invoice.to_s + " " + invoice.status
+        

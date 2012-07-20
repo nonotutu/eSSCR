@@ -5,18 +5,22 @@
   = render 'invoices/header', :selected_item => 'show'
 
   .section
-    %dl
-      %dt Customer_data :
-      %dd
-        - if @invoice.customer_data != nil
-          - @invoice.customer_data.lines.each do |line|
-            = line
-            %br
-        - else
-          %i no client
-    %dl
-      %dt Sent at :
-      %dd= @invoice.sent_at ? @invoice.sent_at : 'not filled yet'
+    .dl_deux_colonnes_base
+      %dl
+        %dt Client (papier) :
+        %dd
+          - if @invoice.customer_data != nil
+            - @invoice.customer_data.lines.each do |line|
+              = line
+              %br
+          - else
+            %i no client
+      %dl
+        %dt Envoyée le :
+        %dd= @invoice.sent_at
+      %dl
+        %dt Payée le :
+        %dd= @invoice.paid_at
 
   .lien_bas_de_page
     >

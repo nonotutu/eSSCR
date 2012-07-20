@@ -6,6 +6,7 @@
 
   .section
     = render 'form'
+    %hr.intrasection
 
   .lien_bas_de_page
     ➤

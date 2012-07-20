@@ -1,6 +1,9 @@
-%dl
+%dl.deux_colonnes_base
   %dt Catégorie :
   %dd= @event.category.name
+%dl
+  %dt Référence :
+  %dd= @event.ref
 %dl
   %dt Nom :
   %dd= @event.name

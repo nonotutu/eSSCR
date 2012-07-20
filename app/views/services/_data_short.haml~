@@ -5,6 +5,8 @@
       %font
         date
     %th
+      %font{:style => "font-family: HeydingsIconsRegular"}
+        P
       %font
         ⌖ rendez-vous
     %th
@@ -58,10 +60,10 @@
   %tr
     %th
       %font
-        volontaires
+        volos ness
   %tr
     %td
       %font
         ⤷
-        - (@service.volness || 0).times do
-          %img{:src => "/icons/volo_s2.png", :alt => "❖ "}
+        = @service.volness
+        =# render "volness_inline_pictures"

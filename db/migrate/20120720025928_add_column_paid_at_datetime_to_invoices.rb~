@@ -1,0 +1,4 @@
+class AddColumnPaidAtDatetimeToInvoices < ActiveRecord::Migration
+  def change
+  end
+end

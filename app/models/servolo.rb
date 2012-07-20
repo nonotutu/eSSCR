@@ -57,7 +57,12 @@ class Servolo < ActiveRecord::Base
   end
   
   def fromto
-    self.starts_at.to_s(:cust_short) + " → " + self.relative_ends_at
+    str = ""
+    if (self.service.début > self.starts_at) || (self.service.ends_at < self.ends_at)
+      str += "⚠ "
+    end
+    str += self.starts_at.to_s(:cust_short) + " → " + self.relative_ends_at
+    str
   end
   
   def relative_ends_at

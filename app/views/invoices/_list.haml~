@@ -35,10 +35,8 @@
   liste_filtre << { :value => '3', :name => 'attente paiement' }
 
   liste_categ = []
-  Category.all.each do |categ|
-    liste_categ << { :value => '1', :name => 'SSCR' }
-    liste_categ << { :value => '2', :name => 'non-SSCR' }
-  end
+  liste_categ << { :value => '1', :name => 'SSCR' }
+  liste_categ << { :value => '2', :name => 'non-SSCR' }
   
   liste_annee = []
   liste_annee << { :value => 'all', :name => 'toutes' }
@@ -55,35 +53,20 @@
 
   case( session[:invoices_liste_categ] )
     when '1'
-      services = services.only_with_events
+      invoices = invoices.only_with_events
     when '2'
-      services = services.only_without_events
+      invoices = invoices.only_without_events
   end
 
   
-.menu_gauche
+.left_menus
 
   .menu_gauche_options
     %form{:action => '', :method => :get}
-      -#
-        %table{:style => 'border-collapse: collapse; width: 100%'}
-          %tr
-            %td
-              Filtre : 
-              %select{:name => 'events_liste_filtre'}
-                - liste_filtre.each do |item|
-                  - selected = ( item[:value] == session[:events_liste_filtre] ? 'selected' : nil )
-                  %option{ :value => item[:value], :selected => selected }= item[:name]
-            %td{:style => 'text-align: right'}
-              Sens :
-              %select{:name => 'events_liste_sens'}
-                - liste_sens.each do |item|
-                  - selected = ( item[:value] == session[:events_liste_sens] ? 'selected' : nil )
-                  %option{ :value => item[:value], :selected => selected }= item[:name]
       %table{:style => 'border-collapse: collapse; width: 100%'}
         %tr
           %td
-            Année : 
+            Année :
             %select{:name => 'invoices_liste_annee'}
               - liste_annee.each do |item|
                 - selected = ( item[:value] == session[:invoices_liste_annee] ? 'selected' : nil )
@@ -96,11 +79,6 @@
                 %option{ :value => item[:value], :selected => selected }= item[:name]
       %table{:style => 'border-collapse: collapse; width: 100%'}
         %tr
-          %td
-            -#
-              Liste :
-              %button{ :name=>"events_liste_type", :value=>'1'} séparées
-              %button{ :name=>"events_liste_type", :value=>'2'} imbriquées
           %td{:style => 'text-align: right'}
             %input{:type => :submit, :value => 'go'}
 
@@ -108,9 +86,11 @@
   .menu_gauche_1
     %ul
       %li
-        = link_to '→ New invoice', new_invoice_path
+        %font{:style => "font-family: HeydingsIconsRegular"} +
+        = link_to 'New invoice', new_invoice_path
+      %hr
       - invoices.all.each do |invoice|
         %li
-          - active = (invoice_id == invoice.id ? :active : nil)
+          - active = (invoice_id == invoice.id ? :active_light : nil)
           - inv = invoice.number + ( invoice.customer_data.present? ? ( " - " + invoice.customer_data.lines.first ) : "" )
           = link_to inv, invoice_path(invoice.id), :class => active

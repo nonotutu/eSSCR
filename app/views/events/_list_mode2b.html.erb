@@ -4,6 +4,7 @@
   <li>
     <%= link_to '→ New event', new_event_path %>
   </li>
+  <hr/>
     <ul>
       <% services.each do |service| %>
         <% if service.event.id == last_event_id %>

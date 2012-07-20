@@ -6,7 +6,7 @@
         date
     %th
       %font
-        ⌖ rendez-vous
+        rendez-vous
     %th
       %font
         ⌚ départ
@@ -58,13 +58,10 @@
   %tr
     %th
       %font
-        volontaires
+        volos ness
   %tr
     %td
       %font
         ⤷
-        - if @service.volness && @service.volness > 0
-          - (@service.volness).times do
-            %img{:src => "/icons/volo_s2.png", :alt => "❖ "}
-        - else
-          ∅
+        = @service.volness
+        =# render "volness_inline_pictures"

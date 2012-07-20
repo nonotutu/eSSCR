@@ -31,9 +31,13 @@
       %td
         = f.input :customer_data, :input_html => { :rows => 3, :cols => 40, :value => cust_data}, :label => false
     %tr
-      %th Payée le :
+      %th Envoyée le :
       %td
         = f.input :sent_at, :start_year => 2010, :end_year => Date.today.year, :include_blank => true, :label => false
+    %tr
+      %th Payée le :
+      %td
+        = f.input :paid_at, :start_year => 2010, :end_year => Date.today.year, :include_blank => true, :label => false
     %tr
       %th
       %td{:align => 'right'}

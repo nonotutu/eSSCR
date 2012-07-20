@@ -2,7 +2,7 @@
 - service = @service
 
 
-- if ( service.ends_at - service.starts_at ).to_i <= 0
+- if service.durée_to_seconds <= 0
   Erreur : Service à durée nulle ou négative
 - else
 

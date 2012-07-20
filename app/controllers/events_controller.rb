@@ -66,7 +66,7 @@ class EventsController < InheritedResources::Base
   def add_to_invoice
     event = Event.find(params[:id])
     invoice = Invoice.find(params[:invoice])
-    invoice.events = invoice.events + [event]
+    invoice.events += [event]
     if invoice.save
       redirect_to :back, :notice => 'Event added to invoice'
     else

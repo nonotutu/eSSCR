@@ -14,57 +14,63 @@
 
 body
   font-family: "URW Gothic L"
+  margin: 0
+  padding-right: 8px
 
 hr.intrasection
-  height: 2px
+  height: 1px
   border: none
-  background: red
-  border-top: 2px dashed red
-  margin: 4px
+  box-shadow: 0 0 4px blue
+  background: blue
+  margin: 0
+  margin-top: 8px
+  margin-bottom :8px
   padding: 0
 
 hr.intrasection_light
-  height: 2px
-  border: none
+  @extend .intrasection_light
   background: rgb(255,127,127)
-  border-top: 2px dashed rgb(255,127,127)
-  margin: 4px
-  padding: 0
 
+.dl_deux_colonnes_base
+  dl
+    margin: 0
+    margin-top: 4px
+    margin-bottom: 4px
+    overflow: hidden
+    dt
+      margin-top: 2px
+      margin-right: 16px
+      font-size: x-small
+      text-align: right
+      color: red
+      float: left
+      width: 10%
+      font-weight: bold
+    dd
+      font-size: small
+      margin: 0
+      float: left
+      color: black
+      i
+        color: gray
+
+  
 .main
   overflow: auto
   .title
+    margin: -2px 0 -6px 0
     color: red
-    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black
+    text-shadow: -1px 0 rgb(255,127,127), 0 1px rgb(255,127,127), 1px 0 black, 0 -1px black
     &.one
       font-size: xx-large
-      padding-left: 80px
+      padding-left: 40px
     &.two
       font-size: x-large
-      padding-left: 120px
+      padding-left: 80px
   .section     
-    margin: 8px
-    dl
-      margin: 0
-      margin-top: 4px
-      margin-bottom: 4px
-      overflow: hidden
-      dt
-        margin-top: 2px
-        margin-right: 16px
-        font-size: x-small
-        text-align: right
-        color: red
-        float: left
-        width: 10%
-        font-weight: bold
-      dd
-        font-size: small
-        margin: 0
-        float: left
-        color: black
-        i
-          color: gray
+    margin: 0
+    margin-top: 8px
+    margin-left: 8px
     table.insection
       border-collapse: collapse
       tr
@@ -108,60 +114,6 @@ hr.intrasection_light
   float: right
   padding-right: 16px
   
-.menu_gauche // mettre des s et regrouper
-  float: left
-
-.menu_gauche_0
-  background: lightgray
-  width: 300px
-  overflow-y: auto
-  margin: 8px
-  padding: 4px
-  border-radius: 4px
-  ul
-    list-style: none
-    margin: 0
-    padding: 0
-    font-size: small
-    li
-      ul
-        li
-          padding-left: 16px
-  hr
-    margin: 2px
-    background: white
-    border: none
-  a
-    color: black
-    &:link
-      text-decoration: none
-    &:hover
-      color: red
-    &.active
-      font-weight: bold
-      border: 1px solid black
-      padding-right: 3px
-      padding-left: 2px
-      padding-top: 1px
-    &.active_light
-      font-weight: bold
-  
-.menu_gauche_1
-  @extend .menu_gauche_0
-  height: 300px
-      
-.menu_gauche_2
-  @extend .menu_gauche_0
-  height: 150px
-  
-.menu_gauche_3
-  @extend .menu_gauche_0
-  height: 450px
-  
-.menu_gauche_options
-  @extend .menu_gauche_0
-  font-size: small
-
 .lien_bas_de_page
   font-size: small
   padding-left: 8px
@@ -194,11 +146,11 @@ table.graphe_volo
     &.sv
       background: rgb(127,127,255)
     &.totabs
-      background: lightred
+      background: rgb(255,127,127)
     &.totpres
       background: green
     &.partpres
-      background: lightgreen
+      background: lightgray
   th
     white-space: nowrap
     padding-right: 4px

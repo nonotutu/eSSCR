@@ -43,18 +43,35 @@ class ServicesController < InheritedResources::Base
                                             params[:service]['starts_at(3i)'],
                                             params[:service]['starts_at(4i)'],
                                             params[:service]['starts_at(5i)'])
-                                            
-    # corrige les heures des servolos : avance ceux du début
-    if @service.depart_at != new_depart_at
-      servolos = Servolo.where("service_id = ? AND starts_at < ?", @service.id, new_depart_at || new_surplace_at || new_starts_at)
+
+    new_ends_at = create_date_from_params(params[:service]['ends_at(1i)'],
+                                          params[:service]['ends_at(2i)'],
+                                          params[:service]['ends_at(3i)'],
+                                          params[:service]['ends_at(4i)'],
+                                          params[:service]['ends_at(5i)'])
+
+    old_début = @service.début
+        
+    old_fin = @service.ends_at
+    
+    if @service.update_attributes(params[:service])
+      
+      # correction des heures des servolos : avance ceux du début
+      servolos = Servolo.where("service_id = ? AND starts_at < ?", @service.id, @service.début)
       servolos.each do |servolo|
-        servolo.starts_at = new_depart_at || new_surplace_at || new_starts_at
+        servolo.starts_at = @service.début
         servolo.save
       end
-    end
 
-    if @service.update_attributes(params[:service])
+      # correction des heures des servolos : recule ceux de la fin
+      servolos = Servolo.where("service_id = ? AND ends_at > ?", @service.id, @service.ends_at)
+      servolos.each do |servolo|
+        servolo.ends_at = @service.ends_at
+        servolo.save
+      end
+      
       redirect_to event_service_path, :notice => "Service updated"
+
     else
       redirect_to :back, :alert => "Error updating service" + @service.errors.messages.to_s
     end

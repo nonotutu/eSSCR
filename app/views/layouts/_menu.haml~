@@ -1,4 +1,10 @@
-.menu
+
+%p{:style => "position: absolute; right: 0%; top: 0%; margin: 0; padding: 0" }
+
+  %img{ :src => "/icons/logo_312-64.png", :alt => "Croix-Rouge de Belgische Rode Kruis" }
+
+
+.menu{:style => "width: 75%"}
   %ul
     %li= link_to '(Home)'
 
@@ -19,7 +25,9 @@
     
     - active = controller_name == 'tools'    |
         || controller_name == 'customers'    |
-        || controller_name == 'dispositifs'    |
+        || controller_name == 'dispositifs'  |
         || controller_name == 'templitems'   |
         ? :active : nil                      |
     %li= link_to 'Tools', tools_path, :class => active
+    
+    %li.font_icon abcdef

@@ -42,9 +42,9 @@ class EventsController < InheritedResources::Base
    
     @event = Event.find(params[:id])
     
-    #@event.ref = params[:ref_year] + "-" + params[:ref_number] + params[:ref_type]
+    @event.ref = params[:ref_year] + "-" + params[:ref_number] + params[:ref_type]
 
-    if @event.save
+    if @event.update_attributes(params[:event])
        redirect_to event_path(@event), :notice => 'Event updated'
      else
        redirect_to :back, :error => 'Error updating event'

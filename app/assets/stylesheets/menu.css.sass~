@@ -1,22 +1,95 @@
 .menu
-  background: rgb(255,127,127)
+  background: rgb(191,191,255)
+  border: 1px solid blue
   border-radius: 4px
   float : top
+  margin: 8px 0 0 8px
   ul
     list-style: none
     margin: 0
     padding: 0
   li
     display: inline
-    padding-left: 40px
+    padding-left: 32px
+    &.font_icon
+      font-family: 'HeydingsIconsRegular'
   a
-    font-size: medium
-    color: white
+    font-size: normal
+    color: black
+    text-shadow: 0px 0px 4px white
     &:link
       text-decoration: none
     &:hover
-      color: red
+      text-shadow: -1px 0 3px blue, 0 1px 3px blue, 1px 0 3px blue, 0 -1px 3px blue
     &.active
       font-weight: bold
-      color: red
+      color: blue
       text-shadow: -1px 0 3px white, 0 1px 3px white, 1px 0 3px white, 0 -1px 3px white
+
+      
+.left_menus
+  float: left
+
+  .menu_gauche_0
+    background: rgb(191,191,255)
+    border: 1px solid blue
+    width: 300px
+    overflow-y: auto
+    margin: 8px 0 0 8px
+    padding: 4px
+    border-radius: 4px
+    ul
+      list-style: none
+      margin: 0
+      padding: 0
+      font-size: small
+      li
+        ul
+          li
+            padding-left: 16px
+        &.matching_results_line
+          font-size: x-small
+          font-weight: bold
+          color: white
+          text-shadow: 0px 0px 4px black
+          text-align: center
+
+    hr
+      margin: 2px -4px 2px -4px
+      border: none
+      border-bottom: 1px dotted blue
+    a
+      color: black
+      &:link
+        text-decoration: none
+      &:hover
+        color: blue
+      &.active
+        color: blue
+        font-weight: bold
+        border: 1px solid black
+        padding-right: 3px
+        padding-left: 2px
+        padding-top: 1px
+        border-radius: 4px
+        text-shadow: -1px 0 3px white, 0 1px 3px white, 1px 0 3px white, 0 -1px 3px white
+      &.active_light
+        text-shadow: -1px 0 3px white, 0 1px 3px white, 1px 0 3px white, 0 -1px 3px white
+        color: blue
+        font-weight: bold
+    
+  .menu_gauche_1
+    @extend .menu_gauche_0
+    height: 300px
+        
+  .menu_gauche_2
+    @extend .menu_gauche_0
+    height: 150px
+    
+  .menu_gauche_3
+    @extend .menu_gauche_0
+    height: 450px
+    
+  .menu_gauche_options
+    @extend .menu_gauche_0
+    font-size: small

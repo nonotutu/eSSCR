@@ -20,3 +20,8 @@
     %li
       - active = selected_item == 'refacs' ? :active : nil
       = link_to "Refacturation", event_refacs_path(@event), :class => active
+
+    -#
+      %li.font_icon{:title => "New event"}
+      - active = selected_item == 'new' ? :active : nil
+      = link_to "+", new_event_path, :class => active

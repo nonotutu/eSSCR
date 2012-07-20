@@ -6,9 +6,12 @@
 
   .section
     = render "data"
+    %hr.intrasection_light
 
   .lien_bas_de_page
-    ‣
+    ➤
     = link_to "Edit", edit_event_path
     |
     = link_to "Destroy", { :action => :destroy, :id => @event.id }, :method => :delete
+    |
+    = link_to "Back", event_overview_path(@event)

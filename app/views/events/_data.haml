@@ -1,29 +1,30 @@
-%dl
-  %dt Catégorie :
-  %dd= @event.category.name
-%dl
-  %dt Référence :
-  %dd= @event.ref
-%dl
-  %dt Nom :
-  %dd= @event.name
-%dl
-  %dt Client :
-  %dd
-    - if @event.customer
-      - @event.customer.data.lines.each do |line|
-        = line
-        %br
-    - else
-      ∅
-%dl
-  %dt Lieu :
-  %dd= @event.place
-%dl
-  %dt Adresse :
-  %dd
-    - if @event.address
-      - @event.address.lines.each do |line|
-        = line
-        %br
+.dl_deux_colonnes_base
+  %dl
+    %dt Catégorie :
+    %dd= @event.category.name
+  %dl
+    %dt Référence :
+    %dd= @event.ref
+  %dl
+    %dt Nom :
+    %dd= @event.name
+  %dl
+    %dt Client :
+    %dd
+      - if @event.customer
+        - @event.customer.data.lines.each do |line|
+          = line
+          %br
+      - else
+        ∅
+  %dl
+    %dt Lieu :
+    %dd= @event.place
+  %dl
+    %dt Adresse :
+    %dd
+      - if @event.address
+        - @event.address.lines.each do |line|
+          = line
+          %br
 

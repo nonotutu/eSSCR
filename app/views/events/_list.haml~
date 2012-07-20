@@ -33,6 +33,9 @@
     session[:events_liste_categ] = params[:events_liste_categ]
   end
 
+  session[:events_liste_find] = params[:events_liste_find]
+
+
   liste_type = []
   liste_type << { :value => '1', :name => 'séparé' }
   liste_type << { :value => '2', :name => 'imbriqué' }
@@ -73,6 +76,10 @@
       services = services.only_categ(session[:events_liste_categ])
     end
   end
+
+  if ( session[:events_liste_find] != "" )
+    services = services.only_find(session[:events_liste_find])
+  end
   
   case( session[:events_liste_filtre] )
     when '1'
@@ -93,8 +100,9 @@
     when '4'
       services = services.by_name.reverse_order
   end
-  
-.menu_gauche
+
+
+.left_menus
 
   .menu_gauche_options
     %form{:action => '', :method => :get}
@@ -126,6 +134,12 @@
               - liste_categ.each do |item|
                 - selected = ( item[:value] == session[:events_liste_categ].to_i ? 'selected' : nil )
                 %option{ :value => item[:value], :selected => selected }= item[:name]
+      %table{:style => 'border-collapse: collapse; width: 100%'}
+        %tr
+          %td
+            %font{:style => "font-family: HeydingsIconsRegular"}
+            M :
+            %input{ :name=>"events_liste_find", :value => session[:events_liste_find], :size => "30"}
       %table{:style => 'border-collapse: collapse; width: 100%'}
         %tr
           %td

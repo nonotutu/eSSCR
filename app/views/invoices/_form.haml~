@@ -21,17 +21,20 @@
               = cust.data.lines.first
         %input{ :type => :hidden, :name => 'mode', :value => 'edit' }
         %input{ :type => :submit, :value => 'Use' }
-  %tr
-    = simple_form_for @invoice do |f|
-    %th Numéro :
-    %td
-      = f.input :number, :input_html => { :size => 8 }, :label => false
-    %th Client :
-    %td
-      = f.input :customer_data, :input_html => { :rows => 3, :cols => 40, :value => cust_data}, :label => false
-    %th Payée le :
-    %td
-      = f.input :sent_at, :start_year => 2010, :end_year => Date.today.year, :include_blank => true, :label => false
-    %th
-    %td{:align => 'right'}
-      = f.submit
+  = simple_form_for @invoice do |f|
+    %tr
+      %th Numéro :
+      %td
+        = f.input :number, :input_html => { :size => 8 }, :label => false
+    %tr
+      %th Client :
+      %td
+        = f.input :customer_data, :input_html => { :rows => 3, :cols => 40, :value => cust_data}, :label => false
+    %tr
+      %th Payée le :
+      %td
+        = f.input :sent_at, :start_year => 2010, :end_year => Date.today.year, :include_blank => true, :label => false
+    %tr
+      %th
+      %td{:align => 'right'}
+        = f.submit
