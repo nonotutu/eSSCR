@@ -1,10 +1,7 @@
 class VolosController < InheritedResources::Base
 
-  def index
-  
-    #@service = Service.find(params[:service_id]) 
-    @event = Event.find(@service.event_id)
-  
+  def overview
+    @volo = Volo.find(params[:id])
   end
   
 end

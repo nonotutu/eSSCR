@@ -19,7 +19,7 @@
     %tr
       %th Rendez-vous :
       %td= f.input :rendezvous,                   |
-                   :input_html => { :size => 8 }, |
+                   :input_html => { :size => 12 }, |
                    :label => false                |
     %tr
       %th Départ :
@@ -39,6 +39,11 @@
                    :as => :time,                    |
                    :label => false,                 |
                    :include_blank => true           |
+    %tr
+      %th Volontaires nécessaires :
+      %td= f.input :volness,                      |
+                   :input_html => { :size => 2 }, |
+                   :label => false                |
     %tr
       %th
       %td{ :align => :right }= f.submit

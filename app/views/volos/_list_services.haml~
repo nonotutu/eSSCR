@@ -1,0 +1,9 @@
+%table.ligne
+  - @volo.services.each do |service|
+    %tr
+      %td
+        = service.event.name.to_s
+      %td
+        = service.starts_at.to_s(:cust_date)
+      %td
+        = service.servolos.where("volo_id = ?",@volo.id).first.duree_to_human_readable

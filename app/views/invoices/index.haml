@@ -7,7 +7,7 @@
     %table.ligne
       %tr
         %th Numéro
-        %th Client
+        %th Client (papier)
         %th Montant
         %th Events
         %th Envoyée
@@ -17,7 +17,7 @@
       - Invoice.all.each do |invoice|
         %tr
           %td
-            = link_to invoice.number, invoice_path(invoice)
+            = invoice.number
           %td{:title => invoice.customer_data}
             = invoice.customer_data_to_s
           %td.a_droite
@@ -32,3 +32,5 @@
             = invoice.status(1)
           %td.au_centre
             = invoice.status(2)
+          %td.taille_min
+            = link_to "show", invoice_path(invoice)

@@ -19,7 +19,7 @@ class SeritemsController < InheritedResources::Base
         
     last_pos = 0
     if ( @seritem.service.seritems.count != 0 )
-      last_pos = @seritem.service.seritems.order(:pos).last.pos
+      #last_pos = @seritem.service.seritems.order(:pos).last.pos
     end
     
     @seritem.pos = last_pos + 1

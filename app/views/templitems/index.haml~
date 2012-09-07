@@ -4,10 +4,11 @@
   
   .section
 
-    %table.generic
-      %th Position
-      %th Dénomination
-      %th Prix
+    %table.ligne
+      %tr
+        %th Position
+        %th Dénomination
+        %th Prix
       - Templitem.order(:pos).all.each do |item|
         %tr
           %td
@@ -19,7 +20,7 @@
               = to_euro(item.price)
             - elsif item.kind == 2
               = to_percent(item.price)
-          %td
+          %td.taille_min
             = link_to 'show', templitem_path(item.id)
     
     .lien_bas_de_page

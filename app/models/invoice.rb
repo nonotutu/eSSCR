@@ -1,4 +1,16 @@
 # coding: utf-8
+
+# 
+# 1.9.3p194 :017 > Invoice.includes(:events).group("invoices.id").count.count
+#    (0.9ms)  SELECT COUNT(*) AS count_all, invoices.id AS invoices_id FROM "invoices" GROUP BY invoices.id
+#  => 5 
+# 1.9.3p194 :018 > Invoice.joins(:events).group("invoices.id").count.count
+#    (0.9ms)  SELECT COUNT(*) AS count_all, invoices.id AS invoices_id FROM "invoices" INNER JOIN "events" ON "events"."invoice_id" = "invoices"."id" GROUP BY invoices.id
+#  => 2 
+# 
+# 3 sans events
+# 
+# 
 class Invoice < ActiveRecord::Base
   
   attr_accessible :number, :customer_data, :sent_at, :paid_at
@@ -14,9 +26,10 @@ class Invoice < ActiveRecord::Base
   before_destroy :prevent_destroy_unless_empty
 
   scope :only_year, lambda { |year| where("SUBSTR(number,1,4) = ?", year) unless year.nil? }
-  scope :only_with_events
-  scope :only_without_events
-  
+  scope :only_with_events, joins(:events).group("invoices.id")
+  scope :only_without_events, (includes(:events) - joins(:events))
+  scope :wnw_events
+
   def to_s
     self.number + ( self.customer_data_to_s ? ( " - " + self.customer_data_to_s ) : "" )
   end
@@ -63,7 +76,7 @@ class Invoice < ActiveRecord::Base
         end
         case type
         when 1
-          return "attente paiement ↶ " + ((DateTime.now - self.sent_at)).to_i.to_s + " jours"
+          return "attente ↶ " + ((DateTime.now - self.sent_at)).to_i.to_s + " jours"
         else
           return "⌛"
         end

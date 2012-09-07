@@ -59,7 +59,7 @@ class Servolo < ActiveRecord::Base
   def fromto
     str = ""
     if (self.service.début > self.starts_at) || (self.service.ends_at < self.ends_at)
-      str += "☹ "
+      str += "⚠ "
     end
     str += self.starts_at.to_s(:cust_short) + " → " + self.relative_ends_at
     str
@@ -72,6 +72,16 @@ class Servolo < ActiveRecord::Base
     else
       self.ends_at.to_s(:cust_time) + " (+" + diff.to_s + ")"
     end
+  end
+
+  def durée_to_seconds
+    self.ends_at - self.starts_at
+  end
+
+  def durée_to_human_readable
+    h = (durée_to_seconds.to_i)/1.hour
+    m = (durée_to_seconds.to_i-h*1.hour)/1.minute
+    str = h.to_s + " h " + ((m>0)?(m.to_s+" m"):"")
   end
   
 end

@@ -1,0 +1,19 @@
+.dl_deux_colonnes_base
+  %dl
+    %dt Nombre de services :
+    %dd= @volo.services.count 
+  %dl
+    %dt Nombre de services complets :
+    %dd TODO
+  %dl
+    %dt Nombre de services coupés :
+    %dd TODO
+  %dl
+    %dt Durée totale des services :
+    %dd TODO
+  %dl
+    %dt Nombre de services par an :
+    %dd TODO
+  %dl
+    %dt Nombre d'heures par mois :
+    %dd TODO

@@ -1,0 +1,11 @@
+.dl_deux_colonnes_base
+  %dl
+    %dt Prénom :
+    %dd= @volo.first_name
+  %dl
+    %dt Nom :
+    %dd= @volo.last_name
+  %dl
+    %dt Entité :
+    %dd= @volo.entite
+

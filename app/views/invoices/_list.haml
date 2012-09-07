@@ -35,8 +35,9 @@
   liste_filtre << { :value => '3', :name => 'attente paiement' }
 
   liste_categ = []
-  liste_categ << { :value => '1', :name => 'Event related' }
-  liste_categ << { :value => '2', :name => 'Nonevent related' }
+  liste_categ << { :value => '0', :name => '<toutes>' }
+  liste_categ << { :value => '1', :name => 'SSCR' }
+  liste_categ << { :value => '2', :name => 'non-SSCR' }
   
   liste_annee = []
   liste_annee << { :value => 'all', :name => 'toutes' }
@@ -56,6 +57,8 @@
       invoices = invoices.only_with_events
     when '2'
       invoices = invoices.only_without_events
+    else
+      invoices = invoices.wnw_events
   end
 
   
@@ -89,7 +92,7 @@
         %font{:style => "font-family: HeydingsIconsRegular"} +
         = link_to 'New invoice', new_invoice_path
       %hr
-      - invoices.all.each do |invoice|
+      - invoices.each do |invoice|
         %li
           - active = (invoice_id == invoice.id ? :active_light : nil)
           = link_to invoice.to_s, invoice_path(invoice.id), :class => active

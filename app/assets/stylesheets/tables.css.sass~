@@ -21,6 +21,8 @@ table.titre_intrasection
     &:hover
       color: red
 
+
+
 table.base
   border-collapse: collapse
   width: 100%
@@ -31,6 +33,8 @@ table.base
       text-align: right
     &.au_centre
       text-align: center
+    &.taille_min
+      width: 1%
   td
     font-size: small
     text-align: left
@@ -38,8 +42,10 @@ table.base
       text-align: right
     &.au_centre
       text-align: center
+    &.taille_min
+      width: 1%
 
-table.white
+table.white /*TODO : renommer*/
   @extend table.base
   th
     color: black
@@ -54,6 +60,20 @@ table.white
     font-weight: bold
     vertical-align: top
 
+table.white_compact
+  @extend table.white
+  width: 1%
+  th
+    text-align: right
+    width: 1%
+    white-space: nowrap
+  td
+    padding-left: 8px
+    padding-right: 16px
+    width: 1%
+    white-space: nowrap
+    
+    
 table.base_with_rounded_th_coins
   @extend table.base
   tr:first-child
@@ -118,10 +138,10 @@ table.ligne
 
   th
     color: black
-    height: 24px
+    /*height: 24px*/
   td
     color: black
-    height: 16px
+    /*height: 24px*/
 
   tr:nth-child(2n+1)
     th
@@ -145,14 +165,11 @@ table.base_with_href
 table.grille
   @extend table.base_with_padding
   @extend table.base_with_rounded_th_coins
-
-  /* tous */
+  @extend table.base_with_href
   th
     color: black
   td
     color: black
-
-  /* couleur grille */
   tr:nth-child(2n+1)
     th:nth-child(2n+1)
       background: rgb( 127+$c-red*128 , 127+$c-green*128 , 127+$c-blue*128 )
@@ -171,16 +188,28 @@ table.grille
       background: rgb( 223+$c-red*32 , 223+$c-green*32 , 223+$c-blue*32 )
     th:nth-child(2n+1)
       background: rgb( 159+$c-red*96 , 159+$c-green*96 , 159+$c-blue*96 )
-        
+
+table.invoiced_items
+  @extend table.ligne
+  td:nth-child(2)
+    font-family: "monospace"
+    text-align: right
+  td:nth-child(3)
+    font-family: "monospace"
+    text-align: right
+  td:nth-child(4)
+    font-family: "monospace"
+    text-align: right
+
+
+
 table.empty
   @extend table.base_with_padding
+  @extend table.base_with_rounded_th_coins
+  background: orange
   th
     color: white
     background: rgb(127,127,127)
-  th:nth-child(1)
-    border-radius: 4px 0 0 0
-  th:last-child
-    border-radius: 0 4px 0 0
   input
     font-family: 'URW Gothic L'
     padding: 0px
@@ -211,30 +240,6 @@ table.generic
     background: rgb(255,207,207)
   tr:nth-child(1)
     background: none
-    
-table.invoiced_items
-  @extend table.generic
-  td:nth-child(2)
-    font-family: "monospace"
-    text-align: right
-  td:nth-child(3)
-    font-family: "monospace"
-    text-align: right
-  td:nth-child(4)
-    font-family: "monospace"
-    text-align: right
-  td:nth-child(5)
-    width: 1%
-  td:nth-child(6)
-    width: 1%
-  td:nth-child(7)
-    width: 1%
-  td:nth-child(8)
-    width: 1%
-  tr:last-child
-    background: red
-    color: white
-    font-weight: bold
     
 table.fullitems
   @extend table.empty

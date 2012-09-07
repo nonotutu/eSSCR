@@ -1,0 +1,35 @@
+= simple_form_for @volo do |f|
+
+  .dl_deux_colonnes_base
+    %dl
+      %dt Prénom :
+      %dd= f.input :first_name, :input_html => { :size => 16 }, :label => false
+    %dl
+      %dt Nom :
+      %dd= f.input :last_name, :input_html => { :size => 16 }, :label => false
+    %dl
+      %dt Entité :
+      %dd= f.input :entite, :input_html => { :size => 8 }, :label => false
+    %dl
+      %dt
+      %dd= f.submit
+
+
+
+    -#
+      %tr
+        %th Client :
+        %td
+          = f.input :customer_data, :input_html => { :rows => 3, :cols => 40, :value => cust_data}, :label => false
+      %tr
+        %th Envoyée le :
+        %td
+          = f.input :sent_at, :start_year => 2010, :end_year => Date.today.year, :include_blank => true, :label => false
+      %tr
+        %th Payée le :
+        %td
+          = f.input :paid_at, :start_year => 2010, :end_year => Date.today.year, :include_blank => true, :label => false
+      %tr
+        %th
+        %td{:align => 'right'}
+          = f.submit

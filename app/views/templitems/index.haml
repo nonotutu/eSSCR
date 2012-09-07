@@ -4,7 +4,7 @@
   
   .section
 
-    %table.generic
+    %table.ligne
       %tr
         %th Position
         %th Dénomination
@@ -20,11 +20,11 @@
               = to_euro(item.price)
             - elsif item.kind == 2
               = to_percent(item.price)
-          %td
+          %td.taille_min
             = link_to 'show', templitem_path(item.id)
     
     .lien_bas_de_page
-      >
-      = link_to 'New templitem', new_templitem_path
+      ➤
+      = link_to 'New', new_templitem_path
         
   

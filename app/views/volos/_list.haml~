@@ -1,0 +1,65 @@
+
+:ruby
+
+  if controller_name == 'invoices'
+    volo_id = params[:id].to_i
+  else
+    volo_id = params[:volo_id].to_i
+  end
+
+  if (params[:volos_liste_entite].present?)
+    session[:volos_liste_entite] = params[:volos_liste_entite]
+  end
+
+  liste_entite = []
+  liste_entite << { :value => '0', :name => '<toutes>' }
+  liste_entite << { :value => '1', :name => 'Uccle' }
+  liste_entite << { :value => '2', :name => 'Autres' }
+  
+  volos = Volo
+
+  case( session[:volos_liste_entite] )
+    when '1'
+      volos = volos.only_uccle
+    when '2'
+      volos = volos.only_not_uccle
+    else
+      volos = volos.all
+  end
+
+  
+.left_menus
+
+  .menu_gauche_options
+    %form{:action => '', :method => :get}
+      %table{:style => 'border-collapse: collapse; width: 100%'}
+        %tr
+          %td
+            Entité :
+            %select{:name => 'volos_liste_entite'}
+              - liste_entite.each do |item|
+                - selected = ( item[:value] == session[:volos_liste_entite] ? 'selected' : nil )
+                %option{ :value => item[:value], :selected => selected }= item[:name]
+          %td{:style => 'text-align: right'}
+          -#
+            Cat :
+            %select{:name => 'invoices_liste_categ'}
+              - liste_categ.each do |item|
+                - selected = ( item[:value] == session[:invoices_liste_categ] ? 'selected' : nil )
+                %option{ :value => item[:value], :selected => selected }= item[:name]
+      %table{:style => 'border-collapse: collapse; width: 100%'}
+        %tr
+          %td{:style => 'text-align: right'}
+            %input{:type => :submit, :value => 'go'}
+
+
+  .menu_gauche_1
+    %ul
+      %li
+        %font{:style => "font-family: HeydingsIconsRegular"} +
+        = link_to 'Volontaire', new_volo_path
+      %hr
+      - volos.each do |volo|
+        %li
+          - active = (volo_id == volo.id ? :active_light : nil)
+          = link_to volo.to_s, volo_path(volo.id), :class => active

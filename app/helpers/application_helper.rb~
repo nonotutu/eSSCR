@@ -24,6 +24,18 @@ module ApplicationHelper
   end
 
 
+  def calcul_prix_all_services_form_one_event(event_id)
+    event = Event.find(event_id)
+    tot = BigDecimal.new("0.0")
+    event.services.each do |service|
+      tot += calcul_prix_service_included(service.id)
+    end
+      
+    return tot
+    
+  end
+  
+  
   def calcul_prix_service(service_id)
 
     service = Service.find(service_id)
@@ -190,7 +202,7 @@ module ApplicationHelper
 
 #   Liste des seritems
     tot = BigDecimal.new("0.0")
-    service.seritems.each do |item|
+    service.seritems.order(:pos).each do |item|
       ligne = Array.new
       ligne << 1 << item.id << item.name
       if item.kind == 1
@@ -214,7 +226,7 @@ module ApplicationHelper
 #   Liste des evitems_% s'il y en a
     if service.event.evitems.where("evitems.kind = ?",2).count > 0
       tot = BigDecimal.new("0.0")
-      service.event.evitems.each do |item|
+      service.event.evitems.order(:pos).each do |item|
         if item.kind == 2
           tot = total * item.price / BigDecimal("100.0")
         end
@@ -228,7 +240,7 @@ module ApplicationHelper
 #   Liste des nositems, s'il y a une facture et des nositems_%
     if (service.event.invoice && service.event.invoice.nositems.where("nositems.kind = ?", 2).count > 0)
       tot = BigDecimal.new("0.0")
-      service.event.invoice.nositems.each do |item|
+      service.event.invoice.nositems.order(:pos).each do |item|
         if item.kind == 2
           tot = total * item.price / BigDecimal("100.0")
         end
@@ -255,7 +267,7 @@ module ApplicationHelper
 
     event = Event.find(event_id)
 
-    event.services.each do |service|
+    event.services.order.each do |service|
       total += calcul_prix_service(service.id)
     end
     if total > 0
@@ -265,7 +277,7 @@ module ApplicationHelper
     end
 
     tot = BigDecimal.new("0.0")
-    event.evitems.each do |item|
+    event.evitems.order(:pos).each do |item|
       ligne = Array.new
       ligne << 1 << item.id << item.name
       if item.kind == 1
@@ -288,7 +300,7 @@ module ApplicationHelper
 #   Liste des nositems_%, s'il y a une invoice et des nositems_%
     if (event.invoice && event.invoice.nositems.where("nositems.kind = ?", 2).count > 0)
       tot = BigDecimal.new("0.0")
-      event.invoice.nositems.each do |item|
+      event.invoice.nositems.order(:pos).each do |item|
         if item.kind == 2
           tot = total * item.price / BigDecimal("100.0")
         end
@@ -319,11 +331,11 @@ module ApplicationHelper
       total += calcul_prix_event(event.id)
     end
     ligne = Array.new
-    ligne << 3 << nil << "Events/ Services related items" << nil << nil << total
+    ligne << 3 << nil << "Events/Services related items" << nil << nil << total
     table << ligne
 
     tot = BigDecimal.new("0.0")
-    invoice.nositems.each do |item|
+    invoice.nositems.order(:pos).each do |item|
       ligne = Array.new
       ligne << 1 << item.id << item.name
       if item.kind == 1
@@ -355,7 +367,7 @@ module ApplicationHelper
 #           -6 : total
 
   def table_event_fullitem(event_id)
-    
+
     table = Array.new
     ligne = Array.new
   
@@ -368,7 +380,7 @@ module ApplicationHelper
       if service.seritems.count > 0
         ligne = Array.new
         ligne << -1 << ( service.starts_at.to_s(:cust_short) + " - " + service.relative_ends_at )
-        service.seritems.order('pos').each do |item|
+        service.seritems.order(:pos).each do |item|
           table << ligne
           ligne = Array.new
           ligne << -2
@@ -398,7 +410,7 @@ module ApplicationHelper
     ligne << -4 << "Sous-total services" << to_euro(total)
     table << ligne
 
-    event.evitems.order('pos').each do |item|
+    event.evitems.order(:pos).each do |item|
       ligne = Array.new
       ligne << -5
       ligne << item.name

@@ -62,9 +62,9 @@ class ServolosController < InheritedResources::Base
     @servolo.starts_at = @servolo.service.debut
     @servolo.ends_at = @servolo.service.ends_at
     if @servolo.service.debut == @servolo.service.depart_at
-      @servolo.rendezvous = 1
+      @servolo.rendezvous = "1"
     else
-      @servolo.rendezvous = 2
+      @servolo.rendezvous = "2"
     end
 
   end

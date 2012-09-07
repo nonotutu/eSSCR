@@ -59,14 +59,14 @@ class ServicesController < InheritedResources::Base
       # correction des heures des servolos : avance ceux du début
       servolos = Servolo.where("service_id = ? AND starts_at < ?", @service.id, @service.début)
       servolos.each do |servolo|
-        servolo.starts_at = @service.début
+#         servolo.starts_at = @service.début
         servolo.save
       end
 
       # correction des heures des servolos : recule ceux de la fin
       servolos = Servolo.where("service_id = ? AND ends_at > ?", @service.id, @service.ends_at)
       servolos.each do |servolo|
-        servolo.ends_at = @service.ends_at
+#         servolo.ends_at = @service.ends_at
         servolo.save
       end
       

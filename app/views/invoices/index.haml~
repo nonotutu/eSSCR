@@ -7,14 +7,14 @@
     %table.ligne
       %tr
         %th Numéro
-        %th Client
+        %th Client (papier)
         %th Montant
         %th Events
         %th Envoyée
         %th Payée
         %th Status
         %th.au_centre ✔/✘
-      - Invoice.all.each do |invoice|
+      - Invoice do |invoice|
         %tr
           %td
             = invoice.number
@@ -32,3 +32,5 @@
             = invoice.status(1)
           %td.au_centre
             = invoice.status(2)
+          %td.taille_min
+            = link_to "show", invoice_path(invoice)

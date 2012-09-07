@@ -1,0 +1,16 @@
+
+= render 'volos/list'
+
+.main
+  = render 'volos/header', :selected_item => 'show'
+
+  .section
+    = render "data"
+    
+    %hr.intrasection
+  
+  .lien_bas_de_page
+    ➤
+    = link_to "Edit", edit_volo_path
+    |
+    = link_to "Destroy", { :action => :destroy, :id => @volo.id }, :method => :delete

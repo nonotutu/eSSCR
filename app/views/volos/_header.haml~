@@ -1,0 +1,4 @@
+.title.one
+  = @invoice.to_s
+  
+= render 'invoices/menu', :selected_item => selected_item

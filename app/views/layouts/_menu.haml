@@ -16,16 +16,20 @@
         || controller_name == 'servolos'     |
         || controller_name == 'disposers'    |
 	      ? :active : nil                      |
-    %li= link_to 'Events', events_path, :class => active
+    %li= link_to 'Événements', events_path, :class => active
+
+    - active = controller_name == 'volos'    |
+        ? :active : nil                      |
+    %li= link_to 'Volontaires', volos_path, :class => active
 
     - active = controller_name == 'invoices' |
         || controller_name == 'nositems'     |
         ? :active : nil                      |
-    %li= link_to 'Invoices', invoices_path, :class => active
+    %li= link_to 'Factures', invoices_path, :class => active
     
     - active = controller_name == 'tools'    |
         || controller_name == 'customers'    |
         || controller_name == 'dispositifs'  |
         || controller_name == 'templitems'   |
         ? :active : nil                      |
-    %li= link_to 'Tools', tools_path, :class => active
+    %li= link_to 'Outils', tools_path, :class => active

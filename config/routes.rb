@@ -28,6 +28,8 @@ ESSCR2::Application.routes.draw do
   match "invoices/:id/overview" => "invoices#overview", :as => :invoice_overview
   match "invoices/:id/generate_pdf" => "invoices#generate_pdf", :as => :invoice_generate_pdf
 
+  match "volos/:id/overview" => "volos#overview", :as => :volo_overview
+  
   match "tools" => "tools#index", :as => :tools
   scope "/tools" do
     resources :templitems, :customers

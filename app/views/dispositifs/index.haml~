@@ -3,13 +3,11 @@
   
   .section
 
-    %table.generic
+    %table.ligne
       %tr
         %th Position
         %th Dénomination
         %th Image 1
-        %th Image 2
-        %th Image 4
       - Dispositif.order(:pos).all.each do |dispo|
         %tr
           %td
@@ -23,7 +21,7 @@
               = image_tag("/dispositifs/code_image_s2/#{dispo.id}", :alt => "☒")
             %td
               = image_tag("/dispositifs/code_image_s4/#{dispo.id}", :alt => "☒")
-          %td
+          %td.taille_min
             = link_to 'show', dispositif_path(dispo.id)
     
     .lien_bas_de_page

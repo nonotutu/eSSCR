@@ -1,7 +1,7 @@
 
 - unless @service.servolos.empty?
 
-  %table.generic
+  %table.ligne
     %tr
       %th Who
       %th When
@@ -10,8 +10,7 @@
       %tr
         - selection = (params[:mode]=='edit' && @servolo && @servolo.id==servolo.id)?"color:red;font-weight:bold":nil
         %td{:style => selection}
-          = servolo.volo.first_name
-          = servolo.volo.last_name
+          = servolo.volo.full_name
         %td{:style => selection}
           = servolo.fromto
         %td{:style => selection}

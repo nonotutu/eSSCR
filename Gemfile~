@@ -36,3 +36,18 @@ gem 'jquery-rails'
 
 # To use debugger
 # gem 'ruby-debug19', :require => 'ruby-debug'
+
+# arno: HAML
+gem 'haml-rails'
+
+# arno: simple_form
+gem 'simple_form'
+
+# arno: inherited resources
+gem 'inherited_resources'
+
+# arno: railroady
+gem 'railroady', :group => :development
+
+# arno: pdf
+gem 'prawn'

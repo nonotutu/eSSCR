@@ -53,7 +53,8 @@ class ServolosController < InheritedResources::Base
     end
     
   end
-  
+
+
   def heures_auto
   
 #   if heures_auto // TODO : rajouter dans le servolos/form // TODO : tester

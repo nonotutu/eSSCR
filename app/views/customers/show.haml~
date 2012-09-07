@@ -9,12 +9,12 @@
         = @customer.data
   
     .lien_bas_de_page
-      >
+      ➤
+      = link_to 'Back', customers_path
+      |
       = link_to 'Edit', edit_customer_path(@customer.id)
       |
       = link_to 'Destroy', customer_path(@customer.id), :method => :delete
-      |
-      = link_to 'Back', customers_path
       
   .section
   

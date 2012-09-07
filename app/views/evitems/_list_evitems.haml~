@@ -7,7 +7,7 @@
     %th Qty
     %th Price
     %th Total
-  - table.each  do |ligne|
+  - table.each do |ligne|
     %tr
       %td= ligne[2]
       %td= ligne[3]
@@ -17,4 +17,4 @@
         %td= button_to '↑↑', :action => :move_up, :id=>ligne[1]
         %td= button_to '↓↓', :action => :move_down, :id=>ligne[1]
         %td= link_to 'edit', event_evitems_path(params[:event_id], { :mode => "edit", :evitem_id => ligne[1] } )
-        %td= button_to "×", { :action => :destroy, :id => ligne[0] }, :method => :delete
+        %td= button_to "×", { :action => :destroy, :id => ligne[1] }, :method => :delete

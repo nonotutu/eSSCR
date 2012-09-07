@@ -73,5 +73,15 @@ class Servolo < ActiveRecord::Base
       self.ends_at.to_s(:cust_time) + " (+" + diff.to_s + ")"
     end
   end
+
+  def duree_to_seconds
+    self.ends_at - self.starts_at
+  end
+
+  def duree_to_human_readable
+    h = (duree_to_seconds.to_i)/1.hour
+    m = (duree_to_seconds.to_i-h*1.hour)/1.minute
+    str = h.to_s + " h " + ((m>0)?(m.to_s+" m"):"")
+  end
   
 end

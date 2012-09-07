@@ -1,0 +1,12 @@
+.menu
+  %ul
+    %li
+      = link_to "Volontaires", volos_path
+
+    %li
+      - active = selected_item == 'show' ? :active : nil
+      = link_to "Données", volo_path(@volo.id), :class => active
+
+    %li
+      - active = selected_item == 'overview' ? :active : nil
+      = link_to "Overview", volo_overview_path(@volo.id), :class => active

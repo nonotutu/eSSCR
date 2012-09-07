@@ -15,3 +15,35 @@
       &nbsp &nbsp &nbsp
       = render "disposers/inline_pictures", :params => { :icon_size => 2 }
       = render "servolos/graph"
+      %table.white_compact
+        %tr
+          %th
+            %font Prix
+          %td
+            %font
+              →
+              = to_euro(calcul_prix_service(@service.id))
+          %th
+            %font Prix sur facture
+          %td
+            %font
+              →
+              = to_euro(calcul_prix_service_included(@service.id))
+      
+
+    = render "/table_titre_intrasection", :params => { :titre => "Facturation" }
+    %table.white_compact
+      %tr
+        %th
+          %font Prix total événement
+        %td
+          %font
+            →
+            = to_euro(calcul_prix_event(@event.id))
+        %th
+          %font Prix sur facture
+        %td
+          %font
+            →
+            = to_euro(calcul_prix_event_included(@event.id))
+            

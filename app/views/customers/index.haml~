@@ -4,7 +4,7 @@
   
   .section
 
-    %table.generic
+    %table.ligne
       %tr
         %th Nom
         %th Adresse
@@ -22,14 +22,14 @@
             - cust.events.each do |c|
               - s += c.services.count
             = cust.events.count
-            /
+            \/
             = s
               
-          %td
+          %td.taille_min
             = link_to 'show', customer_path(cust.id)
 
     .lien_bas_de_page
-      >
+      ➤
       = link_to 'New customer', new_customer_path
         
   

@@ -1,0 +1,4 @@
+class AddColumnEntiteToVolos < ActiveRecord::Migration
+  def change
+  end
+end

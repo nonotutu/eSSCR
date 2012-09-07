@@ -15,8 +15,7 @@
         - @event.customer.data.lines.each do |line|
           = line
           %br
-      - else
-        ∅
+        = link_to "show", customer_path(@event.customer.id)
   %dl
     %dt Lieu :
     %dd= @event.place

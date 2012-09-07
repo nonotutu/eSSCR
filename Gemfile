@@ -51,3 +51,7 @@ gem 'railroady', :group => :development
 
 # arno: pdf
 gem 'prawn'
+
+# arno: accès
+gem 'cancan'
+gem 'authlogic'

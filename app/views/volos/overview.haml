@@ -1,0 +1,13 @@
+= render "volos/list"
+
+.main
+
+  = render "volos/header", :selected_item => "overview"
+
+  .section
+    = render "/table_titre_intrasection", :params => {:titre => "Services"}
+    = render "list_services", :locals => { :volo => @volo }
+    
+    = render "/table_titre_intrasection", :params => {:titre => "Totaux"}
+    = render "totaux", :locals => { :volo => @volo }
+    

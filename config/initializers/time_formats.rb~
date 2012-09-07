@@ -93,4 +93,6 @@
 Time::DATE_FORMATS[:cust_short] = "%d/%m/%y - %H:%M"
 Time::DATE_FORMATS[:cust_long]  = "%A %d %B %Y - %Hh%M"
 Time::DATE_FORMATS[:cust_time]  = "%H:%M"
+Time::DATE_FORMATS[:cust_date]  = "%d/%m/%y"
 Time::DATE_FORMATS[:cust_jdate]  = "%A %d/%m/%y"
+Time::DATE_FORMATS[:cust_jtime]  = "%A %H:%M"

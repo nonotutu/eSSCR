@@ -1,0 +1,11 @@
+= render 'volos/list'
+
+.main
+  = render 'volos/header', :selected_item => 'show'
+
+  .section
+    = render 'form'
+
+  .lien_bas_de_page
+    ➤
+    = link_to "Back", volo_path
