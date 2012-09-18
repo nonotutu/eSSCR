@@ -1,9 +1,15 @@
-%table.empty
-  - @invoice.events.each do |event|
-    %tr
-      %td
-        = event.name
-      %td
-        = calcul_prix_event(event.id)
+- unless @invoice.events.count == 0
 
-  = render "nositems/list_nositems"
+  %table.ligne
+    %tr
+      %th Événement
+      %th Prix facturé
+    - @invoice.events.each do |event|
+      %tr
+        %td
+          = event.name
+        %td
+          = to_euro(calcul_prix_event(event.id))
+
+- else
+  %i ∅ aucun événement ─

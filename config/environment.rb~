@@ -1,0 +1,8 @@
+# Load the rails application
+require File.expand_path('../application', __FILE__)
+
+# arno : PDF
+config.load_paths << "#{RAILS_ROOT}/vendor/prawn/lib"
+
+# Initialize the rails application
+ESSCR2::Application.initialize!

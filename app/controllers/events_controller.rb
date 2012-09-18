@@ -3,6 +3,13 @@ class EventsController < InheritedResources::Base
   
   def show
     @event = Event.find(params[:id])
+    respond_to do |format|
+      format.html
+      format.pdf do
+        pdf = DevisPdf.new(@event)
+        send_data pdf.render, filename: "devis_#{@event.created_at.strftime("%d/%m/%Y")}.pdf", type: "application/pdf"
+      end
+    end
   end
   
   

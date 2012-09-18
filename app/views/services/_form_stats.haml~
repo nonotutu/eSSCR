@@ -1,0 +1,46 @@
+= simple_form_for ([@event, @service]), :url => url_for(:action => 'update_stats', :controller => 'services') do |f|
+    
+  .dl_deux_colonnes_base
+    %dl
+      %dt T4 :
+      %dd= f.input :stats_t4,                      |
+                  :input_html => { :size => 2 },  |
+                  :label => false                 |
+    %dl
+      %dt T3 :
+      %dd= f.input :stats_t3,                      |
+                  :input_html => { :size => 2 },  |
+                  :label => false                 |
+    %dl
+      %dt T2 :
+      %dd= f.input :stats_t2,                      |
+                  :input_html => { :size => 2 },  |
+                  :label => false                 |
+    %dl
+      %dt T1 :
+      %dd= f.input :stats_t1,                      |
+                  :input_html => { :size => 2 },  |
+                  :label => false                 |
+    %dl
+      %dt Ambus :
+      %dd= f.input :stats_ambu,                    |
+                  :input_html => { :size => 2 },  |
+                  :label => false                 |
+    %dl
+      %dt PIT :
+      %dd= f.input :stats_pit,                     |
+                  :input_html => { :size => 2 },  |
+                  :label => false                 |
+    %dl
+      %dt SMUR :
+      %dd= f.input :stats_smur,                    |
+                  :input_html => { :size => 2 },  |
+                  :label => false                 |
+    %dl
+      %dt DCD :
+      %dd= f.input :stats_dcd,                     |
+                  :input_html => { :size => 2 },  |
+                  :label => false                 |
+    %dl
+      %dt
+      %dd= f.submit

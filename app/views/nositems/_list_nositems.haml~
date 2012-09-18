@@ -14,7 +14,11 @@
       %td= ligne[4]
       %td= ligne[5]
       - if ligne[0] == 1 && mode == 'edit'
-        %td.taille_min= button_to '↑↑', :action => :move_up, :id=>ligne[1]
-        %td.taille_min= button_to '↓↓', :action => :move_down, :id=>ligne[1]
-        %td= link_to 'edit', invoice_nositems_path(params[:invoice_id], { :mode => "edit", :nositem_id => ligne[1] } )
-        %td= button_to "×", { :action => :destroy, :id => ligne[1] }, :method => :delete
+        %td.taille_min= link_to '↑↑', :action => :move_up, :id=>ligne[1]
+        %td.taille_min= link_to '↓↓', :action => :move_down, :id=>ligne[1]
+        %td.taille_min
+          %font{:style => "font-family: HeydingsIconsRegular"}
+            = link_to 'w', invoice_nositems_path(params[:invoice_id], { :mode => "edit", :nositem_id => ligne[1] } )
+        %td.taille_min
+          %font{:style => "font-family: HeydingsIconsRegular"}
+            = link_to "-", { :action => :destroy, :id => ligne[1] }, :method => :delete

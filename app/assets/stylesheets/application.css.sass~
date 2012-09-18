@@ -59,10 +59,11 @@ hr.intrasection_light
   overflow: auto
   .title
     margin: -2px 0 -6px 0
-    color: red
-    text-shadow: -1px 0 rgb(255,127,127), 0 1px rgb(255,127,127), 1px 0 black, 0 -1px black
+    color: orange
+    /*text-shadow: -1px 0 rgb(255,127,127), 0 1px rgb(255,127,127), 1px 0 black, 0 -1px black*/
+    text-shadow: 0 0 4px blue
     &.one
-      font-size: xx-large
+      font-size: x-large
       padding-left: 40px
     &.two
       font-size: x-large
@@ -84,6 +85,9 @@ hr.intrasection_light
             font-size: x-large
           a:hover
             color: red
+    &.texte
+      font-size: small
+      color: gray
     h4
       margin: 0
       font-size: large
@@ -167,4 +171,3 @@ table.graphe_volo
   table
     width: 100%
     border-collapse: collapse
-

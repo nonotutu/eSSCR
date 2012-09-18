@@ -1,0 +1,23 @@
+
+= render 'events/list'
+
+.main
+  = render 'events/header', :selected_item => 'services'
+  = render 'services/header', :selected_item => 'stats'
+
+  .section
+    - if params[:mode] == "edit"
+      = render "form_stats"
+    - else
+      = render "table_stats"
+  
+    %hr.intrasection
+  
+  .lien_bas_de_page
+    ➤
+    - unless params[:mode] == "edit"
+      = link_to "Edit", event_service_stats_path(@event, @service, :mode => "edit")
+      |
+      = link_to "Back", event_service_stats_path(@event, @service)
+    - else
+      = link_to "Back", event_service_overview_path(@event, @service)

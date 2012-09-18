@@ -10,6 +10,9 @@
 
   .lien_bas_de_page
     ➤
+    = link_to "Devis", event_path(@event, :pdf)
+    %font{:style => "font-family: HeydingsIconsRegular"} D
+    |
     = link_to "Edit", edit_event_path
     |
     = link_to "Destroy", { :action => :destroy, :id => @event.id }, :method => :delete

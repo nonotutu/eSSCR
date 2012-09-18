@@ -1,0 +1,37 @@
+#encoding: utf-8
+.main
+
+  .section
+
+    %table.base_with_href
+      %tr{:style => "vertical-align: top"}
+        %td{:style => "width: 50%"}
+          = render "/table_titre_intrasection", :params => { :titre => "Services à venir" }
+          %ul.empty
+            - Service.only_future.each do |service|
+              %li
+                = link_to service.event.name + " - " + service.to_s,        |
+                  event_service_overview_path(service.event.id, service.id) |
+                %ul.empty
+                  - string_total_servolos(service.id).each do |ligne|
+                    %li
+                      = ligne
+          
+        %td
+          = render "/table_titre_intrasection", :params => { :titre => "Événements à facturer" }
+          %ul.empty
+            - Service.only_past.group(:event_id).only_not_invoiced.each do |service|
+              %li
+                = link_to ( service.event.name + " - " + to_euro(calcul_prix_event_included(service.event.id)) ), |
+                  event_path(service.event.id)                                                                    |
+          = render "/table_titre_intrasection", :params => { :titre => "Factures à envoyer" }
+          %ul.empty
+            - Invoice.only_not_sent.each do |invoice|
+              %li
+                = invoice.to_s
+
+          = render "/table_titre_intrasection", :params => { :titre => "Factures en attente de paiement" }
+          %ul.empty
+            - Invoice.only_sent_not_paid.each do |invoice|
+              %li
+                = invoice.to_s

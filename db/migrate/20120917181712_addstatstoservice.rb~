@@ -1,0 +1,13 @@
+class Addstatstoservice < ActiveRecord::Migration
+  def change
+    add_column :services, :qty_t1, :integer
+    add_column :services, :qty_t2, :integer
+    add_column :services, :qty_t3, :integer
+    add_column :services, :qty_t4, :integer
+    add_column :services, :qty_app_ambu, :integer
+    add_column :services, :qty_app_pit, :integer
+    add_column :services, :qty_app_smur, :integer
+    add_column :services, :qty_dcd, :integer
+  end
+
+end

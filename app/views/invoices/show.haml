@@ -11,7 +11,8 @@
   
   .lien_bas_de_page
     ➤
-    = link_to "Generate PDF", invoice_generate_pdf_path(@invoice)
+    = link_to "Facture", invoice_path(@invoice, :pdf)
+    %font{:style => "font-family: HeydingsIconsRegular"} dD
     |
     = link_to "Edit", edit_invoice_path
     |

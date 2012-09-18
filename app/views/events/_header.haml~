@@ -1,4 +1,6 @@
-.titre.one
+
+.title.one
+  ➽➻➡
   = @event.name
 
 = render 'events/menu', :selected_item => selected_item

@@ -1,5 +1,9 @@
 .menu_gauche_1
   %ul
+    %li
+      %font{:style => "font-family: HeydingsIconsRegular"} +
+      = link_to "New event", new_event_path
+    %hr
     %li.matching_results_line
       ――
       = services.count
@@ -22,20 +26,16 @@
           - active = (event_id == event.id ? :active_light : nil)
           - evt = event.category.short_name + " - " + event.name
           = link_to evt, event_overview_path(event.id), :class => active
-      %hr
-      %li
-        %font{:style => "font-family: HeydingsIconsRegular"} +
-        = link_to "New event", new_event_path
         
 .menu_gauche_2
   - if ( params[:id].present? || params[:event_id].present? )
     %ul
+      %li
+        %font{:style => "font-family: HeydingsIconsRegular"} +
+        = link_to "New service", new_event_service_path(@event)
+      %hr
       - services.where("event_id = ?", event_id).each do |service|
         %li
           - active = (service_id == service.id ? :active_light : nil)
           - ser = service.to_s
           = link_to ser, event_service_overview_path(service.event.id, service.id), :class => active
-      %hr
-      %li
-        %font{:style => "font-family: HeydingsIconsRegular"} +
-        = link_to "New service", new_event_service_path(@event)

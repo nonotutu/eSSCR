@@ -24,17 +24,13 @@
     %tr
       %th Départ :
       %td= f.input :depart_at,                      |
-                   :start_year => 2010,             |
-                   :end_year => Date.today.year+2,  |
-                   :minute_step => 5,               |
                    :as => :time,                    |
+                   :minute_step => 5,               |
                    :label => false,                 |
                    :include_blank => true           |
     %tr
       %th Surplace :
       %td= f.input :surplace_at,                    |
-                   :start_year => 2010,             |
-                   :end_year => Date.today.year+2,  |
                    :minute_step => 5,               |
                    :as => :time,                    |
                    :label => false,                 |

@@ -9,47 +9,47 @@
     ref_number = last_ref[5..7].next
     ref_type   = "A"
   end
-
+    
 = simple_form_for (@event) do |f|
-  %table.formulaire
-    %tr
-      %th Catégorie :
-      %td= f.association :category,   :label => false
-    -#
-      %tr
-      %th Référence :
-      %td= f.input        :ref,       :label => false,  :input_html => { :size => 8 }
-    %tr
-      %th Référence :
-      %td
-        %table{:style => "border-collapse: collapse"}
-          %tr
-            %td
-              = f.input :attr, :input_html => { :name => "ref_year", :value => ref_year, :size => "4" }, :label => false
-            %td
-              = f.input :attr, :input_html => { :name => "ref_number", :value => ref_number, :size => "3" }, :label => false
-            %td
-              = f.input :attr, :input_html => { :name => "ref_type", :value => ref_type, :size => "1" }, :label => false
-            %td{:style => "font-size: x-small"}
-              loc
-              %b>A
-              l - en&nbsp 
-              %b>R
-              enfort - renfort
-              %b>S
-    %tr
-      %th Nom :
-      %td= f.input        :name,      :label => false
-    %tr
-      %th Client :
-      %td= f.association  :customer,  :label => false
-    %tr
-      %th Lieu :
-      %td= f.input        :place,     :label => false
-    %tr
-      %th Adresse :
-      %td= f.input        :address,   :label => false,  :input_html => {:rows => 4, :columns => 20}
-    %tr
-      %th
-      %td{:align => :right}
-        = f.button      :submit
+  .dl_deux_colonnes_base
+    %dl
+      %dt Catégorie :
+      %dd= f.association :category,   :label => false
+    %dl
+      %dt Référence :
+      %dd
+      %table{:style => "border-collapse: collapse"}
+        %tr
+          %td
+            = f.input :attr, :input_html => { :name => "ref_year", :value => ref_year, :size => "4" }, :label => false
+          %td
+            = f.input :attr, :input_html => { :name => "ref_number", :value => ref_number, :size => "3" }, :label => false
+          %td
+            = f.input :attr, :input_html => { :name => "ref_type", :value => ref_type, :size => "1" }, :label => false
+          %td{:style => "font-size: x-small"}
+            ( loc
+            %b>A
+            l - en&nbsp 
+            %b>R
+            enfort - renfort
+            %b>S
+            &nbsp)
+    %dl
+      %dt Nom :
+      %dd= f.input        :name,      :label => false
+    %dl
+      %dt Lieu :
+      %dd= f.input        :place,     :label => false
+    %dl
+      %dt Adresse :
+      %dd= f.input        :address,   :label => false,  :input_html => {:rows => 4, :columns => 20}
+    %dl
+      %dt Client :
+      %dd= f.association  :customer,  :label => false
+    %dl
+      %dt Gratuit ? :
+      %dd= f.input :is_free, :label => false
+    %dl
+      %dt
+      %dd= f.button :submit
+  %hr.intrasection

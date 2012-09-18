@@ -1,12 +1,21 @@
-%table
-  %tr
-    %th Name
-    %th Cat
-    %th Services
-    %th
-    - @events_without_invoice.each do |event|
-      %tr
-        %td= event.name
-        %td= event.category.short_name
-        %td= event.services.count
-        %td= link_to "add", :controller => :events, :action => :add_to_invoice, :id => event.id, :invoice => @invoice
+- unless Event.only_without_invoice_and_not_free.count == 0
+
+  %table.ligne
+    %tr
+      %th Nom
+      %th Catégorie
+      %th # services
+      -# TODO : controller ou model ?
+      -# @events_without_invoice.each do |event|
+      - Event.only_without_invoice_and_not_free.each do |event|
+        %tr
+          %td= event.name
+          %td= event.category.short_name
+          %td= event.services.count
+          %td.taille_min
+            %font{:style => "font-family: HeydingsIconsRegular"}
+              = link_to "+", :controller => :events, :action => :add_to_invoice, :id => event.id, :invoice => @invoice
+              
+- else
+
+  %i ∅ aucun événement à facturer ─

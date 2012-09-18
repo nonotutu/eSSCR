@@ -9,31 +9,31 @@
       %dd= f.input :last_name, :input_html => { :size => 16 }, :label => false
     %dl
       %dt Actif :
+      %dd= f.input :actif, :label => false
     %dl
-      %dt Entité :
-      %dd= f.input :entite, :input_html => { :size => 8 }, :label => false
+      %dt Entité CR :
+      %td= f.association :crentite, :label => false
     %dl
-      %dt DDN :
+      %dt Date de naissance :
+      %td= f.input :birth_date,                       |
+                   :start_year => Date.today.year-80, |
+                   :end_year => Date.today.year-1,    |
+                   :order => [:day, :month, :year],   |
+                   :label => false,                   |
+                   :as => :date,                      |
+                   :include_blank => true             |
+    %dl
+      %dt Date d'entrée :
+      %td= f.input :local_date,                       |
+                   :start_year => Date.today.year-80, |
+                   :end_year => Date.today.year,      |
+                   :order => [:day, :month, :year],   |
+                   :label => false,                   |
+                   :as => :date,                      |
+                   :include_blank => true             |
+    %dl
+      %dt Commentaire
+      %dd= f.input :comment, :label => false
     %dl
       %dt
       %dd= f.submit
-
-
-
-    -#
-      %tr
-        %th Client :
-        %td
-          = f.input :customer_data, :input_html => { :rows => 3, :cols => 40, :value => cust_data}, :label => false
-      %tr
-        %th Envoyée le :
-        %td
-          = f.input :sent_at, :start_year => 2010, :end_year => Date.today.year, :include_blank => true, :label => false
-      %tr
-        %th Payée le :
-        %td
-          = f.input :paid_at, :start_year => 2010, :end_year => Date.today.year, :include_blank => true, :label => false
-      %tr
-        %th
-        %td{:align => 'right'}
-          = f.submit

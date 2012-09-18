@@ -29,6 +29,8 @@ class Invoice < ActiveRecord::Base
   scope :only_with_events, joins(:events).group("invoices.id")
   scope :only_without_events, (includes(:events) - joins(:events))
   scope :wnw_events
+  scope :only_sent_not_paid, where("sent_at IS NOT NULL AND paid_at IS NULL")
+  scope :only_not_sent, where("sent_at IS NULL")
 
   def to_s
     self.number + ( self.customer_data_to_s ? ( " - " + self.customer_data_to_s ) : "" )

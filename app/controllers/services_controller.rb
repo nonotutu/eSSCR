@@ -3,6 +3,10 @@ class ServicesController < InheritedResources::Base
 
   belongs_to :event
   
+  def stats
+    @event = Event.find(params[:event_id])
+    @service = Service.find(params[:id])
+  end
   
   def destroy
     
@@ -19,7 +23,22 @@ class ServicesController < InheritedResources::Base
     end
     
   end
-  
+
+
+  # Miracle ... fonctionne via une route définie, toujours par miracle
+  def update_stats
+    
+    @service = Service.find(params[:id])
+    
+    if @service.update_attributes(params[:service])
+      redirect_to event_service_stats_path, :notice => "Service's stats updated"
+    else
+      redirect_to :back, :alert => "Error updating service's stats" + @service.errors.messages.to_s
+    end
+    
+  end
+
+
   def update
 
     datizer

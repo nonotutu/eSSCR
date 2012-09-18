@@ -18,15 +18,12 @@
                    :label => false                  |
     %tr
       %th Rendez-vous :
-      %td= f.input :rendezvous,                   |
+      %td= f.input :rendezvous,                    |
                    :input_html => { :size => 12 }, |
-                   :label => false                |
+                   :label => false                 |
     %tr
       %th Départ :
       %td= f.input :depart_at,                      |
-                   :start_year => 2010,             |
-                   :end_year => Date.today.year+2,  |
-                   :minute_step => 5,               |
                    :as => :time,                    |
                    :label => false,                 |
                    :include_blank => true           |

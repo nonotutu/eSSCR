@@ -7,9 +7,21 @@
     %dd= @volo.last_name
   %dl
     %dt Actif :
+    %dd= @volo.actif ? "oui" : "non"
   %dl
-    %dt Entité :
-    %dd= @volo.entite
+    %dt Entité CR :
+    %dd= @volo.crentite
   %dl
-    %dt DDN :
+    %dt Date de naissance :
+    %dd
+      = @volo.birth_date
+      - if @volo.birth_date.to_s != ""
+        = "→ " + age(@volo.birth_date).to_s + " ans"
+        = " (annif : " + nb_jours_to_annif(@volo.birth_date).to_s + " jours)"
+  %dl
+    %dt Date d'entrée :
+    %dd= @volo.local_date
+  %dl
+    %dt Commentaire :
+    %dd= @volo.comment
 

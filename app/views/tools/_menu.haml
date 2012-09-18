@@ -12,3 +12,7 @@
     %li
       - active = selected_item == 'templitems' ? :active : nil
       = link_to 'Templitems', templitems_path, :class => active
+      
+    %li
+      - active = selected_item == 'crentites' ? :active : nil
+      = link_to 'Entités CR', crentites_path, :class => active

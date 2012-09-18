@@ -1,16 +1,22 @@
-%table
-  %tr
-    %th Name
-    %th Cat
-    %th Services
-    - if params[:mode] == 'edit'
-      %th
-    %th
-    - @invoice.events.each do |event|
-      %tr
-        %td= event.name
-        %td= event.category.short_name
-        %td= event.services.count
-        - if params[:mode] == 'edit'
-          %td= link_to "remove", :controller => :events, :action => :remove_from_invoice, :id => event.id
-        %td= link_to 'go', event_path(event)
+- unless @invoice.events.count == 0
+
+  %table.ligne
+    %tr
+      %th Nom
+      %th Catégorie
+      %th # services
+      - @invoice.events.each do |event|
+        %tr
+          %td= event.name
+          %td= event.category.short_name
+          %td= event.services.count
+          - if params[:mode] == 'edit'
+            %td.taille_min
+              %font{:style => "font-family: HeydingsIconsRegular"}
+                = link_to "-", :controller => :events, :action => :remove_from_invoice, :id => event.id
+          - else
+            %td.taille_min
+              = link_to "➫", event_overview_path(event)
+                
+- else
+  %i ─ aucun événement ─

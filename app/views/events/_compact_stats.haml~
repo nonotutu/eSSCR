@@ -1,0 +1,42 @@
+%table.white.egal
+  %tr
+    %th{:style => "text-align: right"}
+      %font{:style => "background: white; border: 1px solid black"} ♯&nbspT4
+    %td{:style => "text-align: left"}
+      ×
+      %font= @service.stats_t4.nil? ? "∅" : @service.stats_t4
+    %th{:style => "text-align: right"}
+      %font{:style => "background: lightgreen; border: 1px solid black"} ♯&nbspT3
+    %td{:style => "text-align: left"}
+      ×
+      %font= @service.stats_t3.nil? ? "∅" : @service.stats_t3
+    %th{:style => "text-align: right"}
+      %font{:style => "background: rgb(255,255,95); border: 1px solid black"} ♯&nbspT2
+    %td{:style => "text-align: left"}
+      ×
+      %font= @service.stats_t2.nil? ? "∅" : @service.stats_t2
+    %th{:style => "text-align: right"}
+      %font{:style => "background: rgb(255,95,95); border: 1px solid black"} ♯&nbspT1
+    %td{:style => "text-align: left"}
+      ×
+      %font= @service.stats_t1.nil? ? "∅" : @service.stats_t1
+    %th{:style => "text-align: right"}
+      %font{:style => "background: blue; border: 1px solid black; color: white"} ✆&nbspAmbu
+    %td{:style => "text-align: left"}
+      ×
+      %font= @service.stats_ambu.nil? ? "∅" : @service.stats_ambu
+    %th{:style => "text-align: right"}
+      %font{:style => "background: green; border: 1px solid black; color: white"} ✆&nbspPIT
+    %td{:style => "text-align: left"}
+      ×
+      %font= @service.stats_pit.nil? ? "∅" : @service.stats_pit
+    %th{:style => "text-align: right"}
+      %font{:style => "background: red; border: 1px solid black; color: white"} ✆&nbspSMUR
+    %td{:style => "text-align: left"}
+      ×
+      %font= @service.stats_smur.nil? ? "∅" : @service.stats_smur
+    %th{:style => "text-align: right"}
+      %font{:style => "background: black; border: 1px solid black; color: white"} ✆&nbspDCD
+    %td{:style => "text-align: left"}
+      ×
+      %font= @service.stats_dcd.nil? ? "∅" : @service.stats_dcd

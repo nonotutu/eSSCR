@@ -1,0 +1,31 @@
+
+.main
+  = render 'tools/header', :selected_item => 'customers'
+  
+  .section
+
+    %ul
+      %li
+        = @crentite.name
+      %li
+        = @crentite.number
+  
+    .lien_bas_de_page
+      ➤
+      = link_to 'Back', crentites_path
+      |
+      = link_to 'Edit', edit_crentite_path(@crentite.id)
+      |
+      = link_to 'Destroy', crentite_path(@crentite.id), :method => :delete
+      
+-#
+  .section
+
+    %ul
+      - @customer.events.each do |event|
+        %li
+          = event.name
+          (
+          = event.services.count
+          )
+      

@@ -5,14 +5,17 @@
 
   .section
     = render 'invoices/list_events'
-
+    %hr.intrasection
+    
     - if params[:mode] == 'edit'
       = render 'list_events_without_invoice'
+      %hr.intrasection
+
     
   .lien_bas_de_page
     - unless params[:mode] == 'edit'
-      >
-      = link_to "Manage events", invoice_events_path(:mode=>'edit')
+      ➤
+      = link_to "Manage", invoice_events_path(:mode=>'edit')
     - else
-      >
+      ➤
       = link_to "Back", invoice_events_path

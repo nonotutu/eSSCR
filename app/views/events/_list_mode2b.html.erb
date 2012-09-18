@@ -2,8 +2,13 @@
 
 <ul>
   <li>
-    <%= link_to '→ New event', new_event_path %>
+    <%= link_to '→ Nouvel événement', new_event_path %>
   </li>
+  <% if ( params[:id].present? || params[:event_id].present? ) %>
+    <li>
+    <%= link_to '→ Nouveau service', new_event_service_path(@event) %>
+    </li>
+  <% end %>
   <hr/>
     <ul>
       <% services.each do |service| %>

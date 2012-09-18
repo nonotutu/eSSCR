@@ -9,14 +9,6 @@
     %dt Nom :
     %dd= @event.name
   %dl
-    %dt Client :
-    %dd
-      - if @event.customer
-        - @event.customer.data.lines.each do |line|
-          = line
-          %br
-        = link_to "show", customer_path(@event.customer.id)
-  %dl
     %dt Lieu :
     %dd= @event.place
   %dl
@@ -26,4 +18,15 @@
         - @event.address.lines.each do |line|
           = line
           %br
-
+  %dl
+    %dt Client :
+    %dd
+      - if @event.customer
+        - @event.customer.data.lines.each do |line|
+          = line
+          %br
+        = link_to "show", customer_path(@event.customer.id)
+  %dl
+    %dt Gratuit ? :
+    %dd= ( @event.is_free==true ? "oui" : ( @event.is_free==false ? "non" : "non-défini" ) )
+  -# TODO : non-défini non utilisé

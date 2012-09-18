@@ -1,9 +1,23 @@
 #encoding: utf-8
+
 module ApplicationHelper
 
+  def age(birth_date)
+    age = Date.today - birth_date
+    (age / 365.25).to_i
+  end
+
+  def nb_jours_to_annif(birth_date)
+    annif = birth_date + (Date.today.year - birth_date.year).years
+    if ( annif < Date.today )
+      annif = annif + 1.years
+    end
+    nb = (annif - Date.today).to_i
+  end
   
   def humanize_time_range(secs)
-    (secs/1.hour).to_s + "h"
+    (((secs/1.hour*100).to_i)/100.0).to_s + "h"
+#   TODO : faire mieux
   end
   
   def event_last_year()
@@ -15,12 +29,12 @@ module ApplicationHelper
   end
   
   def to_euro(number)
-    number_to_currency(number, :separator => ',', :delimiter => ' ', :unit => "&euro;", :format => "%n %u", :negative_format => "- %n %u")
+    number_to_currency(number, :separator => ',', :delimiter => ' ', :unit => "€", :format => "%n %u", :negative_format => "- %n %u")
   end
-
   
   def to_percent(number)
-    number_to_currency(number, :separator => ',', :delimiter => ' ', :unit => "%", :format => "%n %u", :negative_format => "- %n %u") # TODO : faire mieux
+    number_to_currency(number, :separator => ',', :delimiter => ' ', :unit => "%", :format => "%n %u", :negative_format => "- %n %u")
+#   TODO : faire mieux
   end
 
 
@@ -144,33 +158,41 @@ module ApplicationHelper
 
   
   def calcul_prix_invoice(invoice_id)
-    
+        
+    total_invoice = BigDecimal.new("0.0")
     invoice = Invoice.find(invoice_id)
-    
-    total = BigDecimal("0.0")
-    
     invoice.events.each do |event|
+      total_event = BigDecimal.new("0.0")
       event.services.each do |service|
-        total += calcul_prix_service(service.id)
+        total_service = BigDecimal.new("0.0")
+        service.seritems.order(:pos).each do |seritem|
+          ligne = Array.new
+          if seritem.kind == 1
+            total_service += seritem.qty * seritem.price
+          elsif seritem.kind == 2
+            total_service += total_service * seritem.price / BigDecimal("100.0")
+          end
+        end
+        total_event += total_service
       end
-      event.evitems.each do |evitem|
+      event.evitems.order(:pos).each do |evitem|
         if evitem.kind == 1
-          total += evitem.price
+          total_event += evitem.qty * evitem.price
         elsif evitem.kind == 2
-          total += total * evitem.price / BigDecimal.new("100.0")
+          total_event += total_event * evitem.price / BigDecimal("100.0")
         end
       end
+      total_invoice += total_event
     end
-    
-    invoice.nositems.each do |nositem|
+    invoice.nositems.order(:pos).each do |nositem|
       if nositem.kind == 1
-        total += nositem.price
+        total_invoice += nositem.qty * nositem.price
       elsif nositem.kind == 2
-        total += total * nositem.price / BigDecimal.new("100.0")
+        total_invoice += total_invoice * nositem.price / BigDecimal("100.0")
       end
     end
-    
-    total
+
+    total_invoice
     
   end
         
@@ -191,7 +213,6 @@ module ApplicationHelper
 
   # TODO : ne pas afficher les lignes inutiles
   # TODO : version 2
-  
   
   def generate_table_seritems(service_id)
 
@@ -258,8 +279,8 @@ module ApplicationHelper
     table
     
   end
-
-
+ 
+  
   def generate_table_evitems(event_id)
 
     table = Array.new
@@ -331,7 +352,7 @@ module ApplicationHelper
       total += calcul_prix_event(event.id)
     end
     ligne = Array.new
-    ligne << 3 << nil << "Events/Services related items" << nil << nil << total
+    ligne << 3 << nil << "Events/Services related items" << nil << nil << to_euro(total)
     table << ligne
 
     tot = BigDecimal.new("0.0")
@@ -340,10 +361,10 @@ module ApplicationHelper
       ligne << 1 << item.id << item.name
       if item.kind == 1
         ligne << item.qty << to_euro(item.price)
-        ligne << (tot = item.qty * item.price)
+        ligne << to_euro(tot = item.qty * item.price)
       elsif item.kind == 2
         ligne << nil << to_percent(item.price)
-        ligne << (tot = total * item.price / BigDecimal.new("100.0"))
+        ligne << to_euro(tot = total * item.price / BigDecimal.new("100.0"))
       end
       ligne << tot
       table << ligne
@@ -537,7 +558,7 @@ module ApplicationHelper
     
     service.servolos.by_first_name.each do |servolo|
       ligne = Array.new
-      ligne << servolo.volo.first_name
+      ligne << servolo.volo.full_name_avec_crentite
       debut_servolo = ( servolo.starts_at - debut ).to_i
       if debut_servolo < 0
         ligne << 0
@@ -582,21 +603,12 @@ module ApplicationHelper
     total = total_servolos(service_id)
     
     service = Service.find(service_id)
-    
-#     i = 0
-#     max = -1
-#     while i < total.count-1
-#       if max < total[i+2]
-#         max = total[i+2]
-#       end
-#       i += 3
-#     end
-    
+        
     max = service.volness ||= 0
     i = 0
     while i < total.count-1
       if max > total[i+2]
-        table << "De " +
+        table << "de " +
             (service.début + total[i].seconds).to_s(:cust_short) +
             " à " +
             (service.début + total[i+1].seconds).to_s(:cust_short) +
@@ -751,5 +763,188 @@ module ApplicationHelper
     return ligne7
     
   end
+
+
+  # mode decal
+  def generate_table_fullitems_event(event_id)
+    
+    table = Array.new
+      
+    event = Event.find(event_id)
+    
+    total_event = BigDecimal.new("0.0")
+    event.services.each do |service|
+        
+      ligne = Array.new
+      ligne << "2service" << service.to_s
+      table << ligne
+       
+      total_service = BigDecimal.new("0.0")
+      service.seritems.order(:pos).each do |seritem|
+        ligne = Array.new
+        if seritem.kind == 1
+          ligne << "3seritem" << seritem.name << seritem.qty << to_euro(seritem.price) << to_euro(seritem.qty * seritem.price)
+          total_service += seritem.qty * seritem.price
+        elsif seritem.kind == 2
+          ligne << "3seritem" << seritem.name << '' << to_percent(seritem.price) << to_euro(total_service * seritem.price / BigDecimal("100.0"))
+          total_service += total_service * seritem.price / BigDecimal("100.0")
+        end
+        table << ligne
+      end
+      
+      if service.seritems.count > 1
+        ligne = Array.new
+        ligne << "2sstot_service" << to_euro(total_service)
+        table << ligne
+      end
+      total_event += total_service
+      
+    end
+
+    if event.services.count > 1
+      ligne = Array.new
+      ligne << "1sstot_services" << event.name << to_euro(total_event)
+      table << ligne
+    end
+      
+    event.evitems.order(:pos).each do |evitem|
+      ligne = Array.new
+      if evitem.kind == 1
+        ligne << "1evitem" << evitem.name << evitem.qty << to_euro(evitem.price) << to_euro(evitem.qty * evitem.price)
+        total_event += evitem.qty * evitem.price
+      elsif evitem.kind == 2
+        ligne << "1evitem" << evitem.name << "" << to_percent(evitem.price)  << to_euro(total_event * evitem.price / BigDecimal("100.0"))
+        total_event += total_event * evitem.price / BigDecimal("100.0")
+      end
+      table << ligne
+    end
+
+     
+    ligne = Array.new
+    ligne << "1total" << to_euro(total_event)
+    table << ligne
+    
+    table
+    
+  end
+
+  
+  # mode decal
+  def generate_table_fullitems_invoice(invoice_id)
+    
+    table = Array.new
+    total_invoice = BigDecimal.new("0.0")
+    
+    invoice = Invoice.find(invoice_id)
+    invoice.events.by_date.each do |event|
+      
+      ligne = Array.new
+      ligne << "2event" << event.to_s
+      table << ligne
+      
+      total_event = BigDecimal.new("0.0")
+      event.services.each do |service|
+        
+        ligne = Array.new
+        ligne << "3service" << service.to_s
+        table << ligne
+          
+        total_service = BigDecimal.new("0.0")
+        service.seritems.order(:pos).each do |seritem|
+          ligne = Array.new
+          if seritem.kind == 1
+            ligne << "4seritem" << seritem.name << seritem.qty << to_euro(seritem.price) << to_euro(seritem.qty * seritem.price)
+            total_service += seritem.qty * seritem.price
+          elsif seritem.kind == 2
+            ligne << "4seritem" << seritem.name << '' << to_percent(seritem.price) << to_euro(total_service * seritem.price / BigDecimal("100.0"))
+            total_service += total_service * seritem.price / BigDecimal("100.0")
+          end
+          table << ligne
+        end
+        
+        if service.seritems.count > 1
+          ligne = Array.new
+          ligne << "3sstot_service" << to_euro(total_service)
+          table << ligne
+        end
+        total_event += total_service
+        
+      end
+
+      if event.services.order(:starts_at).count > 1
+        ligne = Array.new
+        ligne << "2sstot_services" << event.name << to_euro(total_event)
+        table << ligne
+      end
+        
+      event.evitems.order(:pos).each do |evitem|
+        ligne = Array.new
+        if evitem.kind == 1
+          ligne << "2evitem" << evitem.name << evitem.qty << to_euro(evitem.price) << to_euro(evitem.qty * evitem.price)
+          total_event += evitem.qty * evitem.price
+        elsif evitem.kind == 2
+          ligne << "2evitem" << evitem.name << "" << to_percent(evitem.price)  << to_euro(total_event * evitem.price / BigDecimal("100.0"))
+          total_event += total_event * evitem.price / BigDecimal("100.0")
+        end
+        table << ligne
+      end
+
+      if event.evitems.count > 1 || event.services.count > 1
+        ligne = Array.new
+        ligne << "2sstot_event" << event.name << to_euro(total_event)
+        table << ligne
+      end
+      total_invoice += total_event
+     
+    end
+
+    if invoice.events.count > 1
+      ligne = Array.new
+      ligne << "1sstot_events" << to_euro(total_invoice)
+      table << ligne
+    end
+
+    invoice.nositems.order(:pos).each do |nositem|
+      ligne = Array.new
+      if nositem.kind == 1
+        ligne << "1nositem" << nositem.name << nositem.qty << to_euro(nositem.price)  << to_euro(nositem.qty * nositem.price)
+        total_invoice += nositem.qty * nositem.price
+      elsif nositem.kind == 2
+        ligne << "1nositem" << nositem.name << "" << to_percent(nositem.price)  << to_euro(total_invoice * nositem.price / BigDecimal("100.0"))
+        total_invoice += total_invoice * nositem.price / BigDecimal("100.0")
+      end
+      table << ligne
+    end
+
+    ligne = Array.new
+    ligne << "1total" << to_euro(total_invoice)
+    table << ligne
+    
+    table
+    
+  end
+
+  
+  def event_total_stats(event_id)
+    
+    event = Event.find(event_id)
+    
+    stats = [0,0,0,0,0,0,0,0]
+    
+    event.services.each do |service|
+      unless service.stats_t4.nil?
+        stats[0] += service.stats_t4
+        stats[1] += service.stats_t3
+        stats[2] += service.stats_t2
+        stats[3] += service.stats_t1
+        stats[4] += service.stats_ambu
+        stats[5] += service.stats_pit
+        stats[6] += service.stats_smur
+        stats[7] += service.stats_dcd
+      end
+    end
+    
+  end
+    
   
 end

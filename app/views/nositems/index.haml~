@@ -4,16 +4,22 @@
 .main
   = render 'invoices/header', :selected_item => 'nositems'
 
+
+  .section.texte
+    Les éléments facturés relatifs à la facture agissent sur l'ensemble de celle-ci.
+
   .section
-    %table
-      %tr
-        %th Name
-        %th Qty
-        %th Kind
-        %th Price
-        - @invoice.nositems.each do |nositem|
-          %tr
-            %td= nositem.name
-            %td= nositem.qty
-            %td= nositem.kind
-            %td= nositem.price
+    = render "list_nositems"
+    %hr.intrasection
+
+    - if params[:mode] == 'edit'
+      .section
+        = render "form"
+                
+  .lien_bas_de_page
+    - unless params[:mode] == 'edit'
+      ➤
+      = link_to 'Manage', invoice_nositems_path(params[:invoice_id], :mode => "edit")
+    - else
+      ➤
+      = link_to 'Back', invoice_nositems_path

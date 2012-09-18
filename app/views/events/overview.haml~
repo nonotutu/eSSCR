@@ -18,30 +18,59 @@
       %table.white_compact
         %tr
           %th
-            %font Prix :
+            %font Prix
           %td
             %font
+              →
               = to_euro(calcul_prix_service(@service.id))
           %th
-            %font Prix sur facture :
+            %font Prix sur facture
           %td
             %font
+              →
               = to_euro(calcul_prix_service_included(@service.id))
-      
-
+              
+    = render "/table_titre_intrasection", :params => { :titre => "Statistiques" }
+    = render "compact_stats", :params => { :titre => "Statistiques" }
+     
+    
     = render "/table_titre_intrasection", :params => { :titre => "Facturation" }
-    %table.white_compact
+    %table.white
       %tr
         %th
-          %font Prix total événement :
-        %td
-          %font
-            →
-            = to_euro(calcul_prix_event(@event.id))
+          %font Facture
         %th
-          %font Prix sur facture :
+          %font Prix événement
+        %th
+          %font Prix sur facture
+        %th
+          %font Refacturation
+      %tr
+        %td
+          %font 
+            ⤷
+            - if !@event.is_free
+              - if @event.invoice
+                = @event.invoice.number
+                = link_to "➫", invoice_path(@event.invoice)
+              - else
+                aucune
+                %font{:style => "font-family: HeydingsIconsRegular"}
+                  = link_to "+", new_invoice_path
+            - else
+              événement gratuit
         %td
           %font
-            →
+            ⤷
+            = to_euro(calcul_prix_event(@event.id))
+        %td
+          %font
+            ⤷
             = to_euro(calcul_prix_event_included(@event.id))
-            
+        %td
+          %font
+            ⤷
+            - if @event.refacs.count > 0
+              = link_to 'oui', event_refacs_path(@event)
+            - elsif
+              non

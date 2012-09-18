@@ -1,39 +1,40 @@
 class Volo < ActiveRecord::Base
   
-  attr_accessible :first_name, :last_name, :short_last_name, :entite
+  attr_accessible :first_name, :last_name, :short_last_name, :crentite_id, :actif, :birth_date, :local_date, :comment
 
+  belongs_to :crentite
+  
   has_many :services, :through => :servolos
   has_many :servolos
   
   validates :first_name, :presence => true
   validates :last_name,  :presence => true
-
-  scope :only_uccle, where("entite = '0040'")
-  scope :only_not_uccle, where("entite != '0040' OR entite IS NULL")
-
   
+  scope :by_first_name, order(:first_name)
+  scope :by_last_name, order(:last_name)
+  scope :by_local_date, order(:local_date)
+  
+  scope :only_crentite, lambda { |id| where("crentite_id = ?", id) unless id.nil? }
+  scope :only_not_crentite, lambda { |id| where("crentite_id != ?", id) unless id.nil? }
+  
+  scope :only_actif, where("actif = ?", true)
+  scope :only_not_actif, where("actif != ?", true)
+  
+  scope :only_first_letter_of_first_name, lambda  { |letter| where("SUBSTR(UPPER(first_name),1,1) = ?", letter) unless letter.nil? }
+  scope :only_first_letter_of_last_name, lambda  { |letter| where("SUBSTR(UPPER(last_name),1,1) = ?", letter) unless letter.nil? }
+
   def to_s
     self.full_name
   end
-  
+
 # Prénom Nom
 # Prénom Nom (entité)
   def full_name
-    if self.entite == "0040"
-      self.first_name + " " + self.last_name
-    else
-      self.first_name + " " + self.last_name + " (" + (self.entite.to_s.empty? ? "ext." : self.entite) + ")"
-    end
+    self.first_name + " " + self.last_name
   end
 
-# Prénom Nom_Court
-# TODO : Garder ? Pourquoi ne pas faire un prénom court aussi ?
-  def short_full_name
-    if self.short_last_name
-      self.first_name + ' ' + self.short_last_name
-    else
-      self.first_name
-    end
+  def full_name_avec_crentite
+    self.first_name + " " + self.last_name + " (" + ( self.crentite.nil? ? "autre" : self.crentite.short ) + ")"
   end
   
 end

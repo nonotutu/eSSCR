@@ -3,8 +3,12 @@
 
     %li    
       - active = selected_item == 'customers' ? :active : nil
-      = link_to 'Clients', tools_customers_path, :class => active
+      = link_to 'Clients', customers_path, :class => active
+
+    %li
+      - active = selected_item == "dispositifs" ? :active : nil
+      = link_to "Dispositifs", dispositifs_path, :class => active
 
     %li
       - active = selected_item == 'templitems' ? :active : nil
-      = link_to 'Templitems', tools_templitems_path, :class => active
+      = link_to 'Templitems', templitems_path, :class => active

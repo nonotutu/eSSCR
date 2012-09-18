@@ -1,0 +1,75 @@
+- table = generate_table_fullitems_invoice(@invoice.id)
+
+%table.fulloptions{:style => "border: 1px solid black"}
+  %tr
+    %th{:colspan => 4} Dénomination
+    %th Quantité
+    %th P/U
+    %th Montant
+  - table.each do |ligne|
+    %tr
+      - case ligne[0]
+      - when "2event"
+        %td
+        %td{:colspan => 3}= ligne[1]
+      - when "3service"
+        %td
+        %td
+        %td{:colspan => 2}= ligne[1]
+      - when "4seritem"
+        %td
+        %td
+        %td
+        %td= ligne[1]
+        %td.mono_droite= ligne[2]
+        %td.mono_droite= ligne[3]
+        %td.mono_droite= ligne[4]
+      - when "2evitem"
+        %td
+        %td
+        %td{:colspan => 2}= ligne[1]
+        %td.mono_droite= ligne[2]
+        %td.mono_droite= ligne[3]
+        %td.mono_droite= ligne[4]
+      - when "1nositem"
+        %td{:colspan => 4}= ligne[1]
+        %td.mono_droite= ligne[2]
+        %td.mono_droite= ligne[3]
+        %td.mono_droite= ligne[4]
+      - when "3sstot_service"
+        %td
+        %td
+        %td{:colspan => 2}
+          %i Sous-total
+        %td
+        %td
+        %td.mono_droite
+          %i= ligne[1]
+      - when "2sstot_services"
+        %td
+        %td{:colspan => 3}
+          %i= "Sous-total #{ligne[1]}"
+        %td
+        %td
+        %td.mono_droite
+          %i= ligne[2]
+      - when "2sstot_event"
+        %td
+        %td{:colspan => 3}
+          %i= "Total #{ligne[1]}"
+        %td
+        %td
+        %td.mono_droite
+          %i= ligne[2]
+      - when "1sstot_events"
+        %td{:colspan => 4}
+          %i Sous-total général
+        %td
+        %td
+        %td.mono_droite
+          %i= ligne[1]
+      - when "1total"
+        %th{:colspan => 4} Total général
+        %th
+        %th
+        %th.mono_droite= ligne[1]

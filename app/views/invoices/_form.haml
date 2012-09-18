@@ -5,13 +5,10 @@
   end
   
   
-=# formulaire mis en page
-%table.formulaire
-  %tr
-    %th
-      %i
-        Customer :
-    %td{ :colspan => '5' }
+.dl_deux_colonnes_base
+  %dl
+    %dt Client :
+    %dd
       %form{ :method => :get }
         %select{ :name => :customer_id }
           %option{ :value => '' }
@@ -21,24 +18,25 @@
               = cust.data.lines.first
         %input{ :type => :hidden, :name => 'mode', :value => 'edit' }
         %input{ :type => :submit, :value => 'Use' }
+
   = simple_form_for @invoice do |f|
-    %tr
-      %th Numéro :
-      %td
+    %dl
+      %dt Numéro :
+      %dd
         = f.input :number, :input_html => { :size => 8 }, :label => false
-    %tr
-      %th Client :
-      %td
+    %dl
+      %dt Client :
+      %dd
         = f.input :customer_data, :input_html => { :rows => 3, :cols => 40, :value => cust_data}, :label => false
-    %tr
-      %th Envoyée le :
-      %td
+    %dl
+      %dt Envoyée le :
+      %dd
         = f.input :sent_at, :start_year => 2010, :end_year => Date.today.year, :include_blank => true, :label => false
-    %tr
-      %th Payée le :
-      %td
+    %dl
+      %dt Payée le :
+      %dd
         = f.input :paid_at, :start_year => 2010, :end_year => Date.today.year, :include_blank => true, :label => false
-    %tr
-      %th
-      %td{:align => 'right'}
-        = f.submit
+    %dl
+      %dt
+      %dd
+        = f.button :submit

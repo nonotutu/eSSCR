@@ -1,0 +1,24 @@
+
+.main
+  = render 'tools/header', :selected_item => 'crentites'
+  
+  .section
+
+    %table.ligne
+      %tr
+        %th Nom
+        %th Numéro
+      - Crentite.all.each do |crentite|
+        %tr
+          %td
+            = crentite.name
+          %td
+            = crentite.number
+          %td.taille_min
+            = link_to 'show', crentite_path(crentite.id)
+
+    .lien_bas_de_page
+      ➤
+      = link_to 'New', new_crentite_path
+        
+  

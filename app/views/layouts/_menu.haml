@@ -1,12 +1,13 @@
 
 %p{:style => "position: absolute; right: 0%; top: 0%; margin: 0; padding: 0" }
 
-  %img{ :src => "/icons/logo_312-64.png", :alt => "Croix-Rouge de Belgische Rode Kruis" }
+  %img{ :src => "/icons/logo_91-32.png", :alt => "Croix-Rouge de Belgische Rode Kruis" }
 
 
 .menu{:style => "width: 75%"}
   %ul
-    %li= link_to '(Home)'
+    - active = controller_name == 'home' ? :active : nil
+    %li= link_to 'Home', home_path, :class => active
 
     - active = controller_name == 'events'   |
 	      || controller_name == 'evitems'      |
@@ -31,5 +32,6 @@
         || controller_name == 'customers'    |
         || controller_name == 'dispositifs'  |
         || controller_name == 'templitems'   |
+        || controller_name == 'crentites'    |
         ? :active : nil                      |
     %li= link_to 'Outils', tools_path, :class => active

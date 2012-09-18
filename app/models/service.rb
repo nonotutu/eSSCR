@@ -7,7 +7,8 @@ class Service < ActiveRecord::Base
                   :rendezvous,
                   :depart_at,
                   :surplace_at,
-                  :volness
+                  :volness,
+                  :stats_t1, :stats_t2, :stats_t3, :stats_t4, :stats_ambu, :stats_pit, :stats_smur, :stats_dcd
 
   belongs_to :event
   has_many :seritems
@@ -25,11 +26,13 @@ class Service < ActiveRecord::Base
   validate  :surplace_before_start
 
   before_destroy :prevent_destroy_unless_service_empty
+  before_update :stats_to_zero
 
   scope :only_year, lambda  { |year| where("SUBSTR(starts_at,1,4) = ?", year) unless year.nil? }
   scope :only_categ, lambda { |categ| includes(:event).where("events.category_id = ?", categ) unless categ.nil? }
   scope :only_not_invoiced, includes(:event).where("events.invoice_id IS NULL") # TODO : OR = "" ?
-  scope :only_future, where("starts_at > ?", '2012-06-11')
+  scope :only_future, where("starts_at >= ?", Date.today)
+  scope :only_past, where("ends_at <= ?", Date.today)
   scope :only_find, lambda  { |find| includes(:event).where("events.name LIKE '%#{find}%'") unless find.nil? }
  
   scope :by_date, order(:starts_at)
@@ -39,6 +42,14 @@ class Service < ActiveRecord::Base
     return self.depart_at ||= self.surplace_at ||= self.starts_at
   end
 
+#   def stats_t4
+#     if read_attribute(:stats_t4) != nil
+#       return self.stats_t4
+#     else
+#       "∅"
+#     end
+#   end
+  
 #   def disposers_to_inline
 #     if self.disposers.count > 0
 #       str = ""
@@ -141,6 +152,35 @@ class Service < ActiveRecord::Base
     if ( self.surplace_at && self.starts_at )
       unless self.surplace_at < self.starts_at
         self.errors.add :base, "Surplace_at not before starts_at"
+      end
+    end
+  end
+  
+  def stats_to_zero
+    if self.stats_ambu || self.stats_dcd || self.stats_pit || self.stats_smur || self.stats_t1 || self.stats_t2 || self.stats_t3 || self.stats_t4
+      if !self.stats_ambu
+        self.stats_ambu = 0
+      end
+      if !self.stats_dcd
+        self.stats_dcd = 0
+      end
+      if !self.stats_pit
+        self.stats_pit = 0
+      end
+      if !self.stats_smur
+        self.stats_smur = 0
+      end
+      if !self.stats_t1
+        self.stats_t1 = 0
+      end
+      if !self.stats_t2
+        self.stats_t2 = 0
+      end
+      if !self.stats_t3
+        self.stats_t3 = 0
+      end
+      if !self.stats_t4
+        self.stats_t4 = 0
       end
     end
   end

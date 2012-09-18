@@ -8,20 +8,24 @@
 
     %li
       - active = selected_item == 'show' ? :active : nil
-      = link_to "Data", event_service_path(@event, @service), :class => active
+      = link_to "Données", event_service_path(@event, @service), :class => active
+
+    %li
+      - active = selected_item == 'stats' ? :active : nil
+      = link_to "Stats", event_service_stats_path(@event, @service), :class => active
 
     =# nesté
     %li
       - active = selected_item == 'disposers' ? :active : nil
-      = link_to "Disposers(#{@service.dispositifs.count})", event_service_disposers_path(@event, @service), :class => active
+      = link_to "Dispositifs (#{@service.dispositifs.count})", event_service_disposers_path(@event, @service), :class => active
     
     %li
       - active = selected_item == 'servolos' ? :active : nil
-      = link_to "Servolos(#{@service.volos.count})", event_service_servolos_path(@event, @service), :class => active
+      = link_to "Volontaires (#{@service.volos.count})", event_service_servolos_path(@event, @service), :class => active
             
     %li
       - active = selected_item == 'seritems' ? :active : nil
-      = link_to "Seritems(#{@service.seritems.count})", event_service_seritems_path(@event, @service), :class => active
+      = link_to "Facturation (#{@service.seritems.count})", event_service_seritems_path(@event, @service), :class => active
       
     -#
       %li.font_icon{:title => "New service"}

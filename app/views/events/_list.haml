@@ -87,7 +87,7 @@
     when '2'
       services = services.only_future
     when '3'
-      services = services.only_not_invoiced
+      services = services.only_past.only_not_invoiced
   end
 
   case( session[:events_liste_sens] )

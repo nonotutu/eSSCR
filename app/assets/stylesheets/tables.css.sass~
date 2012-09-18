@@ -22,7 +22,6 @@ table.titre_intrasection
       color: red
 
 
-
 table.base
   border-collapse: collapse
   width: 100%
@@ -35,6 +34,9 @@ table.base
       text-align: center
     &.taille_min
       width: 1%
+    &.mono_droite
+      text-align: right
+      font-family: 'monospace'
   td
     font-size: small
     text-align: left
@@ -44,9 +46,13 @@ table.base
       text-align: center
     &.taille_min
       width: 1%
+    &.mono_droite
+      text-align: right
+      font-family: 'monospace'
 
 table.white /*TODO : renommer*/
   @extend table.base
+  @extend table.base_with_href
   th
     color: black
     font-weight: normal
@@ -69,11 +75,13 @@ table.white_compact
     white-space: nowrap
   td
     padding-left: 8px
-    padding-right: 16px
+    padding-right: 32px
     width: 1%
     white-space: nowrap
-    
-    
+  &.egal
+    width: 100%
+    table-layout: fixed
+
 table.base_with_rounded_th_coins
   @extend table.base
   tr:first-child
@@ -189,6 +197,13 @@ table.grille
     th:nth-child(2n+1)
       background: rgb( 159+$c-red*96 , 159+$c-green*96 , 159+$c-blue*96 )
 
+table.fulloptions
+  @extend table.base_with_padding
+  @extend table.base_with_rounded_th_coins
+  @extend table.base_with_href
+
+      
+      
 table.invoiced_items
   @extend table.ligne
   td:nth-child(2)
@@ -200,6 +215,8 @@ table.invoiced_items
   td:nth-child(4)
     font-family: "monospace"
     text-align: right
+  tr:last-child
+    font-weight: bold
 
 
 
@@ -265,3 +282,9 @@ ul.empty
   font-size: small
   list-style: square
   li
+    ul
+      margin: 0
+      font-size: x-small
+      list-style: square
+      li
+  
