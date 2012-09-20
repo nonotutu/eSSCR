@@ -1,3 +1,5 @@
+#encoding : utf-8
+
 class Event < ActiveRecord::Base
   
   attr_accessible :invoice_id, :category_id, :customer_id, :name, :place, :address, :ref, :is_free
@@ -26,6 +28,43 @@ class Event < ActiveRecord::Base
   def to_s
     self.name
   end
+  
+  def is_finished
+    if self.services.order(:ends_at).last.fin < DateTime.now
+      true else false end
+  end
+  
+  def how_many_volos_still_needed
+    total = 0
+    self.services.each do |service|
+      total += service.how_many_volos_still_needed
+    end
+    total
+  end
+
+  def is_complet
+    if self.how_many_volos_still_needed == 0
+      true
+    end
+    false
+  end
+  
+  def status
+    unless self.is_finished
+      unless self.is_complet
+        {:texte => "besoin de volontaires", :code => 3}
+      else
+        {:texte => "à venir / en cours", :code => 2}
+      end
+    else
+      unless self.is_free || self.invoice
+        {:texte => "à facturer", :code => 3}
+      else
+        {:texte => "terminé", :code => 1}
+      end
+    end
+  end
+  
   
 private
   def prevent_destroy_unless_event_empty

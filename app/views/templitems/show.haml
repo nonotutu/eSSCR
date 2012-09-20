@@ -1,24 +1,26 @@
 
 .main
-  = render 'tools/header', :selected_item => 'templitems'
+  = render "tools/header", :selected_item => "templitems"
   
   .section
+    .dl_deux_colonnes_base
+      %dl
+        %dt Position :
+        %dd= @templitem.pos
+      %dl
+        %dt Dénomination :
+        %dd= @templitem.name
+      %dl
+        %dt Type :
+        %dd= @templitem.kind_to_long_s
+      %dl
+        %dt Montant :
+        %dd= @templitem.price
 
-    %dl
-      %dt Position :
-      %dd= @templitem.pos
-    %dl
-      %dt Dénomination :
-      %dd= @templitem.name
-    %dl
-      %dt Type :
-      %dd= @templitem.kind_to_long_s
-    %dl
-      %dt Valeur :
-      %dd= @templitem.price
+    %hr.intrasection
   
     .lien_bas_de_page
-      >
+      ➤
       = link_to 'Edit', edit_templitem_path(@templitem.id)
       |
       = link_to 'Destroy', templitem_path(@templitem.id), :method => :delete

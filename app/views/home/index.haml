@@ -5,7 +5,7 @@
 
     %table.base_with_href
       %tr{:style => "vertical-align: top"}
-        %td{:style => "width: 50%"}
+        %td.mono_droite{:style => "width: 50%"}
           = render "/table_titre_intrasection", :params => { :titre => "Services à venir" }
           %ul.empty
             - Service.only_future.each do |service|
@@ -16,6 +16,30 @@
                   - string_total_servolos(service.id).each do |ligne|
                     %li
                       = ligne
+          = render "/table_titre_intrasection", :params => { :titre => "Zone test" }
+          - e = Event.first
+          - s = e.services.first
+          = e.name
+          \::
+          = s.to_s
+          %br
+          e.is_finished =
+          = e.is_finished
+          %br
+          -# how_many_volos_still_needed(s.id) =
+          -# = how_many_volos_still_needed(s.id)
+          -# %br
+          s.how_many_volos_still_needed =
+          = s.how_many_volos_still_needed
+          %br
+          e.how_many_volos_still_needed =
+          = e.how_many_volos_still_needed
+          %br
+          Tableau volontaires :
+          %br
+          - s.generate_table_heures_horaires_servolos.each do |ligne|
+            = ligne
+            %br
           
         %td
           = render "/table_titre_intrasection", :params => { :titre => "Événements à facturer" }

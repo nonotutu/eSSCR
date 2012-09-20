@@ -19,6 +19,4 @@
         %td.taille_min
           %font{:style => "font-family: HeydingsIconsRegular"}
             = link_to 'w', invoice_nositems_path(params[:invoice_id], { :mode => "edit", :nositem_id => ligne[1] } )
-        %td.taille_min
-          %font{:style => "font-family: HeydingsIconsRegular"}
-            = link_to "-", { :action => :destroy, :id => ligne[1] }, :method => :delete
+        %td.taille_min= link_to "×", { :action => :destroy, :id => ligne[1] }, :method => :delete

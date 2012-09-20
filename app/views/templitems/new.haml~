@@ -4,10 +4,11 @@
   
   .section
 
-    = render 'templitems/form'
+    = render "templitems/form"
 
     %hr.intrasection
-    
+  
     .lien_bas_de_page
       ➤
-      = link_to 'Back', templitem_path(@templitem.id)      
+      = link_to 'Back', templitems_path
+      

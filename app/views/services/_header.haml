@@ -1,5 +1,10 @@
 .title.two
-  ➡
+  ⋙
   = @service.to_s
-    
+  %font{:style => "font-size: x-small; font-weight: normal; #{status_color(@service.status[:code])}"}
+    &nbsp&nbsp&nbsp&nbsp
+    ∙ ⊢&nbsp
+    = @service.status[:texte]
+    &nbsp⊣ ∙
+
 = render 'services/menu', :selected_item => selected_item

@@ -5,9 +5,7 @@
   .section
 
     = render "dispositifs/form"
-
-    %hr.intrasection
     
     .lien_bas_de_page
-      ➤
+      >
       = link_to 'Back', dispositif_path(@dispositif.id)

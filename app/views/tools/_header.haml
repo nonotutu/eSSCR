@@ -1,4 +1,14 @@
 .title.one
-  Tools
+  ➡ Outils
+  - case(controller_name)
+  - when "crentites"
+    \: Entités CR
+  - when "templitems"
+    \: Éléments facturables
+  - when "customers"
+    \: Clients
+  - when "dispositifs"
+    \: Dispositifs
+  
 
-= render 'tools/menu', :selected_item => selected_item
+= render "tools/menu", :selected_item => selected_item

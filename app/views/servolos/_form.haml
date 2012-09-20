@@ -1,7 +1,7 @@
 :ruby
-  heures_from_début_to_fin = Array.new
-  deb = @service.début
-  fin = @service.ends_at
+  heures_from_debut_to_fin = Array.new
+  deb = @service.debut
+  fin = @service.fin
   while deb <= fin
     duo = Array.new
     case deb
@@ -16,7 +16,7 @@
     end
       
     duo << deb
-    heures_from_début_to_fin << duo
+    heures_from_debut_to_fin << duo
     deb += 5*60
   end
 
@@ -43,18 +43,18 @@
               De :
             %td
               = f.input :starts_at,
-                        :collection => heures_from_début_to_fin,
-                        :selected => @servolo.starts_at ||= @service.début,
-                        :include_blank => false,                        
+                        :collection => heures_from_debut_to_fin,
+                        :selected => @servolo.starts_at ||= @service.debut,
+                        :include_blank => true,                        
                         :label => false
           %tr
             %th
               À :
             %td
               = f.input :ends_at,
-                        :collection => heures_from_début_to_fin,
+                        :collection => heures_from_debut_to_fin,
                         :selected => @servolo.ends_at ||= @service.ends_at,
-                        :include_blank => false,
+                        :include_blank => true,
                         :label => false
           %tr
             %th

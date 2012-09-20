@@ -1,42 +1,39 @@
+
+- stats = Array.new
+- stat = Array.new
+
+- stat = {:texte => "♯ T4", :valeur => @service.stats_t4, :color_f => "black", :color_nf => "gray", :color_b => "white", :color_nb => "white"}
+- stats << stat
+- stat = {:texte => "♯ T3", :valeur => @service.stats_t3, :color_f => "black", :color_nf => "gray", :color_b => "lightgreen", :color_nb => "white"}
+- stats << stat
+- stat = {:texte => "♯ T2", :valeur => @service.stats_t2, :color_f => "black", :color_nf => "gray", :color_b => "rgb(255,255,95)", :color_nb => "white"}
+- stats << stat
+- stat = {:texte => "♯ T1", :valeur => @service.stats_t1, :color_f => "black", :color_nf => "gray", :color_b => "rgb(255,95,95)", :color_nb => "white"}
+- stats << stat
+- stat = {:texte => "✆ Ambu", :valeur => @service.stats_ambu, :color_f => "white", :color_nf => "gray", :color_b => "blue", :color_nb => "white"}
+- stats << stat
+- stat = {:texte => "✆ PIT", :valeur => @service.stats_pit, :color_f => "white", :color_nf => "gray", :color_b => "green", :color_nb => "white"}
+- stats << stat
+- stat = {:texte => "✆ SMUR", :valeur => @service.stats_smur, :color_f => "white", :color_nf => "gray", :color_b => "red", :color_nb => "white"}
+- stats << stat
+- stat = {:texte => "† DCD", :valeur => @service.stats_dcd, :color_f => "white", :color_nf => "gray", :color_b => "black", :color_nb => "white"}
+- stats << stat
+
+
+
 %table.white
   %tr
-    %th{:style => "text-align: right"}
-      %font{:style => "background: white; border: 1px solid black"} ♯&nbspT4
-    %td{:style => "text-align: left"}
-      ×
-      %font= @service.stats_t4.nil? ? "∅" : @service.stats_t4
-    %th{:style => "text-align: right"}
-      %font{:style => "background: lightgreen; border: 1px solid black"} ♯&nbspT3
-    %td{:style => "text-align: left"}
-      ×
-      %font= @service.stats_t3.nil? ? "∅" : @service.stats_t3
-    %th{:style => "text-align: right"}
-      %font{:style => "background: rgb(255,255,95); border: 1px solid black"} ♯&nbspT2
-    %td{:style => "text-align: left"}
-      ×
-      %font= @service.stats_t2.nil? ? "∅" : @service.stats_t2
-    %th{:style => "text-align: right"}
-      %font{:style => "background: rgb(255,95,95); border: 1px solid black"} ♯&nbspT1
-    %td{:style => "text-align: left"}
-      ×
-      %font= @service.stats_t1.nil? ? "∅" : @service.stats_t1
-    %th{:style => "text-align: right"}
-      %font{:style => "background: blue; border: 1px solid black; color: white"} ✆&nbspAmbu
-    %td{:style => "text-align: left"}
-      ×
-      %font= @service.stats_ambu.nil? ? "∅" : @service.stats_ambu
-    %th{:style => "text-align: right"}
-      %font{:style => "background: green; border: 1px solid black; color: white"} ✆&nbspPIT
-    %td{:style => "text-align: left"}
-      ×
-      %font= @service.stats_pit.nil? ? "∅" : @service.stats_pit
-    %th{:style => "text-align: right"}
-      %font{:style => "background: red; border: 1px solid black; color: white"} ✆&nbspSMUR
-    %td{:style => "text-align: left"}
-      ×
-      %font= @service.stats_smur.nil? ? "∅" : @service.stats_smur
-    %th{:style => "text-align: right"}
-      %font{:style => "background: black; border: 1px solid black; color: white"} ✆&nbspDCD
-    %td{:style => "text-align: left"}
-      ×
-      %font= @service.stats_dcd.nil? ? "∅" : @service.stats_dcd
+    - stats.each do |stat|
+      %th{:style => "text-align: right"}
+        - if stat[:valeur] != 0 && stat[:valeur]
+          %font{:style => "background: #{stat[:color_b]}; color: #{stat[:color_f]}; border: 1px solid black;"}
+        - else
+          %font{:style => "background: #{stat[:color_nb]}; color: #{stat[:color_nf]}; border: 1px solid gray;"}
+        = stat[:texte]
+      %td{:style => "text-align: left"}
+        - if stat[:valeur] != 0 && stat[:valeur]
+          %font{:style => "color : black"}
+        - else
+          %font{:style => "color : gray"}
+        ×
+        = stat[:valeur].nil? ? "∅" : stat[:valeur]

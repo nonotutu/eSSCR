@@ -2,6 +2,21 @@
 
 module ApplicationHelper
 
+  spch = {:char_before_title => "⋙"}
+  
+  def status_color(code)
+    
+    case code
+    when 1
+      " text-shadow: 0 0 1px green; color: green; "
+    when 2
+      " text-shadow: 0 0 1px orange; color: orange; "
+    when 3
+      " text-shadow: 0 0 1px red; color: red; "
+    end
+      
+  end
+  
   def age(birth_date)
     age = Date.today - birth_date
     (age / 365.25).to_i
@@ -21,7 +36,7 @@ module ApplicationHelper
   end
   
   def event_last_year()
-    begin Service.order(:ends_at).last.ends_at.year rescue 2010 end
+    begin Service.order(:ends_at).last.fin.year rescue 2010 end
   end
 
   def invoice_last_year()
@@ -400,7 +415,7 @@ module ApplicationHelper
       sstot = BigDecimal("0.0")
       if service.seritems.count > 0
         ligne = Array.new
-        ligne << -1 << ( service.starts_at.to_s(:cust_short) + " - " + service.relative_ends_at )
+        ligne << -1 << ( service.debut.to_s(:cust_short) + " - " + service.relative_ends_at )
         service.seritems.order(:pos).each do |item|
           table << ligne
           ligne = Array.new
@@ -458,143 +473,163 @@ module ApplicationHelper
   
 
 
-  
-# retourne : 0 string :  espace du début à la première heure
-#            1 boolean : espace de la dernière heure à la fin ?
-#            2 integer : nombre d'heures
-#            3 string :  espace entre 2 heures
-#            4 string :  espace de la dernière heure à la fin
-#            5 boolean : espace du début à la première heure ?
-  
-  def fct_calcul_tableau_heures(debut, fin_service)
-
-    duree_service = fin_service - debut
-    
-    # si durée négative, retourne nil # TODO : nécessaire ?
-    if ( duree_service <= 0 )
-      nil
-    end
-
-    # TODO : améliorer
-    # tableau de toutes les heures
-    tableau = Array.new
-    i = debut
-    while i <= fin_service do
-      if i%3600 == 0
-        tableau << i - debut
-      end
-      i += 5.minutes
-    end
-
-    nombre_heures = tableau.count
-
-    tableau_heures = Array.new
-    tableau_heures << ( tableau.first.to_f / duree_service * 100 ).to_s + "%"
-    tableau_heures << ( tableau.last == duree_service ? false : true )
-    tableau_heures << tableau.count
-    tableau_heures << ( 3600.to_f / duree_service * 100 ).to_s + "%"
-    tableau_heures << ( (duree_service - tableau.last.to_f) / duree_service * 100 ).to_s + "%"
-    tableau_heures << ( tableau.first == 0 ? false : true )
-    
-    return tableau_heures
-
-  end
-  
-  
-  def fct_calcul_tableau_horaire(fin, debut, surplace = nil, depart = nil)
-
-    if depart
-      duree = fin - depart
-    elsif surplace
-      duree = fin - surplace
-    else
-      duree = fin - debut
-    end
-    
-    # si durée négative, retourne nil # TODO : nécessaire ?
-    if ( duree <= 0 )
-      nil
-    end
-
-    d = Array.new
-    tableau = Array.new
-    
-    # TODO : optimiser
-    if depart && surplace
-      d0 = ( surplace - depart ).to_f / duree * 100
-      d1 = ( debut - surplace ).to_f / duree * 100
-    elsif depart && !surplace
-      d0 = ( debut - depart ).to_f / duree * 100
-    elsif !depart && surplace
-      d1 = ( debut - surplace ).to_f / duree * 100
-    end
-
-    d2 = ( fin - debut ).to_f / duree * 100
-
-    tableau << ( d0 ? ( d0.to_s + "%" ) : nil )
-    tableau << ( d1 ? ( d1.to_s + "%" ) : nil )
-    tableau << d2.to_s + "%"
-
-    tableau
-    
-  end
-
-  
-  def fct_calcul_tableau_servolos(service_id)
-    
-    service = Service.find(service_id)
-    
-    if service.depart_at
-      debut = service.depart_at
-    elsif service.surplace_at
-      debut = service.surplace_at
-    else
-      debut = service.starts_at
-    end
-    
-    duree_service = ( service.ends_at - debut ).to_i
-    
-    graphe = Array.new
-    
-    service.servolos.by_first_name.each do |servolo|
-      ligne = Array.new
-      ligne << servolo.volo.full_name_avec_crentite
-      debut_servolo = ( servolo.starts_at - debut ).to_i
-      if debut_servolo < 0
-        ligne << 0
-      else
-        ligne << debut_servolo
-      end
-      fin_servolo = ( servolo.ends_at - debut ).to_i
-      if fin_servolo > duree_service
-        ligne << duree_service
-      else
-        ligne << fin_servolo
-      end
-      graphe << ligne
-    end
-
-    graphe.each do |ligne|
-      ligne[1] = ligne[1].to_f / duree_service * 100
-      ligne[2] = ligne[2].to_f / duree_service * 100
-    end
-
-    graphe_temp = Array.new
-    graphe.each do |ligne|
-      ligne_temp = Array.new
-      ligne_temp << ligne[0] << ligne[1]
-      ligne_temp << ( ligne[2] - ligne[1] )
-      ligne_temp << 100 - ligne[2]
-      ligne_temp << ligne[2]
-      graphe_temp << ligne_temp
-    end
-    graphe = graphe_temp
-
-    graphe
-
-  end
-
-
+#   
+# # retourne : 0 string :  espace du début à la première heure
+# #            1 boolean : espace de la dernière heure à la fin ?
+# #            2 integer : nombre d'heures
+# #            3 string :  espace entre 2 heures
+# #            4 string :  espace de la dernière heure à la fin
+# #            5 boolean : espace du début à la première heure ?
+# 
+#   def fct_calcul_tableau_heures(debut, fin_service)
+# 
+#     duree_service = fin_service - debut
+#     
+#     # si durée négative, retourne nil # TODO : nécessaire ?
+#     if ( duree_service <= 0 )
+#       nil
+#     end
+# 
+#     # TODO : améliorer
+#     # tableau de toutes les heures
+#     tableau = Array.new
+#     i = debut
+#     while i <= fin_service do
+#       if i%3600 == 0
+#         tableau << i - debut
+#       end
+#       i += 5.minutes
+#     end
+# 
+#     nombre_heures = tableau.count
+# 
+#     tableau_heures = Array.new
+#     tableau_heures << ( tableau.first.to_f / duree_service * 100 ).to_s + "%"
+#     tableau_heures << ( tableau.last == duree_service ? false : true )
+#     tableau_heures << tableau.count
+#     tableau_heures << ( 3600.to_f / duree_service * 100 ).to_s + "%"
+#     tableau_heures << ( (duree_service - tableau.last.to_f) / duree_service * 100 ).to_s + "%"
+#     tableau_heures << ( tableau.first == 0 ? false : true )
+#     
+#     return tableau_heures
+#     
+#   end
+#   
+#   
+# 
+#   
+#     
+#   def fct_calcul_tableau_horaire(fin, debut, surplace = nil, depart = nil)
+#     
+#     if depart
+#       duree = fin - depart
+#     elsif surplace
+#       duree = fin - surplace
+#     else
+#       duree = fin - debut
+#     end
+#     
+#     # si durée négative, retourne nil # TODO : nécessaire ?
+#     if ( duree <= 0 )
+#       nil
+#     end
+# 
+#     d = Array.new
+#     tableau = Array.new
+#     
+#     # TODO : optimiser
+#     if depart && surplace
+#       d0 = ( surplace - depart ).to_f / duree * 100
+#       d1 = ( debut - surplace ).to_f / duree * 100
+#     elsif depart && !surplace
+#       d0 = ( debut - depart ).to_f / duree * 100
+#     elsif !depart && surplace
+#       d1 = ( debut - surplace ).to_f / duree * 100
+#     end
+# 
+#     d2 = ( fin - debut ).to_f / duree * 100
+# 
+#     tableau << ( d0 ? ( d0.to_s + "%" ) : nil )
+#     tableau << ( d1 ? ( d1.to_s + "%" ) : nil )
+#     tableau << d2.to_s + "%"
+# 
+#     tableau
+#     
+#   end
+# 
+#   
+#   def fct_calcul_tableau_servolos(service_id)
+#     
+#     service = Service.find(service_id)
+#     
+#     debut = service.debut
+#     
+#     duree_service = ( service.fin - debut ).to_i
+#     
+#     graphe = Array.new
+#     
+#     service.servolos.by_first_name.each do |servolo|
+#       ligne = Array.new
+#       ligne << servolo.volo.first_name
+#       debut_servolo = ( servolo.debut - debut ).to_i
+#       if debut_servolo < 0
+#         ligne << 0
+#       else
+#         ligne << debut_servolo
+#       end
+#       fin_servolo = ( servolo.fin - debut ).to_i
+#       if fin_servolo > duree_service
+#         ligne << duree_service
+#       else
+#         ligne << fin_servolo
+#       end
+#       ligne << servolo.volo.full_name_avec_crentite
+#       graphe << ligne
+#     end
+# 
+#     graphe.each do |ligne|
+#       ligne[1] = ligne[1].to_f / duree_service * 100
+#       ligne[2] = ligne[2].to_f / duree_service * 100
+#     end
+# 
+#     graphe_temp = Array.new
+#     graphe.each do |ligne|
+#       ligne_temp = Array.new
+#       ligne_temp << ligne[0] << ligne[1]
+#       ligne_temp << ( ligne[2] - ligne[1] )
+#       ligne_temp << 100 - ligne[2]
+#       ligne_temp << ligne[2]
+#       ligne_temp << ligne[3]
+#       graphe_temp << ligne_temp
+#     end
+#     graphe = graphe_temp
+# 
+#     graphe
+# 
+#   end  
+#   
+  # correspondace dans le ServiceModel
+#   def how_many_volos_still_needed(service_id)
+# 
+#     table = Array.new
+#     total = total_servolos(service_id)
+#     service = Service.find(service_id)
+#     max = service.volness ||= 0
+#     i = 0
+#     while i < total.count-1
+#       if max > total[i+2]
+#         table << max - total[i+2]
+#       end
+#       i += 3
+#     end
+#     
+#     if table.max.nil?
+#       return 0
+#     else
+#       table.max
+#     end
+#     
+#   end
 
   def string_total_servolos(service_id)
     
@@ -625,41 +660,41 @@ module ApplicationHelper
   end
   
   
-  
-  def tableau_total_servolos(service_id)
-        
-    ligne7 = total_servolos(service_id)
-    
-    service = Service.find(service_id)
-    duree = service.ends_at - (service.depart_at ||= service.surplace_at ||= service.starts_at)
-    
-    ligne8 = Array.new
-    
-#     max = -1
-    i = 0
-    fin = true
-    while fin
-      
-#       if max < ligne7[i+2]
-#         max = ligne7[i+2]
+#   
+#   def tableau_total_servolos(service_id)
+#         
+#     ligne7 = total_servolos(service_id)
+#     
+#     service = Service.find(service_id)
+#     duree = service.fin - service.debut
+#     
+#     ligne8 = Array.new
+#     
+# #     max = -1
+#     i = 0
+#     fin = true
+#     while fin
+#       
+# #       if max < ligne7[i+2]
+# #         max = ligne7[i+2]
+# #       end
+# 
+#       ligne8 << ligne7[i+2] << (ligne7[i+1] - ligne7[i]) / duree.to_f * 100.0
+# 
+#       i += 3
+#       if i >= ( ligne7.count)
+#         fin = false
 #       end
+#     end
+#     
+# #     ligne8 << max
+#     
+#     return ligne8
+#     
+#   end
+# 
 
-      ligne8 << ligne7[i+2] << (ligne7[i+1] - ligne7[i]) / duree.to_f * 100.0
-
-      i += 3
-      if i >= ( ligne7.count)
-        fin = false
-      end
-    end
-    
-#     ligne8 << max
-    
-    return ligne8
-    
-  end
-
-
-  
+# TODO : supprimer, refaire avec la méthode par bloc de 5.minutes, mettre dans le modèle
   def total_servolos(service_id)
     
     service = Service.find(service_id)
@@ -673,12 +708,12 @@ module ApplicationHelper
     ligne6 = Array.new
     ligne7 = Array.new
     
-    debut = service.depart_at ||= service.surplace_at ||= service.starts_at
-    duree = service.ends_at - debut
+    debut = service.debut
+    duree = service.fin - debut
        
     service.servolos.each do |servolo|
-      ligne1 << servolo.starts_at - debut
-      ligne2 << servolo.ends_at - debut
+      ligne1 << servolo.debut - debut
+      ligne2 << servolo.fin - debut
     end
 
     ligne1.sort!
@@ -727,8 +762,8 @@ module ApplicationHelper
     end
 
     # si le dernier volo termine à la fin du service
-    if ligne5.last != (service.ends_at - debut)
-      ligne5 << (service.ends_at - debut)
+    if ligne5.last != (service.fin - debut)
+      ligne5 << (service.fin - debut)
     else
       ligne6.delete_at(ligne6.count-1)
     end
@@ -943,6 +978,8 @@ module ApplicationHelper
         stats[7] += service.stats_dcd
       end
     end
+    
+    stats
     
   end
     

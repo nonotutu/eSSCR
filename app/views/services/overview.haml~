@@ -16,5 +16,8 @@
     = render "/table_titre_intrasection", :params => { :titre => "Volontaires", :link_to_edit => event_service_servolos_path(@event, @service) }
     = render "servolos/graph"
 
+    = render "/table_titre_intrasection", :params => { :titre => "Statistiques", :link_to_edit => event_service_stats_path(@event, @service, :mode => "edit") }
+    = render "/table_oneline_stats", :params => { :service_id => @service.id }
+
     = render "/table_titre_intrasection", :params => { :titre => "Facturation", :link_to_edit => event_service_seritems_path(@event, @service) }
     = render "seritems/table"

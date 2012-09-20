@@ -7,10 +7,10 @@
       %tr
         %th Position
         %th Dénomination
-        %th Image 1
+        %th Image ×16
       - Dispositif.order(:pos).all.each do |dispo|
         %tr
-          %td
+          %td.mono_droite
             = dispo.pos
           %td
             = dispo.name

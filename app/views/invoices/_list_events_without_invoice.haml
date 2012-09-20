@@ -13,8 +13,7 @@
           %td= event.category.short_name
           %td= event.services.count
           %td.taille_min
-            %font{:style => "font-family: HeydingsIconsRegular"}
-              = link_to "+", :controller => :events, :action => :add_to_invoice, :id => event.id, :invoice => @invoice
+            = link_to "add", :controller => :events, :action => :add_to_invoice, :id => event.id, :invoice => @invoice
               
 - else
 

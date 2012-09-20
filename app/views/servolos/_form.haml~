@@ -1,7 +1,7 @@
 :ruby
   heures_from_début_to_fin = Array.new
-  deb = @service.début
-  fin = @service.ends_at
+  deb = @service.debut
+  fin = @service.fin
   while deb <= fin
     duo = Array.new
     case deb
@@ -34,7 +34,7 @@
             %td
               = f.association :volo,                                                    |
                 :collection => Volo.only_actif.only_crentite(4).by_first_name.all       |
-                + ["----"] + Volo.only_actif.only_not_crentite(4).by_first_name.all,               |
+                + Volo.only_actif.only_not_crentite(4).by_first_name.all,               |
                 :input_html => { :size => 8 }, :include_blank => false, :label => false |
       %td{ :valign => 'top' }
         %table

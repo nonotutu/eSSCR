@@ -1,0 +1,73 @@
+-# 
+  Paramètres :
+    stats : tableau de 8 int
+    || invoice_id
+    || event_id
+    || rien => se base sur les controller_name
+
+:ruby
+
+  total_stats = [0,0,0,0,0,0,0,0]
+
+  if params[:stats] && params[:stats].size == 8
+
+    total_stats[0] += params[:stats][0]
+    total_stats[1] += params[:stats][1]
+    total_stats[2] += params[:stats][2]
+    total_stats[3] += params[:stats][3]
+    total_stats[4] += params[:stats][4]
+    total_stats[5] += params[:stats][5]
+    total_stats[6] += params[:stats][6]
+    total_stats[7] += params[:stats][7]
+  
+  elsif params[:service_id] || controller_name == "services"
+
+    total_stats = [@service.stats_t4,  @service.stats_t3,
+                  @service.stats_t2,   @service.stats_t1,
+                  @service.stats_ambu, @service.stats_pit,
+                  @service.stats_smur, @service.stats_dcd]
+  
+  elsif params[:event_id] || controller_name == "events"
+    
+    total_stats = event_total_stats(@event.id)
+  
+  end
+
+  stats = Array.new
+  stat = Array.new
+  stat = {:texte => "♯ T4", :valeur => total_stats[0], :color_f => "black", :color_nf => "gray", :color_b => "white", :color_nb => "white"}
+  stats << stat
+  stat = {:texte => "♯ T3", :valeur => total_stats[1], :color_f => "black", :color_nf => "gray", :color_b => "lightgreen", :color_nb => "white"}
+  stats << stat
+  stat = {:texte => "♯ T2", :valeur => total_stats[2], :color_f => "black", :color_nf => "gray", :color_b => "rgb(255,255,95)", :color_nb => "white"}
+  stats << stat
+  stat = {:texte => "♯ T1", :valeur => total_stats[3], :color_f => "black", :color_nf => "gray", :color_b => "rgb(255,95,95)", :color_nb => "white"}
+  stats << stat
+  stat = {:texte => "✆ Ambu", :valeur => total_stats[4], :color_f => "white", :color_nf => "gray", :color_b => "blue", :color_nb => "white"}
+  stats << stat
+  stat = {:texte => "✆ PIT", :valeur => total_stats[5], :color_f => "white", :color_nf => "gray", :color_b => "green", :color_nb => "white"}
+  stats << stat
+  stat = {:texte => "✆ SMUR", :valeur => total_stats[6], :color_f => "white", :color_nf => "gray", :color_b => "red", :color_nb => "white"}
+  stats << stat
+  stat = {:texte => "† DCD", :valeur => total_stats[7], :color_f => "white", :color_nf => "gray", :color_b => "black", :color_nb => "white"}
+  stats << stat
+  
+%table.white
+  %tr
+    - stats.each do |stat|
+      %th{:style => "text-align: right"}
+        - if stat[:valeur] != 0 && stat[:valeur]
+          %font{:style => "background: #{stat[:color_b]}; color: #{stat[:color_f]}; border: 1px solid black;"}
+            = stat[:texte]
+        - else
+          %font{:style => "background: #{stat[:color_nb]}; color: #{stat[:color_nf]}; border: 1px solid gray;"}
+            = stat[:texte]
+      %td{:style => "text-align: left"}
+        - if stat[:valeur] != 0 && stat[:valeur]
+          %font{:style => "color : black"}
+            ×
+            = stat[:valeur].nil? ? "∅" : stat[:valeur]
+        - else
+          %font{:style => "color : gray"}
+            ×
+            = stat[:valeur].nil? ? "∅" : stat[:valeur]

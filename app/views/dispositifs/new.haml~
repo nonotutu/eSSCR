@@ -1,14 +1,12 @@
 
 .main
-  = render "tools/header", :selected_item => "dispositifs"
+  = render 'tools/header', :selected_item => 'dispositifs'
   
   .section
 
     = render "dispositifs/form"
-
-    %hr.intrasection
   
     .lien_bas_de_page
-      ➤
+      >
       = link_to 'Back', dispositifs_path
       

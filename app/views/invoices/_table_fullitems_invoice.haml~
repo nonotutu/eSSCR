@@ -11,13 +11,11 @@
       - case ligne[0]
       - when "2event"
         %td
-        %td{:colspan => 3}
-          %i= ligne[1]
+        %td{:colspan => 3}= ligne[1]
       - when "3service"
         %td
         %td
-        %td{:colspan => 2}
-          %i= ligne[1]
+        %td{:colspan => 2}= ligne[1]
       - when "4seritem"
         %td
         %td

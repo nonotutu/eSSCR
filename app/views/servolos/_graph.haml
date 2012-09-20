@@ -1,84 +1,64 @@
 
-- service = @service
+- table = @service.generate_table_heures_horaires_servolos 
+- taille = table.first.size
 
-
-- if service.durée_to_seconds <= 0
-  Erreur : Service à durée nulle ou négative
-- else
-
-  - horaire = fct_calcul_tableau_horaire(service.ends_at,    |
-                                        service.starts_at,   |
-                                        service.surplace_at,  |
-                                        service.depart_at)     |
-  
-  - if service.depart_at
-    - tableau_heures = fct_calcul_tableau_heures(service.depart_at.to_i, service.ends_at.to_i)
-  - elsif service.surplace_at
-    - tableau_heures = fct_calcul_tableau_heures(service.surplace_at.to_i, service.ends_at.to_i)
-  - else
-    - tableau_heures = fct_calcul_tableau_heures(service.starts_at.to_i, service.ends_at.to_i)
-
-    
-  - graphe = fct_calcul_tableau_servolos(service.id)
-    
-  %table.graphe_volo
-
-    %tr
-      %td{ :style => "width: 1%" }
-      %td
-        %table
-          %tr{ :style => "height: 16px" }
-            - if tableau_heures[5]
-              %td{ :style => "width: " + tableau_heures[0] }
-            - deb = service.depart_at ||= service.surplace_at ||= service.starts_at
-            - heure = deb + ( 3600 *(tableau_heures[5] ? 1 : 0) )
-            - (tableau_heures[2] - 1).times do
-              %td{ :style => "width: " + tableau_heures[3] + "; border-left: 1px solid black; font-size: xx-small; padding-left: 4px" }
-                = heure.hour.to_s
-              - heure += 1.hour
-            - if tableau_heures[1]
-              %td{ :style => "width: " + tableau_heures[4] + "; border-left: 1px solid black" }
+%table{:style => "border-collapse: collapse; width: 100%"}
+  %tr
+    %td{:style => "width: 1px"}
+      %table{:style => "border-collapse: collapse; width: 100%; white-space: nowrap"}
+        %tr{:style => "height: 16px"}
+          %td
+        %tr{:style => "height: 16px"}
+          %td
+        - table[2..(taille-1)].each do |ligne|
+          %tr{:style => "height: 16px"}
+            %td{:style => "text-align: right; font-size: x-small; border-top: 1px solid black", :title => ligne[taille+1]}= ligne[taille]
+            
+    %td
+      %table{:style => "border-collapse: collapse; width: 100%"}
+        %tr{:style => "height: 16px"}
+          - pos = 0
+          - col = 1
+          - while pos < taille
+            - if table[0][pos] != " " && pos + 12 <= taille # milieux, avec heures
+              - col += 1
+              %td{:colspan => 12, :style => "border-radius: 0 8px 0 0; font-size: x-small; background: " + ( col%2 == 0? "lightgray" : "white" )}
+                &nbsp
+                = table[0][pos].to_s
+              - pos += 12
+            - elsif table[0][pos] != " " && pos + 12 > taille # derniers
+              - col += 1
+              %td{:colspan => taille-pos, :style => "border-radius: 0 8px 0 0; font-size: x-small; background: " + ( col%2 == 0 ? "lightgray" : "white" )}
+              - pos += taille-pos
+            - else # premiers
+              %td{:style => "background: " + ( col%2 == 0 ? "lightgray" : "white" )}
+              - pos += 1
+              
+        %tr{:style => "height: 16px"}
+          - table[1].each do |bloc|
+            - case bloc
+            - when 1
+              %td{:style => "background: rgb(223,223,255)"}
+            - when 2
+              %td{:style => "background: rgb(191,191,255)"}
+            - when 3
+              %td{:style => "background: rgb(127,127,255)"}
+              
+        - table[2..(table.size-2)].each do |ligne|
+          %tr{:style => "height: 16px"}
+            - ligne[0..(taille-1)].each do |bloc|
+              - case bloc
+              - when 0
+                %td{:style => "background: lightgray; border-top: 1px solid white"}
+              - when 1
+                %td{:style => "background: rgb(127,255,127); border-top: 1px solid white"}
+                
+        %tr{:style => "height: 16px"}
+          - table.last.each do |bloc|
+            - if bloc == 0
+              %td{:style => "background: darkred; border-top: 1px solid white"}
+            - elsif bloc >= @service.volness
+              %td{:style => "background: green; border-top: 1px solid white"}
             - else
-              %td{ :style => "width: 0%; border-right: 1px solid black" }
-
-    %tr
-      %th
-        %b Service :
-      %td
-        - if horaire[0]
-          %hr.dp{ :style => "width: " + horaire[0] }
-        - if horaire[1]
-          %hr.sp{ :style => "width: " + horaire[1] }
-        %hr.sv{ :style => "width: " + horaire[2] }
-    
-    - graphe.each do |ligne|
-      %tr
-        %th
-          = ligne[0]
-          \:
-        %td
-          - if ligne[1] > 0
-            %hr.a{ :style => "width: "+ligne[1].to_s+"%" }
-          %hr.p{ :style => "width: "+ligne[2].to_s+"%" }
-          - if ligne[4] < 100
-            %hr.a{ :style => "width: "+ligne[3].to_s+"%" }
-
-    - totalsv = tableau_total_servolos(service.id)
-    %tr
-      %th
-        %b Total :
-      %td
-        - i = 0
-        - while i < totalsv.count-1
-          - if totalsv[i] == 0
-            %hr.totabs{ :style => "width: "+totalsv[i+1].to_s+"%" }
-          - elsif totalsv[i] < service.volness ||= 0
-            %hr.partpres{ :style => "width: "+totalsv[i+1].to_s+"%" }
-          - else
-            %hr.totpres{ :style => "width: "+totalsv[i+1].to_s+"%" }
-          - i += 2
-  -#
-    - if @service.servolos.empty?
-      %tr
-        %td{:colspan => 2, :align => 'left'}
-          %i ─ aucun volontaire ─
+              %td{:style => "background: rgb(127,255,127); border-top: 1px solid white"}
+              

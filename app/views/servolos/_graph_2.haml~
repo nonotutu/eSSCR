@@ -12,27 +12,23 @@
           %td
         - table[2..(taille-1)].each do |ligne|
           %tr{:style => "height: 16px"}
-            %td{:style => "text-align: right; font-size: x-small; border-top: 1px solid black", :title => ligne[taille+1]}= ligne[taille]
-            
+            %td{:style => "text-align: right; font-size: x-small", :title => ligne[taille+1]}= ligne[taille]
     %td
       %table{:style => "border-collapse: collapse; width: 100%"}
         %tr{:style => "height: 16px"}
           - pos = 0
-          - col = 1
           - while pos < taille
             - if table[0][pos] != " " && pos + 12 <= taille # milieux, avec heures
-              - col += 1
-              %td{:colspan => 12, :style => "border-radius: 0 8px 0 0; font-size: x-small; background: " + ( col%2 == 0? "lightgray" : "white" )}
+              %td{:colspan => 12, :style => "border-left: 1px solid black; font-size: x-small"}
+                &nbsp
                 = table[0][pos].to_s
               - pos += 12
             - elsif table[0][pos] != " " && pos + 12 > taille # derniers
-              - col += 1
-              %td{:colspan => taille-pos, :style => "border-radius: 0 8px 0 0; font-size: x-small; background: " + ( col%2 == 0 ? "lightgray" : "white" )}
+              %td{:colspan => taille-pos, :style => "border-left: 1px solid black; font-size: x-small"}
               - pos += taille-pos
             - else # premiers
-              %td{:style => "background: " + ( col%2 == 0 ? "lightgray" : "white" )}
+              %td
               - pos += 1
-              
         %tr{:style => "height: 16px"}
           - table[1].each do |bloc|
             - case bloc
@@ -42,8 +38,8 @@
               %td{:style => "background: rgb(191,191,255)"}
             - when 3
               %td{:style => "background: rgb(127,127,255)"}
-              
-        - table[2..(table.size-2)].each do |ligne|
+            
+        - table[2..(taille-1)].each do |ligne|
           %tr{:style => "height: 16px"}
             - ligne[0..(taille-1)].each do |bloc|
               - case bloc
@@ -51,13 +47,3 @@
                 %td{:style => "background: lightgray; border-top: 1px solid white"}
               - when 1
                 %td{:style => "background: rgb(127,255,127); border-top: 1px solid white"}
-                
-        %tr{:style => "height: 16px"}
-          - table.last.each do |bloc|
-            - if bloc == 0
-              %td{:style => "background: darkred; border-top: 1px solid white"}
-            - elsif bloc >= @service.volness
-              %td{:style => "background: green; border-top: 1px solid white"}
-            - else
-              %td{:style => "background: rgb(127,255,127); border-top: 1px solid white"}
-              

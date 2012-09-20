@@ -8,20 +8,22 @@
       %tr
         %th Position
         %th Dénomination
-        %th Prix
+        %th Montant
       - Templitem.order(:pos).all.each do |item|
         %tr
-          %td
+          %td.mono_droite
             = item.pos
           %td
             = item.name
-          %td
+          %td.mono_droite
             - if item.kind == 1
               = to_euro(item.price)
             - elsif item.kind == 2
               = to_percent(item.price)
           %td.taille_min
-            = link_to 'show', templitem_path(item.id)
+            = link_to "show", templitem_path(item.id)
+      
+    %hr.intrasection
     
     .lien_bas_de_page
       ➤

@@ -12,7 +12,8 @@
           %td= event.services.count
           - if params[:mode] == 'edit'
             %td.taille_min
-              = link_to "remove", :controller => :events, :action => :remove_from_invoice, :id => event.id
+              %font{:style => "font-family: HeydingsIconsRegular"}
+                = link_to "remove", :controller => :events, :action => :remove_from_invoice, :id => event.id
           - else
             %td.taille_min
               = link_to "show", event_overview_path(event)

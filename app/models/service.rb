@@ -38,8 +38,72 @@ class Service < ActiveRecord::Base
   scope :by_date, order(:starts_at)
   scope :by_name, joins(:event).order(:name)
   
-  def début
+
+  def is_finished
+    if self.ends_at < DateTime.now
+      true
+    else
+      false
+    end
+  end
+
+  
+  def how_many_volos_still_needed
+    retour = Array.new
+    point_temporel = self.debut+1.second
+    while point_temporel <= self.fin
+      nb_volos_sur_point = 0
+      self.servolos.each do |servolo|
+        if servolo.debut < point_temporel && servolo.fin >= point_temporel
+          nb_volos_sur_point += 1
+        end
+      end
+      retour << self.volness - nb_volos_sur_point
+      point_temporel += 5.minute
+    end
+    retour.max
+  end
+
+  
+  def is_complet
+    if self.how_many_volos_still_needed == 0
+      true
+    end
+    false
+  end
+  
+  
+  def status
+    unless self.is_finished
+      unless self.is_complet
+        {:texte => "besoin de " + ( c = self.how_many_volos_still_needed).to_s + " volontaire" + ( c>1 ? "s" : "" ), :code => 3}
+      else
+        {:texte => "à venir / en cours", :code => 2}
+      end
+    else
+      unless self.stats_t4
+        {:texte => "statistiques à remplir", :code => 2}
+      else
+        {:texte => "terminé", :code => 1}
+      end
+    end
+  end
+
+
+  def début # enlever
+    debut
+  end
+
+  def debut
     return self.depart_at ||= self.surplace_at ||= self.starts_at
+  end
+
+  def fin
+    return self.ends_at
+  end
+  
+  def duree
+    self.durée_to_seconds
   end
 
 #   def stats_t4
@@ -117,6 +181,75 @@ class Service < ActiveRecord::Base
     self.starts_at.to_s(:cust_jdate) + " - " + self.starts_at.to_s(:cust_time) + " → " + self.relative_ends_at
   end
 
+  
+  # Array des heures, par bloc de 5 minutes, en commençant avant la 1ère seconde
+  def generate_ligne_heures
+    ligne = Array.new
+    pt = self.debut.to_i
+    while pt <= (self.fin-1.second).to_i
+      if pt%3600 == 0
+        ligne << Time.at(pt).utc.hour
+      else
+        ligne << " "
+      end
+      pt += 5.minutes
+    end
+    ligne
+  end
+  
+  # Array d'horaire, par bloc de 5 minutes, en commençant apres la 1ère seconde
+  def generate_ligne_horaires
+    ligne = Array.new
+    pt = self.debut+1.second
+    while pt <= self.fin
+      if self.starts_at < pt
+        ligne << 3
+      elsif self.surplace_at && self.surplace_at < pt
+        ligne << 2
+      elsif self.depart_at && self.depart_at < pt
+        ligne << 1
+      else
+        ligne << 0
+      end
+      pt += 5.minutes
+    end
+    ligne
+  end
+    
+  # Array d'Array des présences de tous les servolos, par bloc de 5 minutes
+  def generate_table_servolos
+    table = Array.new
+    self.servolos.by_first_name.each do |servolo|
+      table << servolo.generate_ligne_servolo
+    end
+    table
+  end
+    
+  
+  # Array : heures - horaires - présences
+  def generate_table_heures_horaires_servolos
+
+    table_servolos = self.generate_table_servolos
+    
+    ligne_totaux = Array.new
+    ligne_totaux = [0] * (table_servolos.first.size-2)
+    table_servolos.each do |ligne|
+      i = 0
+      while i < ligne.size-2
+        ligne_totaux[i] += ligne[i]
+        i += 1
+      end
+    end
+    
+    table = Array.new
+    table << self.generate_ligne_heures
+    table << self.generate_ligne_horaires
+    table += table_servolos
+    table << ligne_totaux
+    table
+  end
+  
+  
   private
   def prevent_destroy_unless_service_empty
     unless ( self.seritems.empty? && self.volos.empty? && self.dispositifs.empty? )

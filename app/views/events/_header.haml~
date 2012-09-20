@@ -1,6 +1,10 @@
-
 .title.one
-  ➽➻➡
+  ⋙
   = @event.name
+  %font{:style => "font-size: x-small; font-weight: normal; #{status_color(@event.status[:code])}"}
+    &nbsp&nbsp&nbsp&nbsp
+    ∙ ⊢&nbsp
+    = @event.status[:texte]
+    &nbsp☰  ⊣ ∙
 
 = render 'events/menu', :selected_item => selected_item

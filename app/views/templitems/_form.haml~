@@ -1,15 +1,15 @@
 = simple_form_for @templitem do |f|
   .dl_deux_colonnes_base
     %dl
-      %dt Position :
+      %dt Position
       %dd= f.input :pos,            |
                    :label => false  |
     %dl
-      %dt Dénomination :
+      %dt Dénomination
       %dd= f.input :name,           |
                    :label => false  |
     %dl
-      %dt Type :
+      %dt Type
       %dd= f.input :kind,                                |
                    :as => :radio,                        |
                    :collection => [['€', 1], ['%', 2]],  |
@@ -17,7 +17,7 @@
                    :value_method => :last,               |
                    :label => false                       |
     %dl
-      %dt Montant :
+      %dt Montant
       %dd= f.input :price,          |
                    :label => false  |
     %dl

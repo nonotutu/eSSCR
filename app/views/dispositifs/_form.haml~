@@ -9,15 +9,15 @@
       %dd= f.input :name,           |
                    :label => false  |
     %dl
-      %dt Image ×16 :
+      %dt Image 16 :
       %dd= f.input :image_file_s1, :as => :file, |
                    :label => false               |
     %dl
-      %dt Image ×32 :
+      %dt Image 32 :
       %dd= f.input :image_file_s2, :as => :file, |
                    :label => false               |
     %dl
-      %dt Image ×64 :
+      %dt Image 64 :
       %dd= f.input :image_file_s4, :as => :file, |
                    :label => false               |
     %dl

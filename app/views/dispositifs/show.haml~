@@ -1,30 +1,32 @@
 
 .main
-  = render 'tools/header', :selected_item => 'dispositifs'
+  = render "tools/header", :selected_item => "dispositifs"
   
   .section
-  
-    %dl
-      %dt Position :
-      %dd= @dispositif.pos
-    %dl
-      %dt Dénomination :
-      %dd= @dispositif.name
-    %dl
-      %dt Image_s1:
-      %dd
-        = image_tag("/dispositifs/code_image_s1/#{@dispositif.id}", :alt => @dispositif.name)
-    %dl
-      %dt Image_s2:
-      %dd
-        = image_tag("/dispositifs/code_image_s2/#{@dispositif.id}", :alt => @dispositif.name)
-    %dl
-      %dt Image_s4:
-      %dd
-        = image_tag("/dispositifs/code_image_s4/#{@dispositif.id}", :alt => @dispositif.name)
+    .dl_deux_colonnes_base
+      %dl
+        %dt Position :
+        %dd= @dispositif.pos
+      %dl
+        %dt Dénomination :
+        %dd= @dispositif.name
+      %dl
+        %dt Image 16 :
+        %dd
+          = image_tag("/dispositifs/code_image_s1/#{@dispositif.id}", :alt => "☒")
+      %dl
+        %dt Image 32 :
+        %dd
+          = image_tag("/dispositifs/code_image_s2/#{@dispositif.id}", :alt => "☒")
+      %dl
+        %dt Image 64 :
+        %dd
+          = image_tag("/dispositifs/code_image_s4/#{@dispositif.id}", :alt => "☒")
+        
+    %hr.intrasection
 
     .lien_bas_de_page
-      >
+      ➤
       = link_to 'Edit', edit_dispositif_path(@dispositif.id)
       |
       = link_to 'Destroy', dispositif_path(@dispositif.id), :method => :delete
