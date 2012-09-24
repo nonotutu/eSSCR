@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120917181712) do
+ActiveRecord::Schema.define(:version => 20120923013216) do
 
   create_table "categories", :force => true do |t|
     t.string   "name"
@@ -152,6 +152,8 @@ ActiveRecord::Schema.define(:version => 20120917181712) do
     t.integer  "stats_pit"
     t.integer  "stats_smur"
     t.integer  "stats_dcd"
+    t.integer  "subs"
+    t.integer  "crentite_id"
   end
 
   create_table "servolos", :force => true do |t|
@@ -199,10 +201,10 @@ ActiveRecord::Schema.define(:version => 20120917181712) do
     t.datetime "updated_at",      :null => false
     t.string   "short_last_name"
     t.boolean  "actif"
-    t.string   "comment"
     t.date     "birth_date"
     t.date     "local_date"
     t.integer  "crentite_id"
+    t.text     "comment"
   end
 
 end

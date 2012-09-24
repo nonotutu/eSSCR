@@ -5,11 +5,14 @@
   = render "invoices/header", :selected_item => "overview"
 
   .section
-    = render "/table_titre_intrasection", :params => { :titre => "Général", :link_to_edit => edit_invoice_path(@invoice) }
-    = render "data"
-
-    = render "/table_titre_intrasection", :params => { :titre => "Événements", :link_to_edit => invoice_events_path(@invoice, :mode => "edit") }
-    = render "list_events_services", :locals => { :invoice => @invoice }
+    %table{:style => "width: 100%"}
+      %tr
+        %td{:style => "vertical-align: top"}
+          = render "/table_titre_intrasection", :params => { :titre => "Général", :link_to_edit => edit_invoice_path(@invoice) }
+          = render "data"
+        %td{:style => "vertical-align: top"}
+          = render "/table_titre_intrasection", :params => { :titre => "Événements", :link_to_edit => invoice_events_path(@invoice, :mode => "edit") }
+          = render "list_events_services", :locals => { :invoice => @invoice }
     
     = render "/table_titre_intrasection", :params => {:titre => "Facture"}
     = render "table_fullitems_invoice", :locals => { :invoice => @invoice }

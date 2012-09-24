@@ -1,6 +1,6 @@
 
 .main
-  = render 'tools/header', :selected_item => 'templitems'
+  = render "tools/header", :selected_item => "templitems"
   
   .section
 
@@ -20,13 +20,15 @@
               = to_euro(item.price)
             - elsif item.kind == 2
               = to_percent(item.price)
-          %td.taille_min
-            = link_to "show", templitem_path(item.id)
-      
-    %hr.intrasection
-    
-    .lien_bas_de_page
-      ➤
-      = link_to 'New', new_templitem_path
+          %td.manage_link
+            = link_to "⊙", templitem_path(item.id)
+
+    %hr.intrasection_top_liens
+            
+    .liens_intrasection
+      = link_to "✯ new", new_templitem_path
+              
+    %hr.intrasection_bottom_liens
+
         
   

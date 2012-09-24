@@ -2,12 +2,12 @@
 
 <ul>
   <li>
-    <%= link_to '→ Nouvel événement', new_event_path %>
-  </li>
+    &nbsp
+    <%= link_to '✯ nouvel événement', new_event_path %>
   <% if ( params[:id].present? || params[:event_id].present? ) %>
-    <li>
-    <%= link_to '→ Nouveau service', new_event_service_path(@event) %>
-    </li>
+    &nbsp&nbsp&nbsp&nbsp
+    <%= link_to '✯ nouveau service', new_event_service_path(@event) %>
+  </li>
   <% end %>
   <hr/>
     <ul>
@@ -17,7 +17,7 @@
         <% else %>
             </ul>
             <li>
-              <%= link_to service.event.category.short_name + " - " + service.event.name, event_overview_path(service.event_id), :class => (event_id == service.event.id ? :active_light : nil) %>
+              <b><%= link_to service.event.category.short_name + " - " + service.event.name, event_overview_path(service.event_id), :class => (event_id == service.event.id ? :active_light : nil) %></b>
                 <ul>
                   <li><%= link_to service.to_s, event_service_overview_path(service.event.id, service.id), :class => (service_id == service.id ? :active : nil) %></li>
         <% end %>

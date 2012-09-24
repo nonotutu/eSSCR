@@ -2,21 +2,23 @@
   %ul
 
     %li
-      - active = selected_item == 'overview' ? :active : nil
-      = link_to 'Événement', event_overview_path(@event), :class => active
+      - active = selected_item == "overview" ? :active : nil
+      = link_to 'événement', event_overview_path(@event), :class => active
 
     %li    
-      - active = selected_item == 'show' ? :active : nil
-      = link_to 'Données', event_path(@event), :class => active
+      - active = selected_item == "show" ? :active : nil
+      = link_to 'général', event_path(@event), :class => active
     
     %li
-      - active = selected_item == 'evitems' ? :active : nil
-      = link_to "Éléments facturés (#{@event.evitems.count})", event_evitems_path(@event), :class => active
+      - active = selected_item == "evitems" ? :active : nil
+      = link_to "facturation", event_evitems_path(@event), :class => active
+      %font.discret= @event.evitems.count
 
     %li
-      - active = selected_item == 'fullitem' ? :active : nil
-      = link_to "All invoiced items", event_fullitem_path(@event), :class => active
+      - active = selected_item == "refacs" ? :active : nil
+      = link_to "refacturation", event_refacs_path(@event), :class => active
+      %font.discret= @event.refacs.count
 
     %li
-      - active = selected_item == 'refacs' ? :active : nil
-      = link_to "Refacturation", event_refacs_path(@event), :class => active
+      - active = selected_item == "fullitem" ? :active : nil
+      = link_to "aperçu facture", event_fullitem_path(@event), :class => active

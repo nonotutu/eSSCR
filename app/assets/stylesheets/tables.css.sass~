@@ -36,7 +36,7 @@ table.base
       width: 1%
     &.mono_droite
       text-align: right
-      font-family: 'monospace'
+      font-family: 'DejaVu Sans Mono'
   td
     font-size: small
     text-align: left
@@ -48,7 +48,7 @@ table.base
       width: 1%
     &.mono_droite
       text-align: right
-      font-family: 'monospace'
+      font-family: 'DejaVu Sans Mono'
 
 table.white /*TODO : renommer*/
   @extend table.base
@@ -65,6 +65,8 @@ table.white /*TODO : renommer*/
     color: black
     font-weight: bold
     vertical-align: top
+  &.egal
+    table-layout: fixed
 
 table.white_compact
   @extend table.white
@@ -78,9 +80,6 @@ table.white_compact
     padding-right: 32px
     width: 1%
     white-space: nowrap
-  &.egal
-    width: 100%
-    table-layout: fixed
 
 table.base_with_rounded_th_coins
   @extend table.base
@@ -125,7 +124,8 @@ table.base_with_padding
   th:first-child
     padding-left: 16px
   th:last-child
-    padding-right: 16px
+    /*padding-right: 16px*/
+    padding-right: 8px
   td
     padding: 0
     padding-left: 8px
@@ -133,7 +133,8 @@ table.base_with_padding
   td:first-child
     padding-left: 16px
   td:last-child
-    padding-right: 16px
+    /*padding-right: 16px*/
+    padding-right: 8px
 
 $c-red: 0
 $c-green: 0
@@ -143,13 +144,12 @@ table.ligne
   @extend table.base_with_padding
   @extend table.base_with_rounded_th_coins
   @extend table.base_with_href
-
+  
   th
     color: black
-    /*height: 24px*/
+    
   td
     color: black
-    /*height: 24px*/
 
   tr:nth-child(2n+1)
     th
@@ -161,7 +161,14 @@ table.ligne
       background: white
     th
       background: rgb( 191+$c-red*64 , 191+$c-green*64 , 191+$c-blue*64 )
+  tr.total
+    font-weight: bold
+    th
+      background: rgb( 127+$c-red*128 , 127+$c-green*128 , 127+$c-blue*128 )
+    td
+      background: rgb( 127+$c-red*128 , 127+$c-green*128 , 127+$c-blue*128 )
 
+      
 table.base_with_href
   @extend table.base
   a
@@ -169,6 +176,9 @@ table.base_with_href
     color: black
     &:hover
       color: rgb( $c-red*255 , $c-green*255 , $c-blue*255 )
+  td.manage_link
+    padding: 0
+    width: 1px
     
 table.grille
   @extend table.base_with_padding
@@ -203,21 +213,19 @@ table.fulloptions
   @extend table.base_with_href
 
       
-      
 table.invoiced_items
   @extend table.ligne
   td:nth-child(2)
-    font-family: "monospace"
+    font-family: "DejaVu Sans Mono"
     text-align: right
   td:nth-child(3)
-    font-family: "monospace"
+    font-family: "DejaVu Sans Mono"
     text-align: right
   td:nth-child(4)
-    font-family: "monospace"
+    font-family: "DejaVu Sans Mono"
     text-align: right
   tr:last-child
     font-weight: bold
-
 
 
 table.empty
@@ -227,6 +235,7 @@ table.empty
   th
     color: white
     background: rgb(127,127,127)
+    background: orange
   input
     font-family: 'URW Gothic L'
     padding: 0px
@@ -235,10 +244,12 @@ table.empty
     border: 1px solid gray
     border-radius: 8px
     background: white
+    background: orange
     &:hover
       border: 1px solid red
     &:active
       background: red
+      background: orange
       color: white
   a
     @extend input
@@ -262,15 +273,15 @@ table.fullitems
   @extend table.empty
   td:nth-child(2)
     white-space: nowrap
-    font-family: "monospace"
+    font-family: "DejaVu Sans Mono"
     text-align: right
   td:nth-child(3)
     white-space: nowrap
-    font-family: "monospace"
+    font-family: "DejaVu Sans Mono"
     text-align: right
   td:nth-child(4)
     white-space: nowrap
-    font-family: "monospace"
+    font-family: "DejaVu Sans Mono"
     text-align: right
   tr:last-child
     background: red

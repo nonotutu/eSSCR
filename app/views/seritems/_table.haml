@@ -16,10 +16,10 @@
         %td= ligne[4]
         %td= ligne[5]
         - if ligne[0] == 1 && mode == 'edit'
-          %td.taille_min= button_to '↑↑', :action => :move_up, :id => ligne[1]
-          %td.taille_min= button_to '↓↓', :action => :move_down, :id => ligne[1]
-          %td.taille_min= link_to 'edit', event_service_seritems_path( :mode => "edit", :seritem_id => ligne[1] )
-          %td.taille_min= button_to "×", { :action => :destroy, :id => ligne[1] }, :method => :delete
+          %td.manage_link{:title => "move up"}= link_to "⇧", :action => :move_up, :id => ligne[1]
+          %td.manage_link{:title => "move down"}= link_to "⇩", :action => :move_down, :id => ligne[1]
+          %td.manage_link{:title => "edit"}= link_to "⊚", event_service_seritems_path( :mode => "edit", :seritem_id => ligne[1] )
+          %td.manage_link{:title => "delete"}= link_to "⊗", { :action => :destroy, :id => ligne[1] }, :method => :delete
 
 - else
-  %i ─ no seritems ─
+  %i ─ aucun élément facturé relatif au service ─

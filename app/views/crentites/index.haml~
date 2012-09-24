@@ -1,0 +1,54 @@
+
+.main
+  = render "tools/header", :selected_item => "crentites"
+  
+  .section
+
+    %table.ligne
+      %tr
+        %th Nom
+        %th Numéro
+        %th # volos
+        %th # dispos
+        %th # refacs
+        %th # services
+      - Crentite.all.each do |crentite|
+        %tr
+          %td
+            = crentite.name
+          %td
+            = crentite.number
+          %td
+            TODO
+          %td
+            = crentite.disposers.count
+          %td
+            = crentite.refacs.count
+          %td
+            = crentite.services.count
+          %td.manage_link
+            = link_to "⊙", crentite_path(crentite.id)
+
+    %hr.intrasection_top_liens
+            
+    .liens_intrasection
+      = link_to "✯ new", new_crentite_path
+        
+    %hr.intrasection_bottom_liens
+  
+  .section.texte
+    Les 
+    %b entités CR
+    sont liées :
+    %br
+    \- à la refacturation d'un événement
+    %br
+    \- aux dispositifs assurés
+    %br
+    \- aux services assurés
+    %br
+    \- aux volontaires en renfort
+    %br
+    La modifier ou la suppression d'une
+    %b entité CR
+    influera sur tous les éléments auxquels elle est liée.

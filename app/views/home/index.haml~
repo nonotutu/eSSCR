@@ -5,7 +5,7 @@
 
     %table.base_with_href
       %tr{:style => "vertical-align: top"}
-        %td.mono_droite{:style => "width: 50%"}
+        %td{:style => "width: 50%"}
           = render "/table_titre_intrasection", :params => { :titre => "Services à venir" }
           %ul.empty
             - Service.only_future.each do |service|
@@ -13,12 +13,15 @@
                 = link_to service.event.name + " - " + service.to_s,        |
                   event_service_overview_path(service.event.id, service.id) |
                 %ul.empty
-                  - string_total_servolos(service.id).each do |ligne|
-                    %li
-                      = ligne
+                  %li
+                    Volontaire nécessaires :
+                    = service.how_many_volos_still_needed
+                  %li
+                    Status :
+                    = service.status
           = render "/table_titre_intrasection", :params => { :titre => "Zone test" }
-          - e = Event.first
-          - s = e.services.first
+          - e = Event.find(36)
+          - s = Service.find(86)
           = e.name
           \::
           = s.to_s
@@ -26,20 +29,17 @@
           e.is_finished =
           = e.is_finished
           %br
-          -# how_many_volos_still_needed(s.id) =
-          -# = how_many_volos_still_needed(s.id)
-          -# %br
+          e.is_complet =
+          = e.is_complet
+          %br
+          s.is_complet =
+          = s.is_complet
+          %br
           s.how_many_volos_still_needed =
           = s.how_many_volos_still_needed
           %br
           e.how_many_volos_still_needed =
           = e.how_many_volos_still_needed
-          %br
-          Tableau volontaires :
-          %br
-          - generate_table_servolos_from_service(s.id).each do |ligne|
-            = ligne
-            %br
           
         %td
           = render "/table_titre_intrasection", :params => { :titre => "Événements à facturer" }
@@ -59,3 +59,45 @@
             - Invoice.only_sent_not_paid.each do |invoice|
               %li
                 = invoice.to_s
+                
+    = render "/table_titre_intrasection", :params => { :titre => "Zone test" }
+    %table{:style => "font-size: xx-small;"}
+      - s.generate_table_heures_horaires_servolos.each do |ligne|
+        %tr
+          - ligne.each do |bloc|
+            %td{:style => "white-space: nowrap"}
+              = bloc
+      %tr
+        - s.generate_ligne_totaux_servolos.each do |bloc|
+          %td{:style => "border-collapse: collapse; color: red"}
+            = bloc
+    = render "/table_titre_intrasection", :params => { :titre => "Horloge" }
+    %table
+      %tr
+        %td
+          = render "/horloge/horloge", :params => { :heures => 12, :minutes => 30, :size => 2 }
+        %td
+          = render "/horloge/horloge", :params => { :heures => 1, :minutes => 40, :size => 2 }
+        %td
+          = render "/horloge/horloge", :params => { :heures => 2, :minutes => 50, :size => 2 }
+        %td
+          = render "/horloge/horloge", :params => { :heures => 3, :minutes => 0, :size => 2 }
+        %td
+          = render "/horloge/horloge", :params => { :heures => 4, :minutes => 15, :size => 2 }
+        %td
+          = render "/horloge/horloge", :params => { :heures => 5, :minutes => 25, :size => 2 }
+        %td
+          = render "/horloge/horloge", :params => { :heures => 6, :minutes => 35, :size => 2 }
+        %td
+          = render "/horloge/horloge", :params => { :heures => 7, :minutes => 45, :size => 2 }
+        %td
+          = render "/horloge/horloge", :params => { :heures => 8, :minutes => 55, :size => 2 }
+        %td
+          = render "/horloge/horloge", :params => { :heures => 9, :minutes => 60, :size => 2 }
+        %td
+          = render "/horloge/horloge", :params => { :heures => 10, :minutes => 10, :size => 2 }
+        %td
+          = render "/horloge/horloge", :params => { :heures => 11, :minutes => 20, :size => 2 }
+            
+        
+      

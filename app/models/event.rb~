@@ -30,8 +30,16 @@ class Event < ActiveRecord::Base
   end
   
   def is_finished
-    if self.services.order(:ends_at).last.fin < DateTime.now
-      true else false end
+    if self.services.count > 0
+      if self.services.order(:ends_at).last.fin < DateTime.now
+        true
+      else
+        false
+      end
+    else
+      false
+    end
+      
   end
   
   def how_many_volos_still_needed
@@ -43,10 +51,7 @@ class Event < ActiveRecord::Base
   end
 
   def is_complet
-    if self.how_many_volos_still_needed == 0
-      true
-    end
-    false
+    self.how_many_volos_still_needed == 0 ? true : false
   end
   
   def status
@@ -65,6 +70,46 @@ class Event < ActiveRecord::Base
     end
   end
   
+  
+  def calcul_prix
+
+    total = BigDecimal("0.0")
+    self.services.each do |service|
+      total += service.calcul_prix
+    end
+    
+    sstot = BigDecimal("0.0")
+    self.evitems.each do |evitem|
+      if evitem.kind == 1
+        sstot = evitem.qty * evitem.price
+      elsif evitem.kind == 2
+        sstot = total * evitem.price / BigDecimal("100.0")
+      end
+      total = total + sstot
+    end
+
+    total
+
+  end
+  
+  
+  def calcul_prix_refacturation
+    if self.refacs
+      total_facture = self.calcul_prix
+      total_refac = 0
+      self.refacs.each do |refac|
+        if refac.kind == 1
+          total_refac += refac.price
+        elsif refac.kind == 2
+          total_refac += total_facture * refac.price / BigDecimal("100.0")
+        end
+      return total_refac
+    else
+      return 0
+    end
+  end
+
+
 private
   def prevent_destroy_unless_event_empty
     self.errors.add :base, "Event not empty"

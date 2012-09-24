@@ -3,11 +3,12 @@
   = render "tools/header", :selected_item => "dispositifs"
   
   .section
-
+   
     = render "dispositifs/form"
-
-    %hr.intrasection
     
-    .lien_bas_de_page
-      ➤
-      = link_to 'Back', dispositif_path(@dispositif.id)
+    %hr.intrasection_top_liens
+    
+    .liens_intrasection
+      = link_to "⇇ back", dispositif_path(@dispositif.id)
+      
+    %hr.intrasection_bottom_liens

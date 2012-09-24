@@ -1,4 +1,12 @@
 = simple_form_for @customer do |f|
-  = f.input :data
-  = f.submit
+  .dl_deux_colonnes_base
+    %dl
+      %dt Data :
+      %dd
+        = f.input :data,
+                  :label => false
+    %dl
+      %dt
+      %dd
+        = f.submit
   

@@ -1,0 +1,67 @@
+
+.aig
+  position: absolute
+  bottom: 283px
+  -moz-transform-origin: bottom center
+  -webkit-transform-origin: bottom center
+  -o-transform-origin: bottom center
+  transform-origin: bottom center
+
+.aig_s1
+  position: absolute
+  bottom: 8px
+  -moz-transform-origin: bottom center
+  -webkit-transform-origin: bottom center
+  -o-transform-origin: bottom center
+  transform-origin: bottom center
+
+.aig_s2
+  position: absolute
+  bottom: 16px
+  -moz-transform-origin: bottom center
+  -webkit-transform-origin: bottom center
+  -o-transform-origin: bottom center
+  transform-origin: bottom center
+  
+#horloge
+  position: relative
+  height: 567px
+  width: 567px
+  border: 1px solid black
+  -moz-border-radius: 284px
+  -webkit-border-radius: 284px
+  -o-border-radius: 284px
+  border-radius: 284px
+  background: url("cadran.png")
+
+#horloge_s1
+  position: relative
+  height: 16px
+  width: 16px
+  border: 1px solid black
+  -moz-border-radius: 9px
+  -webkit-border-radius: 9px
+  -o-border-radius: 9px
+  border-radius: 9px
+
+#horloge_am_s2
+  position: relative
+  height: 32px
+  width: 32px
+  border: 2px solid grey
+  -moz-border-radius: 18px
+  -webkit-border-radius: 18px
+  -o-border-radius: 18px
+  border-radius: 18px
+  background: white
+  
+#horloge_pm_s2
+  position: relative
+  height: 32px
+  width: 32px
+  border: 2px solid gray
+  -moz-border-radius: 18px
+  -webkit-border-radius: 18px
+  -o-border-radius: 18px
+  border-radius: 18px
+  background: black

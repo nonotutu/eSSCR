@@ -1,11 +1,14 @@
 
 .main
-  = render 'tools/header', :selected_item => 'customers'
+  = render "tools/header", :selected_item => "customers"
   
   .section
 
-    = render 'customers/form'
-    
-    .lien_bas_de_page
-      >
-      = link_to 'Back', customer_path(@customer.id)
+    = render "customers/form"
+
+    %hr.intrasection_top_liens
+
+    .liens_intrasection
+      = link_to "⇇ back", customer_path(@customer.id)
+      
+    %hr.intrasection_bottom_liens

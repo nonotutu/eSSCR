@@ -59,9 +59,23 @@
     %th
       %font
         volos ness
+    %th
+      %font
+        subsistance
+    %th
+      %font
+        assuré par
   %tr
     %td
       %font
         ⤷
-        = @service.volness
-        =# render "volness_inline_pictures"
+        =# @service.volness
+        = render "services/volness_inline_pictures"
+    %td
+      %font
+        ⤷
+        = render "services/subs_inline_pictures"
+    %td
+      %font
+        ⤷
+        = @service.crentite

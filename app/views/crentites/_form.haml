@@ -1,5 +1,18 @@
 = simple_form_for @crentite do |f|
-  = f.input :name
-  = f.input :number
-  = f.submit
+  .dl_deux_colonnes_base
+    %dl
+      %dt Nom :
+      %dd
+        = f.input :name,
+                  :label => false
+        
+    %dl
+      %dt Numéro
+      %dd
+        = f.input :number,
+                  :label => false
+    %dl
+      %dt
+      %dd
+        = f.submit
   

@@ -9,7 +9,7 @@
         %td
           = event.name
         %td
-          = to_euro(calcul_prix_event(event.id))
+          = to_euro(event.calcul_prix_in_invoice)
 
 - else
   %i ∅ aucun événement ─

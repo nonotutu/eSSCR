@@ -3,30 +3,34 @@
 - taille = table.first.size
 
 %table{:style => "border-collapse: collapse; width: 100%"}
-  %tr
+  %tr{:style => "font-size: xx-small; font-weight: bold;"}
     %td{:style => "width: 1px"}
       %table{:style => "border-collapse: collapse; width: 100%; white-space: nowrap"}
         %tr{:style => "height: 16px"}
           %td
         %tr{:style => "height: 16px"}
           %td
-        - table[2..(taille-1)].each do |ligne|
+        - table[2..(table.size-2)].each do |ligne|
           %tr{:style => "height: 16px"}
-            %td{:style => "text-align: right; font-size: x-small; border-top: 1px solid black", :title => ligne[taille+1]}= ligne[taille]
+            %td{:style => "text-align: right; border-top: 1px solid gray", :title => ligne[taille+1]}= ligne[taille]
+        %tr{:style => "height: 16px"}
+          %td{:style => "text-align: right; border-top: 1px solid gray", :title => "Volontaires nécessaires"}
+            ||| :
+            = @service.volness ? @service.volness : "?"
             
     %td
       %table{:style => "border-collapse: collapse; width: 100%"}
-        %tr{:style => "height: 16px"}
+        %tr{:style => "height: 16px; font-weight: bold"}
           - pos = 0
           - col = 1
           - while pos < taille
-            - if table[0][pos] != " " && pos + 12 <= taille # milieux, avec heures
+            - if table[0][pos] != -1 && pos + 12 <= taille # milieux, avec heures
               - col += 1
               %td{:colspan => 12, :style => "border-radius: 0 8px 0 0; font-size: x-small; background: " + ( col%2 == 0? "lightgray" : "white" )}
                 &nbsp
                 = table[0][pos].to_s
               - pos += 12
-            - elsif table[0][pos] != " " && pos + 12 > taille # derniers
+            - elsif table[0][pos] != -1 && pos + 12 > taille # derniers
               - col += 1
               %td{:colspan => taille-pos, :style => "border-radius: 0 8px 0 0; font-size: x-small; background: " + ( col%2 == 0 ? "lightgray" : "white" )}
               - pos += taille-pos
@@ -38,11 +42,11 @@
           - table[1].each do |bloc|
             - case bloc
             - when 1
-              %td{:style => "background: rgb(223,223,255)"}
+              %td{:style => "background: rgb(223,223,255); border-top: 1px solid white", :title => "départ → surplace"}
             - when 2
-              %td{:style => "background: rgb(191,191,255)"}
+              %td{:style => "background: rgb(191,191,255); border-top: 1px solid white", :title => "surplace → opérationnel"}
             - when 3
-              %td{:style => "background: rgb(127,127,255)"}
+              %td{:style => "background: rgb(127,127,255); border-top: 1px solid white", :title => "opérationnel"}
               
         - table[2..(table.size-2)].each do |ligne|
           %tr{:style => "height: 16px"}
@@ -51,14 +55,19 @@
               - when 0
                 %td{:style => "background: lightgray; border-top: 1px solid white"}
               - when 1
-                %td{:style => "background: rgb(127,255,127); border-top: 1px solid white"}
-                
+                %td{:style => "background: rgb(95,255,95); border-top: 1px solid white"}
+              - else
+                %td{:style => "background: red; border-top: 1px solid white"}
+
         %tr{:style => "height: 16px"}
           - table.last.each do |bloc|
-            - if bloc == 0
-              %td{:style => "background: darkred; border-top: 1px solid white"}
+            - if bloc == 0 || !@service.volness
+              %td{:style => "background: rgb(127,63,63); border-top: 1px solid white"}
             - elsif bloc >= @service.volness
-              %td{:style => "background: green; border-top: 1px solid white"}
+              %td{:style => "background: rgb(0,255,0); green; border-top: 1px solid white"}
             - else
-              %td{:style => "background: rgb(127,255,127); border-top: 1px solid white"}
+              - diff = ( 128/@service.volness * bloc )
+              - r = 127 + diff
+              - g = b = 63 + diff
+              %td{:style => "background: rgb(" + r.to_s + "," + g.to_s + "," + b.to_s + "); border-top: 1px solid white"}
               

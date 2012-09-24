@@ -2,24 +2,29 @@
   .dl_deux_colonnes_base
     %dl
       %dt Position :
-      %dd= f.input :pos,            |
-                   :label => false  |
+      %dd
+        = f.input :pos,
+                  :label => false
     %dl
       %dt Dénomination :
-      %dd= f.input :name,           |
-                   :label => false  |
+      %dd
+        = f.input :name,
+                   :label => false
     %dl
       %dt Type :
-      %dd= f.input :kind,                                |
-                   :as => :radio,                        |
-                   :collection => [['€', 1], ['%', 2]],  |
-                   :label_method => :first,              |
-                   :value_method => :last,               |
-                   :label => false                       |
+      %dd
+        = f.input :kind,
+                  :as => :radio,
+                  :collection => [['€', 1], ['%', 2]],
+                  :label_method => :first,
+                  :value_method => :last,
+                  :label => false
     %dl
       %dt Montant :
-      %dd= f.input :price,          |
-                   :label => false  |
+      %dd
+        = f.input :price,
+                  :label => false
     %dl
       %dt
-      %dd= f.submit
+      %dd
+        = f.submit

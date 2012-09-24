@@ -1,0 +1,57 @@
+- params[:size] = 1 unless params[:size]
+
+- params[:size] = 1
+
+- mid = "am"
+
+- if params[:heures] && params[:minutes] && params[:secondes]
+  - time = params[:heures] * 3600 + params[:minutes] * 60 + params[:secondes]
+- elsif params[:heures] && params[:minutes]
+  - time = params[:heures] * 3600 + params[:minutes] * 60
+- elsif params[:heures]
+  - time = params[:heures] * 3600
+- else
+  - hh = Time.now.hour
+  - mm = Time.now.min
+  - ss = Time.now.sec
+  - time = hh * 3600 + mm * 60 + ss
+  - if hh >= 12
+    - mid = "pm"
+
+- if params[:heures] >= 12
+  - mid = "pm"
+
+- s = time * 6
+- m = time / 10
+- h = time / 120
+
+- case params[:size]
+- when 1
+  - if mid == "am"
+    #horloge_am_s1
+      - if params[:minutes]
+        %img.aig_s1{:src => "horloge/aig_M_s1_black.png", :style => "left: 7px; -moz-transform: rotate(#{m}deg);"}/
+      %img.aig_s1{:src => "horloge/aig_H_s1_black.png", :style => "left: 7px; -moz-transform: rotate(#{h}deg);"}/
+  - elsif mid == "pm"
+    #horloge_pm_s1
+      - if params[:minutes]
+        %img.aig_s1{:src => "horloge/aig_M_s1_white.png", :style => "left: 7px; -moz-transform: rotate(#{m}deg);"}/
+      %img.aig_s1{:src => "horloge/aig_H_s1_white.png", :style => "left: 7px; -moz-transform: rotate(#{h}deg);"}/
+- when 2
+  - if mid == "am"
+    #horloge_am_s2
+      - if params[:minutes]
+        %img.aig_s2{:src => "horloge/aig_M_s2_black.png", :style => "left: 15px; -moz-transform: rotate(#{m}deg);"}/
+      %img.aig_s2{:src => "horloge/aig_H_s2_black.png", :style => "left: 15px; -moz-transform: rotate(#{h}deg);"}/
+  - elsif mid == "pm"
+    #horloge_pm_s2
+      - if params[:minutes]
+        %img.aig_s2{:src => "horloge/aig_M_s2_white.png", :style => "left: 15px; -moz-transform: rotate(#{m}deg);"}/
+      %img.aig_s2{:src => "horloge/aig_H_s2_white.png", :style => "left: 15px; -moz-transform: rotate(#{h}deg);"}/
+      
+-#
+  #horloge
+    %img#aigS.aig{:src => "horloge/aigS.png", :style => "left: 283px; -moz-transform: rotate(#{s}deg);"}/
+    %img#aigM.aig{:src => "horloge/aigM.png", :style => "left: 278px; -moz-transform: rotate(#{m}deg);"}/
+    %img#aigH.aig{:src => "horloge/aigH.png", :style => "left: 278px; -moz-transform: rotate(#{h}deg);"}/
+                

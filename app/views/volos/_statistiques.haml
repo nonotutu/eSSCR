@@ -1,40 +1,9 @@
 :ruby
-  durée_totale = 0
-  @volo.services.each do |service|
-    durée_totale += service.servolos.where("volo_id = ?",@volo.id).first.duree_to_seconds
-  end
-
-  if @volo.services.count > 0
-    s = @volo.services.order(:starts_at).first.starts_at
-    e = @volo.services.order(:starts_at).last.starts_at
-    intervalle = (e.month - s.month) + 12 * (e.year - s.year) + 1
-    nb_services = @volo.services.count
-    rapport_services_par_mois = nb_services.to_f / intervalle.to_f
-  end
-  
-  nb_services_complets = 0
-  @volo.services.each do |service|
-    nb_services_complets += service.servolos.where("volo_id = ? AND ? = servolos.starts_at AND ? = servolos.ends_at",@volo.id, service.début, service.ends_at).count
-  end
-
-  nb_services_coupés = 0
-  @volo.services.each do |service|
-    nb_services_coupés += service.servolos.where("volo_id = ? AND ( ? != servolos.starts_at OR ? != servolos.ends_at)",@volo.id, service.début, service.ends_at).count
-  end
 
 .dl_deux_colonnes_base
   %dl
     %dt Nombre de services :
-    %dd= @volo.services.count 
-  %dl
-    %dt - complets :
-    %dd= nb_services_complets
-  %dl
-    %dt - coupés :
-    %dd= nb_services_coupés
+    %dd= @volo.quantity_of_services
   %dl
     %dt Durée totale :
-    %dd= humanize_time_range(durée_totale)
-  %dl
-    %dt Services / Mois :
-    %dd= rapport_services_par_mois
+    %dd= humanize_time_range(@volo.duration_of_services)

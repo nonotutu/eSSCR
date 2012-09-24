@@ -4,30 +4,28 @@
 
     %li
       - active = selected_item == 'overview' ? :active : nil
-      = link_to "Service", event_service_overview_path(@event, @service), :class => active
+      = link_to "service", event_service_overview_path(@event, @service), :class => active
 
     %li
       - active = selected_item == 'show' ? :active : nil
-      = link_to "Données", event_service_path(@event, @service), :class => active
-
-    %li
-      - active = selected_item == 'stats' ? :active : nil
-      = link_to "Données", event_service_stats_path(@event, @service), :class => active
+      = link_to "général", event_service_path(@event, @service), :class => active
 
     =# nesté
     %li
       - active = selected_item == 'disposers' ? :active : nil
-      = link_to "Dispositifs (#{@service.dispositifs.count})", event_service_disposers_path(@event, @service), :class => active
+      = link_to "dispositifs", event_service_disposers_path(@event, @service), :class => active
+      %font.discret= "(#{@service.dispositifs.count})"
     
     %li
       - active = selected_item == 'servolos' ? :active : nil
-      = link_to "Volontaires (#{@service.volos.count})", event_service_servolos_path(@event, @service), :class => active
+      = link_to "volontaires", event_service_servolos_path(@event, @service), :class => active
+      %font.discret= "(#{@service.volos.count})"
             
     %li
       - active = selected_item == 'seritems' ? :active : nil
-      = link_to "Facturation (#{@service.seritems.count})", event_service_seritems_path(@event, @service), :class => active
-      
-    -#
-      %li.font_icon{:title => "New service"}
-      - active = selected_item == 'new' ? :active : nil
-      = link_to "+", new_event_service_path(@event), :class => active
+      = link_to "facturation", event_service_seritems_path(@event, @service), :class => active
+      %font.discret= "(#{@service.seritems.count})"
+
+    %li
+      - active = selected_item == 'stats' ? :active : nil
+      = link_to "stats", event_service_stats_path(@event, @service), :class => active

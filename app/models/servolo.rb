@@ -14,7 +14,7 @@ class Servolo < ActiveRecord::Base
   validate  :ends_at_is_in_service_range
   validate  :duree_is_not_0
     
-  scope :by_first_name, joins(:volo).order(:first_name)
+  scope :by_first_name, joins(:volo).order(:first_name, :last_name)
 
   def debut
     if starts_at.nil?
@@ -115,6 +115,9 @@ class Servolo < ActiveRecord::Base
   
   # Array des présences d'un servolo, par bloc de 5 minutes
   def generate_ligne_servolo
+    
+#     nb_times_volo = self.service.servolos.where("volo_id = ?", self.volo.id).count
+    
     ligne = Array.new
     pt = self.service.debut+1.second
     while pt <= self.service.fin

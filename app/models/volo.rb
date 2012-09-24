@@ -37,4 +37,17 @@ class Volo < ActiveRecord::Base
     self.first_name + " " + self.last_name + " (" + ( self.crentite.nil? ? "autre" : self.crentite.short ) + ")"
   end
   
+  def quantity_of_services
+    self.services.uniq.count
+  end
+  
+  # TODO : gérer les doublinscriptions
+  def duration_of_services
+    duration = 0
+    self.servolos.each do |servolo|
+      duration += servolo.fin - servolo.debut
+    end
+    duration
+  end
+  
 end

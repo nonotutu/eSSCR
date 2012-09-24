@@ -22,13 +22,14 @@
         %dt Image ×64 :
         %dd
           = image_tag("/dispositifs/code_image_s4/#{@dispositif.id}", :alt => "☒")
-        
-    %hr.intrasection
 
-    .lien_bas_de_page
-      ➤
-      = link_to 'Edit', edit_dispositif_path(@dispositif.id)
+    %hr.intrasection_top_liens
+  
+    .liens_intrasection
+      = link_to "⇇ back", dispositifs_path
       |
-      = link_to 'Destroy', dispositif_path(@dispositif.id), :method => :delete
+      = link_to "⊚ edit", edit_dispositif_path(@dispositif.id)
       |
-      = link_to 'Back', dispositifs_path
+      = link_to "⊗ delete", dispositif_path(@dispositif.id), :method => :delete
+            
+    %hr.intrasection_bottom_liens

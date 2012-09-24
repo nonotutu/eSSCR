@@ -6,8 +6,10 @@ class Crentite < ActiveRecord::Base
   has_many :events, :through => :refacs
   has_many :refacs
   has_many :volos
+  has_many :services
   
   validates :name, :presence => true
+  validates :number, :presence => true
   
   before_destroy :prevent_destroy_if_in_use, :notice => "Crentite in use"
   
@@ -26,7 +28,7 @@ class Crentite < ActiveRecord::Base
 private
   def prevent_destroy_if_in_use
     self.errors.add :base, "Crentite in use"
-      unless ( self.volos.empty? || self.disposers.empty? || self.events.empty? )
+      unless ( self.volos.empty? || self.disposers.empty? || self.events.empty? || self.services.empty? )
         false 
       end
   end

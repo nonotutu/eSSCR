@@ -1,19 +1,20 @@
 
-= render 'events/list'
+= render "events/list"
 
 .main
-  = render 'events/header', :selected_item => 'services'
-  = render 'services/header', :selected_item => 'show'
+  = render "events/header", :selected_item => "services"
+  = render "services/header", :selected_item => "show"
 
   .section
     = render "data"
   
-    %hr.intrasection
+    %hr.intrasection_top_liens
   
-  .lien_bas_de_page
-    ➤
-    = link_to "Edit", edit_event_service_path(@event, @service)
-    |
-    = link_to "Destroy", { :action => :destroy, :id => @service.id }, :method => :delete
-    |
-    = link_to "Back", event_service_overview_path(@event, @service)
+    .liens_intrasection
+      = link_to "⇇ back", event_service_overview_path(@event, @service)
+      |
+      = link_to "⊚ edit", edit_event_service_path(@event, @service)
+      |
+      = link_to "⊗ delete", { :action => :destroy, :id => @service.id }, :method => :delete
+     
+    %hr.intrasection_bottom_liens

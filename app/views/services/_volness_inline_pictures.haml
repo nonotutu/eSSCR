@@ -1,5 +1,13 @@
+- unless params[:icon_size]
+  - params[:icon_size] = 1
+  
 - if (nb = @service.volness) && @service.volness > 0
+  - i = 1
   - nb.times do
-    %img{:src => "/icons/volo_s2.png", :alt => "❖ "}
+    %img{:src => "/icons/volo_s#{params[:icon_size].to_s}.png", :alt => "|", :title => @service.volness}
+    - if i%5 == 0
+      - params[:icon_size].times do
+        &nbsp
+    - i += 1
 - else
   %i ─ aucun volontaire nécessaire ─

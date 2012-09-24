@@ -1,8 +1,9 @@
-- total_facture = calcul_prix_event(@event.id)
-
 - unless @event.refacs.empty?
 
-  %table.generic
+  - total_facture = @event.calcul_prix
+  - total_refac = 0
+
+  %table.ligne
     %tr
       %th Entité
       %th %
@@ -13,18 +14,23 @@
           = refac.crentite.name
         - if refac.kind == 1
           %td
-          %td{:align => :right, :style => 'font-family: mono'}
+          %td.mono_droite
             = to_euro(refac.price)
+            - total_refac += refac.price
         -elsif refac.kind == 2
-          %td{:align => :right, :style => 'font-family: mono'}
+          %td.mono_droite
             = to_percent(refac.price)
-            →
-          %td{:align => :right, :style => 'font-family: mono'}
-            = to_euro(total_facture * refac.price / 100.0)
+          %td.mono_droite
+            = to_euro(t = total_facture * refac.price / 100.0)
+            - total_refac += t
         
-        - if params[:mode] == 'edit'
-          %td= link_to 'edit', event_refacs_path( { :mode => "edit", :refac_id => refac.id } )
-          %td= button_to "remove", { :action => :destroy, :id => refac.id }, :method => :delete
+        - if params[:mode] == "edit"
+          %td.manage_link= link_to "⊚", event_refacs_path( { :mode => "edit", :refac_id => refac.id } )
+          %td.manage_link= link_to "⊗", { :action => :destroy, :id => refac.id }, :method => :delete
+    %tr.total
+      %td Total à redistribuer
+      %td 
+      %td.mono_droite= to_euro(total_refac)
 
 - else
   %i ─ aucune refacturation ─

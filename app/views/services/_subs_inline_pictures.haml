@@ -1,0 +1,11 @@
+- unless params[:icon_size]
+  - params[:icon_size] = 1
+
+- if @service.subs
+  - case @service.subs
+  - when 0
+    %img{:src => "/icons/subs_non_s#{params[:icon_size].to_s}.png", :alt => "non", :title => "Subsistance : non-fournie"}
+  - when 1
+    %img{:src => "/icons/subs_oui_s#{params[:icon_size].to_s}.png", :alt => "oui", :title => "Subsistance : fournie"}
+- else
+  %img{:src => "/icons/subs_nd_s#{params[:icon_size].to_s}.png", :alt => "non-défini", :title => "Subsistance : indéfini"}

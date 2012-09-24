@@ -1,7 +1,7 @@
 .menu
   %ul
     %li
-      = link_to "Liste", invoices_path
+      = link_to "☰", invoices_path
       
     %li
       - active = selected_item == 'overview' ? :active : nil
@@ -17,4 +17,4 @@
       
     %li
       - active = selected_item == 'nositems' ? :active : nil
-      = link_to "Éléments facturés (#{@invoice.nositems.count})", invoice_nositems_path(@invoice.id), :class => active
+      = link_to "Facturation (#{@invoice.nositems.count})", invoice_nositems_path(@invoice.id), :class => active

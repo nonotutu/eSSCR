@@ -1,8 +1,6 @@
 #encoding: utf-8
 
 module ApplicationHelper
-
-  spch = {:char_before_title => "⋙"}
   
   def status_color(code)
     
@@ -65,23 +63,6 @@ module ApplicationHelper
   end
   
   
-  def calcul_prix_service(service_id)
-
-    service = Service.find(service_id)
-
-    total, tot = BigDecimal.new("0.0")
-    service.seritems.each do |item|
-      if item.kind == 1
-        tot = item.qty * item.price
-      elsif item.kind == 2
-        tot = total * item.price / BigDecimal.new("100.0")
-      end
-      total = total + tot
-    end
-
-    total
-    
-  end
 
 
   def calcul_prix_service_included(service_id)
@@ -89,7 +70,7 @@ module ApplicationHelper
     total = BigDecimal.new("0.0")
     service = Service.find(service_id)
     
-    total = calcul_prix_service(service_id)
+    total = service.calcul_prix
     
     tot = BigDecimal.new("0.0")
     service.event.evitems.each do |item|
@@ -114,28 +95,7 @@ module ApplicationHelper
   end
 
   
-  def calcul_prix_event(event_id)
 
-    event = Event.find(event_id)
-
-    total = BigDecimal("0.0")
-    event.services.each do |service|
-      total += calcul_prix_service(service.id)
-    end
-    
-    tot = BigDecimal("0.0")
-    event.evitems.each do |item|
-      if item.kind == 1
-        tot = item.qty * item.price
-      elsif item.kind == 2
-        tot = total * item.price / BigDecimal("100.0")
-      end
-      total = total + tot
-    end
-
-    total
-    
-  end
 
   
   def calcul_prix_event_included(event_id)
@@ -144,7 +104,7 @@ module ApplicationHelper
 
     total = BigDecimal("0.0")
     event.services.each do |service|
-      total += calcul_prix_service(service.id)
+      total += service.calcul_prix
     end
     
     tot = BigDecimal("0.0")
@@ -304,7 +264,7 @@ module ApplicationHelper
     event = Event.find(event_id)
 
     event.services.order.each do |service|
-      total += calcul_prix_service(service.id)
+      total += service.calcul_prix
     end
     if total > 0
       ligne = Array.new
@@ -472,140 +432,6 @@ module ApplicationHelper
   end  
 
   
-  def string_total_servolos(service_id)
-    
-    table = Array.new
-    
-    total = total_servolos(service_id)
-    
-    service = Service.find(service_id)
-        
-    max = service.volness ||= 0
-    i = 0
-    while i < total.count-1
-      if max > total[i+2]
-        table << "de " +
-            (service.début + total[i].seconds).to_s(:cust_short) +
-            " à " +
-            (service.début + total[i+1].seconds).to_s(:cust_short) +
-            " : " +
-            (max - total[i+2]).to_s +
-            " volontaire" +
-            ((max-total[i+2])>1?"s":"")
-      end
-      i += 3
-    end
-    
-    return table
-
-  end
-  
-
-# TODO : supprimer, refaire avec la méthode par bloc de 5.minutes, mettre dans le modèle
-  def total_servolos(service_id)
-    
-    service = Service.find(service_id)
-    
-    table = Array.new
-    ligne1 = Array.new
-    ligne2 = Array.new
-    ligne3 = Array.new
-    ligne4 = Array.new
-    ligne5 = Array.new
-    ligne6 = Array.new
-    ligne7 = Array.new
-    
-    debut = service.debut
-    duree = service.fin - debut
-       
-    service.servolos.each do |servolo|
-      ligne1 << servolo.debut - debut
-      ligne2 << servolo.fin - debut
-    end
-
-    ligne1.sort!
-    ligne2.sort!
-    
-    i = 0
-    j = 0
-    v = 0
-    while ( i < ligne1.count && j < ligne2.count )
-       if ligne1[i] > ligne2[j]
-         ligne3 << ligne2[j]
-         ligne4 << v -= 1
-         j += 1
-       else
-         ligne3 << ligne1[i]
-         i += 1
-         ligne4 << v += 1
-       end
-    end
-        
-    if i >= ligne1.count
-      for k in j..ligne2.count-1
-        ligne3 << ligne2[k]
-        ligne4 << v -= 1
-      end
-    else
-      for k in i..ligne1.count-1
-        ligne3 << ligne1[k]
-        ligne4 << v += 1
-      end
-    end
-
-    
-    # si le premier volo commence au début du service
-    if ligne3[0] != 0.0
-      ligne3.insert(0,0.0)
-      ligne4.insert(0,0)
-    end
-    
-    
-    for i in 0..ligne4.count
-      unless ligne3[i] == ligne3[i+1]
-        ligne5 << ligne3[i]
-        ligne6 << ligne4[i]
-      end
-    end
-
-    # si le dernier volo termine à la fin du service
-    if ligne5.last != (service.fin - debut)
-      ligne5 << (service.fin - debut)
-    else
-      ligne6.delete_at(ligne6.count-1)
-    end
-    
-    # table des intervalles
-    for i in 0..ligne6.count-1
-      ligne7 << ligne5[i]
-      ligne7 << ligne5[i+1]
-      ligne7 << ligne6[i]
-    end
-    
-#   0    1  2    3    4  5    ... 
-# début fin nb début fin nb ...
-    
-    fin = true
-    i = 0
-    while fin
-      if ligne7[i+2] == ligne7[i+5]
-        ligne7.delete_at(i+1)
-        ligne7.delete_at(i+1)
-        ligne7.delete_at(i+1)
-      else
-        i += 3
-      end
-
-      if i >= ( ligne7.count - 3 )
-        fin = false
-      end
-      
-    end
-    
-    return ligne7
-    
-  end
-
 
   # mode decal
   def generate_table_fullitems_event(event_id)

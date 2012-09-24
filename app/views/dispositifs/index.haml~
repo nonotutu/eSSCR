@@ -1,5 +1,5 @@
 .main
-  = render 'tools/header', :selected_item => 'dispositifs'
+  = render "tools/header", :selected_item => "dispositifs"
   
   .section
 
@@ -7,7 +7,8 @@
       %tr
         %th Position
         %th Dénomination
-        %th Image 16
+        %th Image ×16
+        %th ? utilisé
       - Dispositif.order(:pos).all.each do |dispo|
         %tr
           %td.mono_droite
@@ -16,14 +17,15 @@
             = dispo.name
           %td
             = image_tag("/dispositifs/code_image_s1/#{dispo.id}", :alt => "☒")
-          -#
-            %td
-              = image_tag("/dispositifs/code_image_s2/#{dispo.id}", :alt => "☒")
-            %td
-              = image_tag("/dispositifs/code_image_s4/#{dispo.id}", :alt => "☒")
-          %td.taille_min
-            = link_to 'show', dispositif_path(dispo.id)
-    
-    .lien_bas_de_page
-      ➤
-      = link_to 'New', new_dispositif_path
+          %td
+            = dispo.disposers.sum(:quantity)
+            ×
+          %td.manage_link
+            = link_to "⊙", dispositif_path(dispo.id)
+
+    %hr.intrasection_top_liens
+            
+    .liens_intrasection
+      = link_to "✯ new", new_dispositif_path
+              
+    %hr.intrasection_bottom_liens

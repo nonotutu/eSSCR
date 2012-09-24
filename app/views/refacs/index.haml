@@ -1,26 +1,29 @@
 
-= render 'events/list'
+= render "events/list"
 
 .main
-  = render 'events/header', :selected_item => 'refacs'
+  = render "events/header", :selected_item => "refacs"
 
   .section
     
-    = render "table"
-    %hr.intrasection
-    
-    - if params[:mode] == 'edit'
-      = render "form"
-    
-  .lien_bas_de_page
-    - unless params[:mode] == 'edit'
-      ➤
-      = link_to 'Manage', event_refacs_path(:mode => "edit")
-      |
-      = link_to "Back", event_overview_path(@event)
-    - else
-      ➤
-      = link_to 'Back', event_refacs_path
-      - if params[:refac_id].present?
+    - unless params[:mode] == "edit"
+      = render "table"
+      %hr.intrasection_top_liens
+      .liens_intrasection
+        = link_to "⇇ back", event_overview_path(@event)
         |
-        = link_to 'Clear (create new)', event_refacs_path(:mode => 'edit') 
+        = link_to "⚙ manage", event_refacs_path(:mode => "edit")
+      %hr.intrasection_bottom_liens
+      
+    - else
+
+      = render "table"
+      %hr.intrasection
+      = render "form"
+      %hr.intrasection_top_liens
+      .liens_intrasection
+        = link_to "⇇ back", event_refacs_path
+        - if params[:refac_id].present?
+          |
+          = link_to "✯ new", event_refacs_path(:mode => 'edit') 
+      %hr.intrasection_bottom_liens

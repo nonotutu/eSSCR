@@ -3,21 +3,20 @@
 
   %table.ligne
     %tr
-      %th Who
-      %th When
-      %th Where
+      %th Prénom Nom
+      %th Horaire
+      %th RV
     - @service.servolos.by_first_name.each do |servolo|
-      %tr
-        - selection = (params[:mode]=='edit' && @servolo && @servolo.id==servolo.id)?"color:red;font-weight:bold":nil
-        %td{:style => selection}
+      %tr{:style => (params[:mode]=="edit" && @servolo && @servolo.id==servolo.id)?"font-weight:bold":nil}
+        %td
           = servolo.volo.full_name
-        %td{:style => selection}
+        %td
           = servolo.fromto
-        %td{:style => selection}
+        %td
           = servolo.rendezvous_to_s
-        - if params[:mode] == 'edit'
-          %td{:width => '1%'}= link_to 'edit', event_service_servolos_path(:servolo_id => servolo.id, :mode => 'edit')
-          %td{:width => '1%'}= link_to "remove", { :action => :destroy, :id => servolo.id }, :method => :delete
+        - if params[:mode] == "edit"
+          %td.manage_link{:title => "edit"}= link_to "⊚", event_service_servolos_path(:servolo_id => servolo.id, :mode => 'edit')
+          %td.manage_link{:title => "delete"}= link_to "⊗", { :action => :destroy, :id => servolo.id }, :method => :delete
 
 - else
   %i ─ aucun volontaire ─

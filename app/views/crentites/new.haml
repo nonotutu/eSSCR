@@ -1,12 +1,17 @@
 
 .main
-  = render 'tools/header', :selected_item => 'crentites'
+  = render "tools/header", :selected_item => "crentites"
   
   .section
 
     = render "crentites/form"
+
+    %hr.intrasection_top_liens
+            
+    .liens_intrasection
+      = link_to "⇇ back", crentites_path
+                  
+    %hr.intrasection_bottom_liens
+
+        
   
-    .lien_bas_de_page
-      >
-      = link_to 'Back', crentites_path
-      
