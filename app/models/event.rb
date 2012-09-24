@@ -79,13 +79,30 @@ class Event < ActiveRecord::Base
     end
     
     sstot = BigDecimal("0.0")
-    self.evitems.each do |evitem|
+    self.evitems.order(:pos).each do |evitem|
       if evitem.kind == 1
         sstot = evitem.qty * evitem.price
       elsif evitem.kind == 2
         sstot = total * evitem.price / BigDecimal("100.0")
       end
       total = total + sstot
+    end
+
+    total
+
+  end
+  
+  
+  def calcul_prix_in_invoice
+
+    total = self.calcul_prix
+    
+    if self.invoice
+      self.invoice.nositems.order(:pos).each do |nositem|
+        if item.kind == 2
+          total += total * nositem.price / BigDecimal.new("100.0")
+        end
+      end
     end
 
     total

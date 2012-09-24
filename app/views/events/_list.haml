@@ -33,6 +33,10 @@
     session[:events_liste_categ] = params[:events_liste_categ]
   end
 
+  if (params[:events_liste_client].present?)
+    session[:events_liste_client] = params[:events_liste_client]
+  end
+
   session[:events_liste_find] = params[:events_liste_find]
 
 
@@ -62,6 +66,11 @@
   2010.upto ( event_last_year() ) { |i| 
     liste_annee << { :value => i.to_s, :name => i.to_s } }
 
+  liste_client = []
+  liste_client << { :value => 'all', :name => 'tous' }
+  Customer.all.each do |client|
+    liste_client << { :value => client.id, :name => client.data.lines.first }
+  end
 
   services = Service
   
@@ -101,6 +110,11 @@
       services = services.by_name.reverse_order
   end
 
+  if ( session[:events_liste_client] )
+    services = services.only_customer(session[:events_liste_client])
+  end
+  
+
 
 .left_menus
 
@@ -137,8 +151,16 @@
       %table{:style => 'border-collapse: collapse; width: 100%'}
         %tr
           %td
-            %font{:style => "font-family: HeydingsIconsRegular"}
-              M :
+            Client : 
+            %select{:name => 'events_liste_client'}
+              - liste_client.each do |item|
+                - selected = ( item[:value] == session[:events_liste_client] ? 'selected' : nil )
+                %option{ :value => item[:value], :selected => selected }= item[:name]
+          %td
+      %table{:style => 'border-collapse: collapse; width: 100%'}
+        %tr
+          %td
+            Ꙫ :
             %input{ :name=>"events_liste_find", :value => session[:events_liste_find], :size => "30"}
       %table{:style => 'border-collapse: collapse; width: 100%'}
         %tr

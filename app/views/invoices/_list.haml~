@@ -1,98 +1,17 @@
-:ruby
 
-  if controller_name == 'invoices'
-    invoice_id = params[:id].to_i
-  else
-    invoice_id = params[:invoice_id].to_i
-  end
+- if params[:invoices]
+  - invoices = params[:invoices]
+- else
+  - invoices = Invoice.all
 
-
-  if (params[:invoices_liste_sens].present?)
-    session[:invoices_liste_sens] = params[:invoices_liste_sens]
-  end
-
-  if (params[:invoices_liste_filtre].present?)
-    session[:invoices_liste_filtre] = params[:invoices_liste_filtre]
-  end
-
-  if (params[:invoices_liste_annee].present?)
-    session[:invoices_liste_annee] = params[:invoices_liste_annee]
-  end
-
-  if (params[:invoices_liste_categ].present?)
-    session[:invoices_liste_categ] = params[:invoices_liste_categ]
-  end
-
-  liste_sens = []
-  liste_sens << { :value => '1', :name => '↑↑' }
-  liste_sens << { :value => '2', :name => '↓↓' }
-  liste_sens << { :value => '3', :name => 'αβ' }
-  liste_sens << { :value => '4', :name => '!αβ' }
-
-  liste_filtre = []
-  liste_filtre << { :value => '1', :name => 'toutes' }
-  liste_filtre << { :value => '2', :name => 'à envoyer' }
-  liste_filtre << { :value => '3', :name => 'attente paiement' }
-
-  liste_categ = []
-  liste_categ << { :value => '0', :name => '<all>' }
-  liste_categ << { :value => '1', :name => 'Event related' }
-  liste_categ << { :value => '2', :name => 'Nonevent related' }
-  
-  liste_annee = []
-  liste_annee << { :value => 'all', :name => 'toutes' }
-  2010.upto ( invoice_last_year() ) { |i| 
-    liste_annee << { :value => i.to_s, :name => i.to_s } }
-
-  invoices = Invoice
-    
-  if ( session[:invoices_liste_annee].present? )
-    unless ( session[:invoices_liste_annee] == 'all' )
-      invoices = invoices.only_year(session[:invoices_liste_annee])
-    end
-  end
-
-  case( session[:invoices_liste_categ] )
-    when '1'
-      invoices = invoices.only_with_events
-    when '2'
-      invoices = invoices.only_without_events
-    else
-      invoices = invoices.wnw_events
-  end
-
+- invoice_id = nil
   
 .left_menus
-
-  .menu_gauche_options
-    %form{:action => '', :method => :get}
-      %table{:style => 'border-collapse: collapse; width: 100%'}
-        %tr
-          %td
-            Année :
-            %select{:name => 'invoices_liste_annee'}
-              - liste_annee.each do |item|
-                - selected = ( item[:value] == session[:invoices_liste_annee] ? 'selected' : nil )
-                %option{ :value => item[:value], :selected => selected }= item[:name]
-          %td{:style => 'text-align: right'}
-            Cat :
-            %select{:name => 'invoices_liste_categ'}
-              - liste_categ.each do |item|
-                - selected = ( item[:value] == session[:invoices_liste_categ] ? 'selected' : nil )
-                %option{ :value => item[:value], :selected => selected }= item[:name]
-      %table{:style => 'border-collapse: collapse; width: 100%'}
-        %tr
-          %td{:style => 'text-align: right'}
-            %input{:type => :submit, :value => 'go'}
-
-
   .menu_gauche_1
     %ul
-      %li
-        %font{:style => "font-family: HeydingsIconsRegular"} +
-        = link_to 'New invoice', new_invoice_path
+      %li= link_to "✯ nouvelle facture", new_invoice_path
       %hr
-      - invoices.each do |invoice|
+      - @invoices.each do |invoice|
         %li
           - active = (invoice_id == invoice.id ? :active_light : nil)
           = link_to invoice.to_s, invoice_path(invoice.id), :class => active

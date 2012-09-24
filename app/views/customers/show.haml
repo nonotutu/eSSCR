@@ -6,7 +6,11 @@
     .dl_deux_colonnes_base
       %dl
         %dt Data :
-        %dd= @customer.data
+        %dd
+          - if @customer.data
+            - @customer.data.lines.each do |ligne|
+              = ligne
+              %br
 
     %hr.intrasection_top_liens
     

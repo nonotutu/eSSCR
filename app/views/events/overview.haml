@@ -1,7 +1,7 @@
-= render 'events/list'
+= render "events/list"
 
 .main
-  = render 'events/header', :selected_item => 'overview'
+  = render "events/header", :selected_item => "overview"
 
   .section
 
@@ -72,7 +72,7 @@
         %td
           %font
             ⤷
-            = to_euro(calcul_prix_event_included(@event.id))
+            = to_euro(@event.calcul_prix_in_invoice)
         %td
           %font
             ⤷

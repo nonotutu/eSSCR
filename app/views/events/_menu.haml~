@@ -2,6 +2,9 @@
   %ul
 
     %li
+      = link_to "☰", invoices_path
+
+    %li
       - active = selected_item == "overview" ? :active : nil
       = link_to 'événement', event_overview_path(@event), :class => active
 
@@ -11,11 +14,13 @@
     
     %li
       - active = selected_item == "evitems" ? :active : nil
-      = link_to "facturation (#{@event.evitems.count})", event_evitems_path(@event), :class => active
+      = link_to "facturation", event_evitems_path(@event), :class => active
+      %font.discret= @event.evitems.count
 
     %li
       - active = selected_item == "refacs" ? :active : nil
-      = link_to "refacturation (#{@event.refacs.count})", event_refacs_path(@event), :class => active
+      = link_to "refacturation", event_refacs_path(@event), :class => active
+      %font.discret= @event.refacs.count
 
     %li
       - active = selected_item == "fullitem" ? :active : nil

@@ -51,17 +51,6 @@ module ApplicationHelper
   end
 
 
-  def calcul_prix_all_services_form_one_event(event_id)
-    event = Event.find(event_id)
-    tot = BigDecimal.new("0.0")
-    event.services.each do |service|
-      tot += calcul_prix_service_included(service.id)
-    end
-      
-    return tot
-    
-  end
-  
   
 
 
@@ -96,81 +85,6 @@ module ApplicationHelper
 
   
 
-
-  
-  def calcul_prix_event_included(event_id)
-
-    event = Event.find(event_id)
-
-    total = BigDecimal("0.0")
-    event.services.each do |service|
-      total += service.calcul_prix
-    end
-    
-    tot = BigDecimal("0.0")
-    event.evitems.each do |item|
-      if item.kind == 1
-        tot = item.qty * item.price
-      elsif item.kind == 2
-        tot = total * item.price / BigDecimal("100.0")
-      end
-      total = total + tot
-    end
-    
-    if event.invoice
-      tot = BigDecimal.new("0.0")
-      event.invoice.nositems.each do |item|
-        if item.kind == 2
-          tot = total * item.price / BigDecimal.new("100.0")
-        end
-        total += tot
-      end
-    end
-
-    total
-    
-  end
-
-  
-  def calcul_prix_invoice(invoice_id)
-        
-    total_invoice = BigDecimal.new("0.0")
-    invoice = Invoice.find(invoice_id)
-    invoice.events.each do |event|
-      total_event = BigDecimal.new("0.0")
-      event.services.each do |service|
-        total_service = BigDecimal.new("0.0")
-        service.seritems.order(:pos).each do |seritem|
-          ligne = Array.new
-          if seritem.kind == 1
-            total_service += seritem.qty * seritem.price
-          elsif seritem.kind == 2
-            total_service += total_service * seritem.price / BigDecimal("100.0")
-          end
-        end
-        total_event += total_service
-      end
-      event.evitems.order(:pos).each do |evitem|
-        if evitem.kind == 1
-          total_event += evitem.qty * evitem.price
-        elsif evitem.kind == 2
-          total_event += total_event * evitem.price / BigDecimal("100.0")
-        end
-      end
-      total_invoice += total_event
-    end
-    invoice.nositems.order(:pos).each do |nositem|
-      if nositem.kind == 1
-        total_invoice += nositem.qty * nositem.price
-      elsif nositem.kind == 2
-        total_invoice += total_invoice * nositem.price / BigDecimal("100.0")
-      end
-    end
-
-    total_invoice
-    
-  end
-        
     
   
 #   [0]   1 : item

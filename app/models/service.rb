@@ -37,7 +37,9 @@ class Service < ActiveRecord::Base
   scope :only_future, where("starts_at >= ?", Date.today)
   scope :only_past, where("ends_at <= ?", Date.today)
   scope :only_find, lambda  { |find| includes(:event).where("events.name LIKE '%#{find}%'") unless find.nil? }
- 
+  scope :only_customer, lambda { |client| includes(:event).where("events.customer_id = ?", client) unless client.nil? }
+
+  
   scope :by_date, order(:starts_at)
   scope :by_name, joins(:event).order(:name)
   
@@ -310,7 +312,7 @@ class Service < ActiveRecord::Base
   def calcul_prix
     
     total = BigDecimal.new("0.0")
-    self.seritems.each do |seritem|
+    self.seritems.order(:pos).each do |seritem|
       if seritem.kind == 1
         total += seritem.qty * seritem.price
       elsif seritem.kind == 2

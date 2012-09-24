@@ -4,11 +4,11 @@
     %tr
       %th Événement
       %th Prix facturé
-    - @invoice.events.each do |event|
+    - @invoice.events.by_date.each do |event|
       %tr
         %td
           = event.name
-        %td
+        %td.mono_droite
           = to_euro(event.calcul_prix_in_invoice)
 
 - else

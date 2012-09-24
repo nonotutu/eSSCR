@@ -1,7 +1,49 @@
+:ruby
+
+  #   if controller_name == "invoices"
+  #     invoice_id = params[:id].to_i
+  #   else
+  #     invoice_id = params[:invoice_id].to_i
+  #   end
+
+
+  if (params[:annee].present?)
+    session[:invoices_annee] = params[:annee]
+  end
+
+  if (params[:categ].present?)
+    session[:invoices_categ] = params[:categ]
+  end
+
+
 = render "invoices/list"
 
 .main
+
   .section
+
+    %form{:action => '', :method => :get}
+      %dl
+        %dt Année :
+        %dd
+          %select{:name => "annee"}
+            - @annees.each do |item|
+              - selected = ( ( item[:value] == params[:annee] ||= session[:invoices_annee] ) ? 'selected' : nil )
+              %option{ :value => item[:value], :selected => selected }= item[:name]
+      %dl
+        %dt Catégorie :
+        %dd
+          %select{:name => "categ"}
+            - @categs.each do |item|
+              - selected = ( ( item[:value] == params[:categ] ||= session[:invoices_categ] ) ? 'selected' : nil )
+              %option{ :value => item[:value], :selected => selected }= item[:name]
+      %dl
+        %dt
+        %dd
+          %input{:type => :submit, :value => 'go'}
+
+    %hr.intrasection
+  
     %table.ligne
       %tr
         %th Numéro
@@ -12,14 +54,13 @@
         %th Payée
         %th Status
         %th.au_centre ✔/✘
-      - Invoice.all.each do |invoice|
+      - @invoices.each do |invoice|
         %tr
-          %td
-            = invoice.number
+          %td= link_to invoice.number, invoice_overview_path(invoice)
           %td{:title => invoice.customer_data}
             = invoice.customer_data_to_s
           %td.a_droite
-            = to_euro(calcul_prix_invoice(invoice.id))
+            = to_euro(invoice.calcul_prix)
           %td.a_droite
             = invoice.events.count
           %td.a_droite
@@ -27,8 +68,6 @@
           %td.a_droite
             = invoice.paid_at
           %td
-            = invoice.status(1)
+            = invoice.status[:texte]
           %td.au_centre
-            = invoice.status(2)
-          %td.taille_min
-            = link_to "show", invoice_path(invoice)
+            = invoice.status[:symbole]

@@ -1,4 +1,4 @@
-# coding: utf-8
+# encoding: utf-8
 
 # 
 # 1.9.3p194 :017 > Invoice.includes(:events).group("invoices.id").count.count
@@ -40,55 +40,47 @@ class Invoice < ActiveRecord::Base
     ( self.customer_data.present? ? ( self.customer_data.lines.first ) : "" )
   end
   
+  
+  
+  def calcul_prix
+    
+    total = BigDecimal.new("0.0")
+    
+    self.events.each do |event|
+      total += event.calcul_prix
+    end
+    
+    self.nositems.order(:pos).each do |nositem|
+      if nositem.kind == 1
+        total += nositem.qty * nositem.price
+      elsif nositem.kind == 2
+        total += total * nositem.price / BigDecimal("100.0")
+      end
+    end
+
+    total
+    
+  end
+  
 # ✔✘
-  def status(type)
+  def status
     if self.paid_at.present?
       if self.paid_at > DateTime.now
-        case type
-        when 1
-          return "erreur"
-        else
-          return "⚠"
-        end
+        { :texte => "erreur", :symbole => "⚠" }
       end
       if self.sent_at.present?
-        case type
-        when 1
-          return "payée ↔ " + (self.paid_at - self.sent_at).to_i.to_s + " jours"
-        else
-          return "✔"
-        end
+        { :texte => "payée ↔ " + (self.paid_at - self.sent_at).to_i.to_s + " jours", :symbole => "✔" }
       else
-        case type
-        when 1
-          return "erreur"
-        else
-          return "⚠"
-        end
+        { :texte => "erreur", :symbole => "⚠" }
       end
     else
       if (self.sent_at.present?)
         if self.sent_at > DateTime.now
-          case type
-          when 1
-            return "erreur"
-          else
-            return "⚠"
-          end
+          { :texte => "erreur", :symbole => "⚠" }
         end
-        case type
-        when 1
-          return "attente ↶ " + ((DateTime.now - self.sent_at)).to_i.to_s + " jours"
-        else
-          return "⌛"
-        end
+        { :texte => "attente ↶ " + ((DateTime.now - self.sent_at)).to_i.to_s + " jours", :symbole => "⌛" }
       else
-        case type
-        when 1
-          return "à envoyer"
-        else
-          return "✉"
-        end
+        { :texte => "à envoyer", :symbole => "✉" }
       end
     end
   end

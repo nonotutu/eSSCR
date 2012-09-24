@@ -2,6 +2,9 @@
   %ul
 
     %li
+      = link_to "☰", events_path
+
+    %li
       - active = selected_item == "overview" ? :active : nil
       = link_to 'événement', event_overview_path(@event), :class => active
 

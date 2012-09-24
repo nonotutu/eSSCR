@@ -72,11 +72,11 @@
         %td
           %font
             ⤷
-            = to_euro(calcul_prix_event_included(@event.id))
+            = to_euro(@event.calcul_prix_in_invoice)
         %td
           %font
             ⤷
             - if @event.refacs.count > 0
-              = @event.calcul_prix_refacturation
+              = to_euro(@event.calcul_prix_refacturation)
             - elsif
               non

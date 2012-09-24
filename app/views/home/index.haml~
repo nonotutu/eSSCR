@@ -81,13 +81,13 @@
         %td
           = render "/horloge/horloge", :params => { :heures => 2, :minutes => 50, :size => 2 }
         %td
-          = render "/horloge/horloge", :params => { :heures => 3, :minutes => 0, :size => 2 }
+          = render "/horloge/horloge", :params => { :heures => 14, :minutes => 0, :size => 2 }
         %td
           = render "/horloge/horloge", :params => { :heures => 4, :minutes => 15, :size => 2 }
         %td
           = render "/horloge/horloge", :params => { :heures => 5, :minutes => 25, :size => 2 }
         %td
-          = render "/horloge/horloge", :params => { :heures => 6, :minutes => 35, :size => 2 }
+          = render "/horloge/horloge", :params => { :heures => 16, :minutes => 35, :size => 2 }
         %td
           = render "/horloge/horloge", :params => { :heures => 7, :minutes => 45, :size => 2 }
         %td
