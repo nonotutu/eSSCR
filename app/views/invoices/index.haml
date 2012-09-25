@@ -1,12 +1,7 @@
 :ruby
 
-  #   if controller_name == "invoices"
-  #     invoice_id = params[:id].to_i
-  #   else
-  #     invoice_id = params[:invoice_id].to_i
-  #   end
-
-
+  # mise en session des paramètres
+  
   if (params[:annee].present?)
     session[:invoices_annee] = params[:annee]
   end
@@ -15,43 +10,66 @@
     session[:invoices_categ] = params[:categ]
   end
 
+  if (params[:sens].present?)
+    session[:invoices_sens] = params[:sens]
+  end
 
-= render "invoices/list"
+-# non-affichage de la liste latérale - les paramètres sont issus du controller
+  = render "invoices/list"
 
 .main
 
   .section
 
-    %form{:action => '', :method => :get}
-      %dl
-        %dt Année :
-        %dd
-          %select{:name => "annee"}
-            - @annees.each do |item|
-              - selected = ( ( item[:value] == params[:annee] ||= session[:invoices_annee] ) ? 'selected' : nil )
-              %option{ :value => item[:value], :selected => selected }= item[:name]
-      %dl
-        %dt Catégorie :
-        %dd
-          %select{:name => "categ"}
-            - @categs.each do |item|
-              - selected = ( ( item[:value] == params[:categ] ||= session[:invoices_categ] ) ? 'selected' : nil )
-              %option{ :value => item[:value], :selected => selected }= item[:name]
-      %dl
-        %dt
-        %dd
-          %input{:type => :submit, :value => 'go'}
+    %table.invisible
+      %tr
+        %td
+          %form{:action => '', :method => :get}
+            .dl_search
+              %dl
+                %dt Année :
+                %dd
+                  %select{:name => "annee"}
+                    - @annees.each do |item|
+                      - selected = ( ( item[:value] == params[:annee] ||= session[:invoices_annee] ) ? 'selected' : nil )
+                      %option{ :value => item[:value], :selected => selected }= item[:name]
+              %dl
+                %dt Catégorie :
+                %dd
+                  %select{:name => "categ"}
+                    - @categs.each do |item|
+                      - selected = ( ( item[:value] == params[:categ] ||= session[:invoices_categ] ) ? 'selected' : nil )
+                      %option{ :value => item[:value], :selected => selected }= item[:name]
+              %dl
+                %dt Sens :
+                %dd
+                  %select{:name => "sens"}
+                    - @sens.each do |item|
+                      - selected = ( ( item[:value] == params[:sens] ||= session[:invoices_sens] ) ? 'selected' : nil )
+                      %option{ :value => item[:value], :selected => selected }= item[:name]
+              %dl
+                %dt
+                %dd
+                  %input{:type => :submit, :value => '→ → → →'}
+        %td{:style => "vertical-align: middle; text-align: center; color: blue"}
+          %font{:style => "font-size: small; border-bottom: 2px dashed lightblue"}
+            &nbsp
+            factures concernées :
+          %font{:style => "font-weight: bold; font-size: large; font-family: 'DejaVu Sans Mono'; text-shadow: 0 0 1px blue, 0 1px 1px blue, 0 -1px 1px blue, 1px 0 1px blue, 1px 1px 1px blue, 1px -1px 1px blue, -1px 0 1px blue, -1px 1px 1px blue, -1px -1px 1px blue; color: white;"}
+            &nbsp
+            = @invoices.count
+            &nbsp
 
-    %hr.intrasection
+      
   
     %table.ligne
       %tr
         %th Numéro
         %th Client (papier)
         %th Montant
-        %th Événements
-        %th Envoyée
-        %th Payée
+        %th # événements
+        %th Envoyée le
+        %th Payée le
         %th Status
         %th.au_centre ✔/✘
       - @invoices.each do |invoice|
@@ -59,7 +77,7 @@
           %td= link_to invoice.number, invoice_overview_path(invoice)
           %td{:title => invoice.customer_data}
             = invoice.customer_data_to_s
-          %td.a_droite
+          %td.mono_droite
             = to_euro(invoice.calcul_prix)
           %td.a_droite
             = invoice.events.count
@@ -71,3 +89,11 @@
             = invoice.status[:texte]
           %td.au_centre
             = invoice.status[:symbole]
+
+    %hr.intrasection_top_liens
+
+    .liens_intrasection
+      = link_to "✯ nouvelle facture", new_invoice_path
+    
+    %hr.intrasection_bottom_liens
+    

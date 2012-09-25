@@ -6,7 +6,7 @@
 
 
   .section.texte
-    Les éléments facturés relatifs à la facture agissent sur l'ensemble de celle-ci.
+    Les éléments ici facturés sont relatifs à la totalité de la facture et agissent sur l'ensemble de celle-ci.
 
   .section
     = render "list_nositems"

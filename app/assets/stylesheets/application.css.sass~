@@ -41,6 +41,11 @@ hr.intrasection_bottom_liens
   @extend hr.intrasection
   margin-top: 4px
 
+table.invisible
+  border-collapse: collapse
+  margin: 0
+  padding: 0
+  
 .dl_deux_colonnes_base
   dl
     width: 100%
@@ -65,11 +70,24 @@ hr.intrasection_bottom_liens
       i
         color: gray
 
+.dl_show
+  @extend .dl_deux_colonnes_base
+  dl
+    dt
+      color: blue
+      
+.dl_search
+  @extend .dl_deux_colonnes_base
+  dl
+    dt
+      color: blue
+      width: 256px
   
 .main
   overflow: auto
   .title
     font-family: "Ubuntu"
+    margin: -1px 0 -7px 0
     color: black
     text-shadow: 1px 1px 1px blue, -1px 1px 1px blue, 1px -1px 1px blue, -1px -1px 1px blue
     color: lightblue

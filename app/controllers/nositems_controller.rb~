@@ -4,7 +4,7 @@ class NositemsController < InvoicesController #InheritedResources::Base
   belongs_to :invoice
   
   def index
-    generate_liste
+    super.generate_liste
     @invoice = Invoice.find(params[:invoice_id])
     # pour éditer un evitem sans la page edit, s'il est dans les params
     @nositem = begin Nositem.find(params[:nositem_id]) rescue nil end

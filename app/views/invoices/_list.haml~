@@ -1,16 +1,14 @@
 
-- if params[:invoices]
-  - invoices = params[:invoices]
+- if controller_name == "invoices"
+  - invoice_id = params[:id].to_i
 - else
-  - invoices = Invoice.all
-
-- invoice_id = nil
+  - invoice_id = params[:invoice_id].to_i
   
 .left_menus
-  .menu_gauche_1
+  .menu_gauche_0
     %ul
-      %li= link_to "✯ nouvelle facture", new_invoice_path
-      %hr
+      -#%li= link_to "✯ nouvelle facture", new_invoice_path
+      -#%hr
       - @invoices.each do |invoice|
         %li
           - active = (invoice_id == invoice.id ? :active_light : nil)

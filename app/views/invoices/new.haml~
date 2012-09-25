@@ -2,8 +2,6 @@
 
 .main
 
-  = render 'invoices/header', :selected_item => "show"
-  
   .section
 
     = render 'form'

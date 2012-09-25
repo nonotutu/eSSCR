@@ -238,7 +238,7 @@ module ApplicationHelper
     invoice = Invoice.find(invoice_id)
     
     invoice.events.each do |event|
-      total += calcul_prix_event(event.id)
+      total += event.calcul_prix
     end
     ligne = Array.new
     ligne << 3 << nil << "Events/Services related items" << nil << nil << to_euro(total)

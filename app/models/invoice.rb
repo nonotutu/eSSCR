@@ -31,6 +31,7 @@ class Invoice < ActiveRecord::Base
   scope :wnw_events
   scope :only_sent_not_paid, where("sent_at IS NOT NULL AND paid_at IS NULL")
   scope :only_not_sent, where("sent_at IS NULL")
+  # scope :only_status, lambda { |status| self.status[:code] == status unless status.nil? }
 
   def to_s
     self.number + ( self.customer_data_to_s ? ( " - " + self.customer_data_to_s ) : "" )
@@ -66,21 +67,21 @@ class Invoice < ActiveRecord::Base
   def status
     if self.paid_at.present?
       if self.paid_at > DateTime.now
-        { :texte => "erreur", :symbole => "⚠" }
+        { :texte => "erreur", :symbole => "⚠", :code => "-1" }
       end
       if self.sent_at.present?
-        { :texte => "payée ↔ " + (self.paid_at - self.sent_at).to_i.to_s + " jours", :symbole => "✔" }
+        { :texte => "payée ↔ " + (self.paid_at - self.sent_at).to_i.to_s + " jours", :symbole => "✔", :code => "1" }
       else
-        { :texte => "erreur", :symbole => "⚠" }
+        { :texte => "erreur", :symbole => "⚠", :code => "-1" }
       end
     else
       if (self.sent_at.present?)
         if self.sent_at > DateTime.now
-          { :texte => "erreur", :symbole => "⚠" }
+          { :texte => "erreur", :symbole => "⚠", :code => "-1" }
         end
-        { :texte => "attente ↶ " + ((DateTime.now - self.sent_at)).to_i.to_s + " jours", :symbole => "⌛" }
+        { :texte => "attente ↶ " + ((DateTime.now - self.sent_at)).to_i.to_s + " jours", :symbole => "⌛", :code => "3" }
       else
-        { :texte => "à envoyer", :symbole => "✉" }
+        { :texte => "à envoyer", :symbole => "✉", :code => "2" }
       end
     end
   end
