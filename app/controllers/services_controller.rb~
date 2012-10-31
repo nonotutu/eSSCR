@@ -1,11 +1,18 @@
 # coding: utf-8
-class ServicesController < InheritedResources::Base
+class ServicesController < EventsController #InheritedResources::Base
 
   belongs_to :event
   
   def stats
+    generate_liste
     @event = Event.find(params[:event_id])
     @service = Service.find(params[:id])
+  end
+  
+  def new
+    generate_liste
+    @event = Event.find(params[:event_id])
+    @service = Service.new(params[:service])
   end
   
   def destroy
@@ -24,7 +31,13 @@ class ServicesController < InheritedResources::Base
     
   end
 
+  def show
+    generate_liste
+    @event = Event.find(params[:event_id])
+    @service = Service.find(params[:id])
+  end
 
+  # Miracle ... fonctionne via une route définie, toujours par miracle
   def update_stats
     
     @service = Service.find(params[:id])
@@ -124,6 +137,7 @@ class ServicesController < InheritedResources::Base
   end
 
   def overview
+    generate_liste
     # nécessaires pour les menus
     @service = Service.find(params[:id])
     @event = @service.event

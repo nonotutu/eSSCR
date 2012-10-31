@@ -7,19 +7,23 @@
 
   .section.texte
     Les éléments ici facturés sont relatifs à la totalité de la facture et agissent sur l'ensemble de celle-ci.
-
+ 
   .section
-    = render "list_nositems"
-    %hr.intrasection
-
+    = render 'list_nositems'
+    
     - if params[:mode] == 'edit'
-      .section
-        = render "form"
-                
-  .lien_bas_de_page
-    - unless params[:mode] == 'edit'
-      ➤
-      = link_to 'Manage', invoice_nositems_path(params[:invoice_id], :mode => "edit")
+      %hr.intrasection
+      = render 'form'
+      %hr.intrasection_top_liens
     - else
-      ➤
-      = link_to 'Back', invoice_nositems_path
+      %hr.intrasection_top_liens
+      
+    .liens_intrasection
+      - unless params[:mode] == "edit"
+        = link_to '⇇ back', invoice_overview_path
+        |
+        = link_to '⚙ manage', invoice_nositems_path(params[:invoice_id], :mode => 'edit')
+      - else
+        = link_to '⇇ back', invoice_nositems_path
+
+    %hr.intrasection_bottom_liens

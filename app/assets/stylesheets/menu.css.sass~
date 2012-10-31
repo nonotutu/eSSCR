@@ -6,7 +6,7 @@
   float : top
   margin: 8px 0 0 8px
   font.discret
-    color: white
+    color: black
     font-size: x-small
     vertical-align: top
   ul
@@ -91,7 +91,7 @@
     
   .menu_gauche_3
     @extend .menu_gauche_0
-    height: 450px
+    height: 100%
     
   .menu_gauche_options
     @extend .menu_gauche_0

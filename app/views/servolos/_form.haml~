@@ -1,5 +1,5 @@
 :ruby
-  heures_from_début_to_fin = Array.new
+  heures_from_debut_to_fin = Array.new
   deb = @service.debut
   fin = @service.fin
   while deb <= fin
@@ -16,56 +16,46 @@
     end
       
     duo << deb
-    heures_from_début_to_fin << duo
+    heures_from_debut_to_fin << duo
     deb += 5*60
   end
 
 
 = simple_form_for ([@event, @service, @servolo ||= Servolo.new ]) do |f|
   = f.input :service_id, :input_html => { :value => params[:service_id] }, :as => :hidden
-  %table.formulaire
-    %tr
-      %td
-        %table{:style => 'border-collapse: collapse' }
-          %tr
-            %th{ :style => 'text-align: left' }
-              Volontaire :
-          %tr
-            %td
-              = f.association :volo,                                                    |
-                :collection => Volo.only_actif.only_crentite(4).by_first_name.all       |
-                + Volo.only_actif.only_not_crentite(4).by_first_name.all,               |
-                :input_html => { :size => 8 }, :include_blank => false, :label => false |
-      %td{ :valign => 'top' }
-        %table
-          %tr
-            %th
-              De :
-            %td
-              = f.input :starts_at,
-                        :collection => heures_from_début_to_fin,
-                        :selected => @servolo.starts_at ||= @service.début,
-                        :include_blank => false,                        
-                        :label => false
-          %tr
-            %th
-              À :
-            %td
-              = f.input :ends_at,
-                        :collection => heures_from_début_to_fin,
-                        :selected => @servolo.ends_at ||= @service.ends_at,
-                        :include_blank => false,
-                        :label => false
-          %tr
-            %th
-              Rendez-vous :
-            %td
-              = f.input :rendezvous,
-                        :as => :radio,
-                        :collection => [['Départ', 1], ['Sur place', 2]],
-                        :label_method => :first,
-                        :value_method => :last,
-                        :label => false
-          %tr
-            %td{ :colspan => 3, :align => "right" }
-              = f.submit
+  .dl_deux_colonnes_base
+    %dl
+      %dt Volontaire :
+      %dd
+        = f.association :volo,                                                    |
+          :collection => Volo.only_actif.only_crentite(4).by_first_name.all       |
+          + Volo.only_actif.only_not_crentite(4).by_first_name.all,               |
+          :input_html => { :size => 6 }, :include_blank => false, :label => false |
+    %dl
+      %dt De :
+      %dd
+        = f.input :starts_at,
+                  :collection => heures_from_debut_to_fin,
+                  :selected => @servolo.starts_at ||= @service.debut,
+                  :include_blank => true,                        
+                  :label => false
+    %dl
+      %dt À :
+      %dd
+        = f.input :ends_at,
+                  :collection => heures_from_debut_to_fin,
+                  :selected => @servolo.ends_at ||= @service.ends_at,
+                  :include_blank => true,
+                  :label => false
+    %dl
+      %dt Rendez-vous :
+      %dd
+        = f.input :rendezvous,
+                  :as => :radio,
+                  :collection => [['Départ', 1], ['Sur place', 2]],
+                  :label_method => :first,
+                  :value_method => :last,
+                  :label => false
+    %dl
+      %dt
+      %dd= f.submit

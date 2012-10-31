@@ -7,17 +7,18 @@
 
   .section
 
-    = render "/table_titre_intrasection", :params => { :titre => "Général", :link_to_edit => event_service_path(@event, @service) }
+    = render "/table_titre_intrasection", :params => { :titre => "Général", :link_to_edit => edit_event_service_path(@event, @service) }
     = render "data_short"
    
-    = render "/table_titre_intrasection", :params => { :titre => "Dispositif", :link_to_edit => event_service_disposers_path(@event, @service) }
+    = render "/table_titre_intrasection", :params => { :titre => "Dispositif", :link_to_edit => event_service_disposers_path(@event, @service, :mode => 'edit') }
     = render "disposers/inline_pictures", :params => { :icon_size => "4" }
 
-    = render "/table_titre_intrasection", :params => { :titre => "Volontaires", :link_to_edit => event_service_servolos_path(@event, @service) }
-    = render "servolos/graph"
+    - if !@service.crentite && @service.servolos.count != 0
+      = render "/table_titre_intrasection", :params => { :titre => "Volontaires", :link_to_edit => event_service_servolos_path(@event, @service, :mode => 'edit') }
+      = render "servolos/graph"
 
-    = render "/table_titre_intrasection", :params => { :titre => "Statistiques", :link_to_edit => event_service_stats_path(@event, @service, :mode => "edit") }
-    = render "/table_oneline_stats", :params => { :service_id => @service.id }
+    = render "/table_titre_intrasection", :params => { :titre => "Statistiques", :link_to_edit => event_service_stats_path(@event, @service, :mode => 'edit') }
+    = render "/table_oneline_stats"
 
     = render "/table_titre_intrasection", :params => { :titre => "Facturation", :link_to_edit => event_service_seritems_path(@event, @service) }
     = render "seritems/table"

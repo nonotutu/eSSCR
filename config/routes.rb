@@ -35,6 +35,8 @@ ESSCR2::Application.routes.draw do
   
   match "home" => "home#index", :as => :home
   
+  match 'tools/montants' => 'tools#montants', :as => :montants
+  
   match "tools" => "tools#index", :as => :tools
   scope "/tools" do
     resources :templitems, :customers, :crentites

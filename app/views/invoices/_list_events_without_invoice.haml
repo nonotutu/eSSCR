@@ -5,16 +5,14 @@
       %th Nom
       %th Catégorie
       %th # services
-      -# TODO : controller ou model ?
-      -# @events_without_invoice.each do |event|
       - Event.only_without_invoice_and_not_free.each do |event|
         %tr
           %td= event.name
           %td= event.category.short_name
           %td= event.services.count
-          %td.taille_min
-            = link_to "add", :controller => :events, :action => :add_to_invoice, :id => event.id, :invoice => @invoice
+          %td.manage_link{:title => "add"}
+            = link_to "⊕", :controller => :events, :action => :add_to_invoice, :id => event.id, :invoice => @invoice
               
 - else
 
-  %i ∅ aucun événement à facturer ─
+  %i ─ aucun événement à facturer ─

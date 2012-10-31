@@ -1,8 +1,9 @@
-class DisposersController < InheritedResources::Base
+class DisposersController < EventsController #InheritedResources::Base
   
   belongs_to :event, :service
   
   def index
+    generate_liste
     @event = Event.find(params[:event_id])
     @service = Service.find(params[:service_id])
     # pour éditer un evitem sans la page edit, s'il est dans les params

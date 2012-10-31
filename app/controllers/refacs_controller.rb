@@ -1,9 +1,10 @@
-class RefacsController < InheritedResources::Base
+class RefacsController < EventsController #InheritedResources::Base
   
   belongs_to :event
   
 
   def index
+    generate_liste
     # pour le menu
     @event = Event.find(params[:event_id])
     # TODO : pour éditer un refac sans la page edit, s'il est dans les params ?

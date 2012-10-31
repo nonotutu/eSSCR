@@ -15,6 +15,12 @@ class InvoicesController < InheritedResources::Base
   end
   
   
+  def edit
+    generate_liste
+    @invoice = Invoice.find(params[:id])
+  end
+  
+  
   def index
   
     # génération des tableaux de liste de choix
@@ -29,15 +35,16 @@ class InvoicesController < InheritedResources::Base
     @categs << { :value => "2", :name => "sans événement" }
 
     @sens = Array.new
-    @sens << { :value => "up", :name => "↑↑↑↑" }
-    @sens << { :value => "down", :name => "↓↓↓↓" }
+    @sens << { :value => "up", :name => "↑↑" }
+    @sens << { :value => "down", :name => "↓↓" }
 
-#     @status = Array.new
-#     @status << { :value => "all", :name => "········" }
-#     @status << { :value => "-1", :name => "erreur" }
-#     @status << { :value => "1", :name => "payée" }
-#     @status << { :value => "2", :name => "à envoyer" }
-#     @status << { :value => "3", :name => "en attente" }
+    @status = Array.new
+    @status << { :value => '-1', :name => "erreur" }
+    @status << { :value => '1', :name => "payée" }
+    @status << { :value => '2', :name => "à envoyer" }
+    @status << { :value => '3', :name => "en attente de paiement" }
+
+    generate_liste
     
   end
 
@@ -45,18 +52,21 @@ class InvoicesController < InheritedResources::Base
   def events
     generate_liste
     @invoice = Invoice.find(params[:id])
-    @events_without_invoice = Event.where(:invoice_id => nil).where(:is_free => false)
+    #@events_without_invoice = Event.where(:invoice_id => nil).where(:is_free => false)
   end
 
+  
   def overview
     generate_liste
     @invoice = Invoice.find(params[:id])
   end
 
+  
   def new
     @invoice = Invoice.new
     @invoice.number = begin Invoice.order(:number).last.number.next rescue "2010-001" end
   end
+  
   
 protected
 
@@ -65,39 +75,29 @@ protected
     # assignation des choix, premièrement si paramètres, deuxièmement, si variables de session
     annee  = params[:annee]  ||= session[:invoices_annee]
     categ  = params[:categ]  ||= session[:invoices_categ]
-#     status = params[:status] ||= session[:invoices_status]
-    sens   = params[:sens]   ||= session[:invoices_sens]
+    sens   = params[:sens]   ||= session[:invoices_sens]   ||= 'up'
+    status = params[:status] ||= session[:invoices_status]
 
-    # si aucun paramètre ou session, génération de la liste de TOUS
-#     unless annee && categ && status
-    unless annee && categ
-      @invoices = Invoice.order(:number).all
-    else
-      @invoices = Invoice.order(:number)
-    end
+    @invoices = Invoice #doit être scopé. (le sera au minimum sur le sens)
     
     # affutage selon les paramètres ou les sessions 
-    if annee && annee != "all"
+    if annee && annee != 'all'
         @invoices = @invoices.only_year(annee)
     end
 
     if categ
       case categ
-      when "1"
+      when '1'
         @invoices = @invoices.only_with_events
-      when "2"
+      when '2'
         @invoices = @invoices.only_without_events
       end
     end
-
-#     if status
-#       unless status = "all"
-#         @invoices = @invoices.only_status(status)
-#       end
-#     end
-
-    if sens && sens == "down"
+ 
+    if sens && sens == 'down'
       @invoices = @invoices.reverse
+    else # sens == 'up'
+      @invoices = @invoices.all
     end
     
   end

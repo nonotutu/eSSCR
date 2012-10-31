@@ -35,7 +35,7 @@ class InvoicePdf < PdfFacture
     
     move_down 8.mm
     
-    a_payer(to_euro(calcul_prix_invoice(@invoice.id)))
+    a_payer(to_euro(@invoice.calcul_prix))
     
     move_down 8.mm
     

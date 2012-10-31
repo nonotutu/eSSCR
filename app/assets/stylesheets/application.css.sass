@@ -12,6 +12,7 @@
 // = require_tree
 //
 // ⊕⊖⊗⊘⊙⊚⊛⊜⊝
+// ⇇ ⚙
 
 body
   font-family: "URW Gothic L"
@@ -46,6 +47,8 @@ table.invisible
   margin: 0
   padding: 0
   width: 100%
+  &.egal
+    table-layout: fixed
   
 .dl_deux_colonnes_base
   dl
@@ -82,7 +85,12 @@ table.invisible
   dl
     dt
       color: blue
-      width: 256px
+
+.dl_form
+  @extend .dl_deux_colonnes_base
+  dl
+    dt
+      color: blue
   
 .main
   overflow: auto

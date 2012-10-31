@@ -1,0 +1,25 @@
+:ruby
+
+.dl_deux_colonnes_base
+  %dl
+    %dt Services :
+    %dd
+      %table.little.spotchi
+        - (2010..2012).each do |année|
+          - if ( q = @volo.quantity_of_services(année) ) != 0
+            %tr
+              %td.mono_droite
+                = année
+                = link_to "⊙", events_path(:params => { :volo => @volo.id, :annee => année, :reset => 'reset' })
+              %td.mono_droite
+                = q
+              %td.mono_droite
+                = humanize_time_range(@volo.duration_of_services(année))
+        %tr
+          %th.mono_droite
+            total
+            = link_to "⊙", events_path(:params => { :volo => @volo.id, :reset => 'reset' })
+          %th.mono_droite
+            = @volo.quantity_of_services
+          %th.mono_droite
+            %dd= humanize_time_range(@volo.duration_of_services)

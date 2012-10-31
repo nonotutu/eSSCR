@@ -93,7 +93,7 @@ class Event < ActiveRecord::Base
   end
   
   
-  def calcul_prix_in_invoice
+  def calcul_prix_included
 
     total = self.calcul_prix
     

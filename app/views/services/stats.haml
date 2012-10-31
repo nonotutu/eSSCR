@@ -6,18 +6,19 @@
   = render 'services/header', :selected_item => 'stats'
 
   .section
-    - if params[:mode] == "edit"
-      = render "form_stats"
+    - if params[:mode] == 'edit'
+      = render 'form_stats'
     - else
-      = render "table_stats"
+      = render 'table_stats'
   
-    %hr.intrasection
+    %hr.intrasection_top_liens
   
-  .lien_bas_de_page
-    ➤
-    - unless params[:mode] == "edit"
-      = link_to "Edit", event_service_stats_path(@event, @service, :mode => "edit")
-      |
-      = link_to "Back", event_service_overview_path(@event, @service)
-    - else
-      = link_to "Back", event_service_stats_path(@event, @service)
+    .lien_bas_de_page
+      - unless params[:mode] == 'edit'
+        = link_to '⇇ back', event_service_overview_path(@event, @service)
+        |
+        = link_to '⊚ edit', event_service_stats_path(@event, @service, :mode => "edit")
+      - else
+        = link_to '⇇ back', event_service_stats_path(@event, @service)
+
+    %hr.intrasection_bottom_liens

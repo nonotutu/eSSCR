@@ -1,4 +1,4 @@
-class ServolosController < InheritedResources::Base
+class ServolosController < EventsController #InheritedResources::Base
 
   #before_filter :heures_auto, :only => [:create]
   
@@ -6,6 +6,7 @@ class ServolosController < InheritedResources::Base
   belongs_to :event, :service
 
   def index
+    generate_liste
     @event = Event.find(params[:event_id])
     @service = Service.find(params[:service_id])
     # pour éditer un evitem sans la page edit, s'il est dans les params
@@ -63,9 +64,9 @@ class ServolosController < InheritedResources::Base
     @servolo.starts_at = @servolo.service.debut
     @servolo.ends_at = @servolo.service.ends_at
     if @servolo.service.debut == @servolo.service.depart_at
-      @servolo.rendezvous = "1"
+      @servolo.rendezvous = '1'
     else
-      @servolo.rendezvous = "2"
+      @servolo.rendezvous = '2'
     end
 
   end

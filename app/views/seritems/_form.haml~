@@ -1,8 +1,8 @@
 :ruby
   # remplir les champs avec les données du template_invoiced_item_id si passé en paramètre
-  t_id = params[:template_invoiced_item_id]
+  t_id = params[:templitem_id]
   if t_id.present?
-    template        = TemplateInvoicedItem.find(t_id)
+    template        = Templitem.find(t_id)
     item            = Seritem.new
     item.name       = template.name
     item.kind       = template.kind
@@ -11,48 +11,43 @@
     seritem         = item
   end
 
-=# formulaire mis en page
-.formulaire
-  %table
-    %tr
-      %td{ :class => 'form_gauche' }
-        %i
-          Template :
-      %td{ :colspan => '5' }
-        %form{ :method => :get }
-          %select{ :name => :template_invoiced_item_id }
-            %option{ :value => '' }
-            = TemplateInvoicedItem.all.each do |item|
-              - selected = ( ( t_id.present? && template.pos == item.pos ) ? 'selected' : nil )
-              %option{ :value => item.id, :selected => selected }
-                = item.name
-          %input{ :type => :hidden, :name => 'mode', :value => 'edit' }
-          %input{ :type => :submit, :value => 'Use' }
-    = simple_form_for ([@event, @service, seritem ||= @seritem ||= Seritem.new ]) do |f|
-      %tr
-        %td{ :class => 'form_gauche' }
-          Name :
-        %td{ :colspan => '5' }
-          = f.input :name, :label => false
-      %tr
-        %td{ :class => 'form_gauche' }
-          Quantity :
-        %td
-          = f.input :qty, :label => false, :input_html => {:size => 2}
-        %td{ :class => 'form_gauche' }
-          Kind :
-        %td
-          = f.input :kind,
-              :as => :radio,
-              :collection => [['€', 1], ['%', 2]],
-              :label_method => :first,
-              :value_method => :last,
-              :label => false
-        %td{ :class => 'form_gauche' }
-          Price :
-        %td
-          = f.input :price, :label => false, :input_html => {:size => 2} 
-      %tr
-        %td
-        %td{ :colspan => '5', :align => :right }
-          = f.button :submit    
+.dl_form
+  %dl
+    %dt Modèle :
+    %dd
+      %form{ :method => :get }
+        %select{ :name => :templitem_id }
+          %option{ :value => '' }
+          = Templitem.all.each do |item|
+            - selected = ( ( t_id.present? && template.pos == item.pos ) ? 'selected' : nil )
+            %option{ :value => item.id, :selected => selected }
+              = item.name
+        %input{ :type => :hidden, :name => 'mode', :value => 'edit' }
+        %input{ :type => :submit, :value => 'Use' }
+  = simple_form_for ([@event, @service, seritem ||= @seritem ||= Seritem.new ]) do |f|
+    %dl
+      %dt Dénomination :
+      %dd
+        = f.input :name, :label => false, :input_html => {:size => 40}
+    %dl
+      %dt
+        Quantity :
+      %dd
+        = f.input :qty, :label => false, :input_html => {:size => 4}
+    %dl
+      %dt Type :
+      %dd
+        = f.input :kind,
+            :as => :radio,
+            :collection => [['€', 1], ['%', 2]],
+            :label_method => :first,
+            :value_method => :last,
+            :label => false
+    %dl
+      %dt Prix :
+      %dd
+        = f.input :price, :label => false, :input_html => {:size => 4} 
+    %dl
+      %dt
+      %dd
+        = f.button :submit

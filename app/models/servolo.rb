@@ -9,7 +9,7 @@ class Servolo < ActiveRecord::Base
   validates :service_id, :presence => true
   validates :volo_id,    :presence => true
 
-  validate  :rdv_is_nil_1_2
+  validate  :rdv_is_nil_1_2_3
   validate  :starts_at_is_in_service_range
   validate  :ends_at_is_in_service_range
   validate  :duree_is_not_0
@@ -32,8 +32,8 @@ class Servolo < ActiveRecord::Base
     end
   end
 
-  def rdv_is_nil_1_2
-    if ( self.rendezvous != "1" && self.rendezvous != "2" )
+  def rdv_is_nil_1_2_3
+    if ( self.rendezvous != "1" && self.rendezvous != "2" && self.rendezvous != "3" )
       self.rendezvous = nil
     end
   end
@@ -77,10 +77,12 @@ class Servolo < ActiveRecord::Base
   
   def rendezvous_to_s
     case self.rendezvous
-      when "1"
-        return "départ"
-      when "2"
-        return "sur place"
+      when '1'
+        return 'départ'
+      when '2'
+        return 'sur place'
+      when '3'
+        return 'trajet'
     end
   end
   

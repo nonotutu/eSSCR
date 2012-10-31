@@ -8,7 +8,7 @@
       %tr
         %td
           = event.name
-        %td
+        %td.mono_droite
           = to_euro(event.calcul_prix_in_invoice)
 
 - else

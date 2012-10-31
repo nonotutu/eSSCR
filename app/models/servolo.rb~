@@ -9,12 +9,12 @@ class Servolo < ActiveRecord::Base
   validates :service_id, :presence => true
   validates :volo_id,    :presence => true
 
-  validate  :rdv_is_nil_1_2
+  validate  :rdv_is_nil_1_2_3
   validate  :starts_at_is_in_service_range
   validate  :ends_at_is_in_service_range
   validate  :duree_is_not_0
     
-  scope :by_first_name, joins(:volo).order(:first_name)
+  scope :by_first_name, joins(:volo).order(:first_name, :last_name)
 
   def debut
     if starts_at.nil?
@@ -33,7 +33,7 @@ class Servolo < ActiveRecord::Base
   end
 
   def rdv_is_nil_1_2
-    if ( self.rendezvous != "1" && self.rendezvous != "2" )
+    if ( self.rendezvous != "1" && self.rendezvous != "2" && self.rendezvous != "3" )
       self.rendezvous = nil
     end
   end
@@ -77,10 +77,12 @@ class Servolo < ActiveRecord::Base
   
   def rendezvous_to_s
     case self.rendezvous
-      when "1"
-        return "départ"
-      when "2"
-        return "sur place"
+      when '1'
+        return 'départ'
+      when '2'
+        return 'sur place'
+      when '3'
+        return 'trajet'
     end
   end
   
@@ -115,8 +117,10 @@ class Servolo < ActiveRecord::Base
   
   # Array des présences d'un servolo, par bloc de 5 minutes
   def generate_ligne_servolo
+    
+#     nb_times_volo = self.service.servolos.where("volo_id = ?", self.volo.id).count
+    
     ligne = Array.new
-    ligne << self.volo.first_name << self.volo.full_name_avec_crentite
     pt = self.service.debut+1.second
     while pt <= self.service.fin
       if pt > self.debut && pt < self.fin
@@ -126,6 +130,7 @@ class Servolo < ActiveRecord::Base
       end
       pt += 5.minutes
     end
+    ligne << self.volo.first_name << self.volo.full_name_avec_crentite
     ligne
   end
     

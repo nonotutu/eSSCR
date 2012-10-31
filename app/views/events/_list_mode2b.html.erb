@@ -5,13 +5,13 @@
     &nbsp
     <%= link_to '✯ nouvel événement', new_event_path %>
   <% if ( params[:id].present? || params[:event_id].present? ) %>
-    &nbsp&nbsp&nbsp&nbsp
+    |
     <%= link_to '✯ nouveau service', new_event_service_path(@event) %>
   </li>
   <% end %>
   <hr/>
     <ul>
-      <% services.each do |service| %>
+      <% @services.each do |service| %>
         <% if service.event.id == last_event_id %>
           <li><%= link_to service.to_s, event_service_overview_path(service.event.id, service.id), :class => (service_id == service.id ? :active : nil) %></li>
         <% else %>

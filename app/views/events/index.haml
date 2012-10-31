@@ -1,16 +1,167 @@
-= render "list"
+-# mise en session des paramètres
+
+- if (params[:categ].present?)
+  - session[:events_categ] = params[:categ]
+
+- if (params[:moment].present?)
+  - session[:events_moment] = params[:moment]
+
+- if (params[:annee].present?)
+  - session[:events_annee] = params[:annee]
+
+- if (params[:client].present?)
+  - session[:events_client] = params[:client]
+
+- if (params[:sens].present?)
+  - session[:events_sens] = params[:sens]
+
+- if (params[:find].present? || params[:find] == "")
+  - session[:events_find] = params[:find]
+
+- if (params[:volo].present?)
+  - session[:events_volo] = params[:volo]
+
+- if (params[:liste_type].present?)
+  - session[:events_liste_type] = params[:liste_type]
+
+
+-# type de liste par défaut
+- if session[:events_liste_type] == ''
+  - session[:events_liste_type] = '2'
 
 .main
 
   .section
 
-    %table.ligne
+    %table.invisible
       %tr
-        %th Événement
-        %th # services
-        %th Status
-      - @events.by_date.each do |event|
+        %td{:width => '50%'}
+          %form{:action => '', :method => :get}
+            .dl_search
+              %dl
+                %dt Catégorie : 
+                %dd
+                  %select{:name => 'categ'}
+                    - @categs.each do |item|
+                      - selected = ( item[:value] == session[:events_categ].to_i ? 'selected' : nil )
+                      %option{ :value => item[:value], :selected => selected }= item[:name]
+              %dl
+                %dt Moment : 
+                %dd
+                  %select{:name => 'moment'}
+                    - @moments.each do |item|
+                      - selected = ( item[:value] == session[:events_moment] ? 'selected' : nil )
+                      %option{ :value => item[:value], :selected => selected }= item[:name]
+              %dl
+                %dt Année :
+                %dd
+                  %select{:name => 'annee'}
+                    - @annees.each do |item|
+                      - selected = ( item[:value] == session[:events_annee] ? 'selected' : nil )
+                      %option{ :value => item[:value], :selected => selected }= item[:name]
+              %dl
+                %dt Client : 
+                %dd
+                  %select{:name => 'client'}
+                    - @clients.each do |item|
+                      - selected = ( item[:value] == session[:events_client].to_i ? 'selected' : nil )
+                      %option{ :value => item[:value], :selected => selected }= item[:name]
+              %dl
+                %dt Sens :
+                %dd
+                  %select{:name => 'sens'}
+                    - @sens.each do |item|
+                      - selected = ( item[:value] == session[:events_sens] ? 'selected' : nil )
+                      %option{ :value => item[:value], :selected => selected }= item[:name]
+              %dl
+                %dt Ꙫ :
+                %dd
+                  %input{ :name=>'find',
+                          :value => session[:events_find],
+                          :size => '30',
+                          :placeholder => "recherche sur : nom / lieu / aaaa-mm-jj" }
+              %dl
+                %dt Volontaire :
+                %dd
+                  %select{:name => 'volo'}
+                    - @volos.each do |item|
+                      - selected = ( item[:value] == session[:events_volo].to_i ? 'selected' : nil )
+                      %option{ :value => item[:value], :selected => selected }= item[:name]
+              %dl
+                %dt Liste :
+                %dd
+                  %input{ :name => 'liste_type', :checked => ( ( session[:events_liste_type] == '1' ) ? 'checked' : nil) , :type => 'radio', :value => '1' } événements
+                  %input{ :name => 'liste_type', :checked => ( ( session[:events_liste_type] == '2' ) ? 'checked' : nil) , :type => 'radio', :value => '2' } événements & services
+              %dl
+                %dt
+                %dd
+                  %input{:type => :submit, :value => '▶ ▶'}
+        %td{:style => "vertical-align: bottom; text-align: left"}
+        
+          %hr.intrasection_top_liens
+          .liens_intrasection
+            = link_to "✯ nouvel événement", new_event_path
+          %hr.intrasection_bottom_liens
+
+          %font{:style => "font-size: small; color: blue"}
+            &nbsp
+            services :
+          %font{:style => "font-weight: bold; font-size: large; font-family: 'DejaVu Sans Mono'; text-shadow: 0 0 1px blue, 0 1px 1px blue, 0 -1px 1px blue, 1px 0 1px blue, 1px 1px 1px blue, 1px -1px 1px blue, -1px 0 1px blue, -1px 1px 1px blue, -1px -1px 1px blue; color: white;"}
+            &nbsp
+            = @services.count
+            &nbsp
+          
+    %hr.intrasection
+            
+    - if session[:events_liste_type] == "2"
+      
+      %table.ligne
         %tr
-          %td= link_to event.name, event_overview_path(event)
-          %td= event.services.count
-          %td= event.status[:texte]
+          %th Cat
+          %th Événement
+          %th 
+          %th Service
+          %th Status
+        - @services.each do |service|
+          %tr
+            %td= service.event.category.short_name
+            %td= link_to service.event.name, event_overview_path(service.event)
+            %td.mono_droite
+              = number_with_negative_sign((service.starts_at.to_i - Time.now.to_i)/1.day)
+            %td= link_to service, event_service_path(service.event, service)
+            %td= service.status[:texte]
+           
+    - else
+      
+      %table.ligne
+        %tr
+          %th Cat
+          %th Événement
+          %th Période
+          %th # services
+          %th Status
+        - Event.only_without_services.each do |event|
+          %tr
+            %td= event.category.short_name
+            %td= link_to event.name, event_overview_path(event.id)
+            %td
+            %td 0
+            %td= event.status[:texte]
+        - @services.group(:event_id).each do |service|
+          %tr
+            %td= service.event.category.short_name
+            %td= link_to service.event.name, event_overview_path(service.event)
+            %td
+              - if service.event.services.count == 1
+                = service.event.services.first.starts_at.to_s(:cust_mmyy)
+              - elsif
+                - one = service.event.services.by_date.first.starts_at
+                - two = service.event.services.by_date.last.starts_at
+                - if one.month == two.month && one.year == two.year
+                  = one.to_s(:cust_mmyy)
+                - else
+                  = one.to_s(:cust_mmyy)
+                  \-
+                  = two.to_s(:cust_mmyy)
+            %td= service.event.services.count
+            %td= service.event.status[:texte]

@@ -8,7 +8,7 @@
       %tr
         %th Nom
         %th Numéro
-        %th # volos
+        %th # volos A / N-A
         %th # dispos
         %th # refacs
         %th # services
@@ -19,7 +19,9 @@
           %td
             = crentite.number
           %td
-            TODO
+            = crentite.volos.where(:actif => TRUE).count
+            \/
+            = crentite.volos.where(:actif => FALSE).count
           %td
             = crentite.disposers.count
           %td

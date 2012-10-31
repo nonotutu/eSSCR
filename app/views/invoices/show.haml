@@ -7,13 +7,13 @@
   .section
     = render "data"
     
-    %hr.intrasection
+    %hr.intrasection_top_liens
   
-  .lien_bas_de_page
-    ➤
-    = link_to "Facture", invoice_path(@invoice, :pdf)
-    %font{:style => "font-family: HeydingsIconsRegular"} dD
-    |
-    = link_to "Edit", edit_invoice_path
-    |
-    = link_to "Destroy", { :action => :destroy, :id => @invoice.id }, :method => :delete
+    .liens_intrasection
+      = link_to "⊚ edit", edit_invoice_path
+      |
+      = link_to "⊗ delete", { :action => :destroy, :id => @invoice.id }, :method => :delete
+      |
+      = link_to "⬇ facture", invoice_path(@invoice, :pdf)
+    
+    %hr.intrasection_bottom_liens

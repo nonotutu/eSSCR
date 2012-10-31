@@ -25,6 +25,11 @@ table.titre_intrasection
 table.base
   border-collapse: collapse
   width: 100%
+  &.spotchi
+    width: 1%
+    white-space: nowrap
+  &.egal
+    table-layout: fixed
   th
     font-size: small
     text-align: left
@@ -135,6 +140,10 @@ table.base_with_padding
   td:last-child
     /*padding-right: 16px*/
     padding-right: 8px
+
+
+table.little
+  @extend table.base_with_padding
 
 $c-red: 0
 $c-green: 0
@@ -268,25 +277,7 @@ table.generic
     background: rgb(255,207,207)
   tr:nth-child(1)
     background: none
-    
-table.fullitems
-  @extend table.empty
-  td:nth-child(2)
-    white-space: nowrap
-    font-family: "DejaVu Sans Mono"
-    text-align: right
-  td:nth-child(3)
-    white-space: nowrap
-    font-family: "DejaVu Sans Mono"
-    text-align: right
-  td:nth-child(4)
-    white-space: nowrap
-    font-family: "DejaVu Sans Mono"
-    text-align: right
-  tr:last-child
-    background: red
-    color: white
-    font-weight: bold
+
     
 ul.empty
   margin: 0

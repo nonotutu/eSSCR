@@ -1,11 +1,18 @@
 # coding: utf-8
-class ServicesController < InheritedResources::Base
+class ServicesController < EventsController #InheritedResources::Base
 
   belongs_to :event
   
   def stats
+    generate_liste
     @event = Event.find(params[:event_id])
     @service = Service.find(params[:id])
+  end
+  
+  def new
+    generate_liste
+    @event = Event.find(params[:event_id])
+    @service = Service.new(params[:service])
   end
   
   def destroy
@@ -24,6 +31,11 @@ class ServicesController < InheritedResources::Base
     
   end
 
+  def show
+    generate_liste
+    @event = Event.find(params[:event_id])
+    @service = Service.find(params[:id])
+  end
 
   # Miracle ... fonctionne via une route définie, toujours par miracle
   def update_stats
@@ -69,7 +81,7 @@ class ServicesController < InheritedResources::Base
                                           params[:service]['ends_at(4i)'],
                                           params[:service]['ends_at(5i)'])
 
-    old_début = @service.début
+    old_début = @service.debut
         
     old_fin = @service.ends_at
     
@@ -95,6 +107,12 @@ class ServicesController < InheritedResources::Base
       redirect_to :back, :alert => "Error updating service" + @service.errors.messages.to_s
     end
     
+  end
+
+  def edit
+    generate_liste
+    @event = Event.find(params[:event_id])
+    @service = Service.find(params[:id])
   end
 
 
@@ -125,6 +143,7 @@ class ServicesController < InheritedResources::Base
   end
 
   def overview
+    generate_liste
     # nécessaires pour les menus
     @service = Service.find(params[:id])
     @event = @service.event

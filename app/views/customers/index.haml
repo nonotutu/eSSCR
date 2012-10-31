@@ -18,6 +18,7 @@
               = ligne
               %br
           %td
+            = link_to "⊙", events_path(:params => { :client => cust.id, :reset => 'reset' })
             - s = 0
             - cust.events.each do |c|
               - s += c.services.count

@@ -1,5 +1,5 @@
 - mode = params[:mode]
-- table = generate_table_seritems(@service.id)
+- table = generate_table_seritems(params[:service].id ||= @service.id)
 
 - unless @service.seritems.empty?
 
@@ -15,7 +15,7 @@
         %td= ligne[3]
         %td= ligne[4]
         %td= ligne[5]
-        - if ligne[0] == 1 && mode == 'edit'
+        - if ligne[0] == 1 && mode == "edit"
           %td.manage_link{:title => "move up"}= link_to "⇧", :action => :move_up, :id => ligne[1]
           %td.manage_link{:title => "move down"}= link_to "⇩", :action => :move_down, :id => ligne[1]
           %td.manage_link{:title => "edit"}= link_to "⊚", event_service_seritems_path( :mode => "edit", :seritem_id => ligne[1] )

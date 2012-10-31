@@ -79,7 +79,7 @@ class Event < ActiveRecord::Base
     end
     
     sstot = BigDecimal("0.0")
-    self.evitems.each do |evitem|
+    self.evitems.order(:pos).each do |evitem|
       if evitem.kind == 1
         sstot = evitem.qty * evitem.price
       elsif evitem.kind == 2
@@ -93,7 +93,25 @@ class Event < ActiveRecord::Base
   end
   
   
+  def calcul_prix_in_invoice
+
+    total = self.calcul_prix
+    
+    if self.invoice
+      self.invoice.nositems.order(:pos).each do |nositem|
+        if item.kind == 2
+          total += total * nositem.price / BigDecimal.new("100.0")
+        end
+      end
+    end
+
+    total
+
+  end
+  
+  
   def calcul_prix_refacturation
+    
     if self.refacs
       total_facture = self.calcul_prix
       total_refac = 0
@@ -103,10 +121,12 @@ class Event < ActiveRecord::Base
         elsif refac.kind == 2
           total_refac += total_facture * refac.price / BigDecimal("100.0")
         end
+      end
       return total_refac
     else
       return 0
     end
+    
   end
 
 

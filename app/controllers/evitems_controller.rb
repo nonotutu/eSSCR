@@ -1,9 +1,10 @@
-class EvitemsController < InheritedResources::Base
+class EvitemsController < EventsController #InheritedResources::Base
 
   # nestage
   belongs_to :event
   
   def index
+    generate_liste
     @event = Event.find(params[:event_id])
     # pour éditer un evitem sans la page edit, s'il est dans les params
     @evitem = begin Evitem.find(params[:evitem_id]) rescue nil end
@@ -11,42 +12,33 @@ class EvitemsController < InheritedResources::Base
   
   
   def create
-
     @evitem = Evitem.new(params[:evitem])
     @evitem.event_id = params[:event_id]
     @evitem.pos = 1
-    
     last_pos = 0
     if ( @evitem.event.evitems.count != 0 )
       last_pos = @evitem.event.evitems.order(:pos).last.pos
     end
-    
     @evitem.pos = last_pos + 1
-  
     if @evitem.save
       redirect_to :back, :notice => 'Invoiced event item created'
     else
       redirect_to :back, :error => 'Error creating invoiced event item'
     end
-
   end
   
   # nécessaire pour les redirections  
   def update
-
     @evitem = Evitem.find(params[:id])
-    
     if @evitem.update_attributes(params[:evitem])
       redirect_to :back, :notice => 'Invoiced event item created'
     else
       redirect_to :back, :error => 'Error creating invoiced event item'
     end
-    
   end
 
   
   def destroy
-    
     #click trop rapides
     sv = begin Evitem.find(params[:id]) rescue nil end
         
@@ -61,10 +53,9 @@ class EvitemsController < InheritedResources::Base
   
    
   def edit
-    
+    generate_liste
     @event = Event.find(params[:event_id])
     @evitem = Evitem.find(params[:id])
-    
   end
   
   

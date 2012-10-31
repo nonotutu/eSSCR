@@ -1,6 +1,6 @@
 - table = generate_table_fullitems_invoice(@invoice.id)
 
-%table.fulloptions{:style => "border: 1px solid black"}
+%table.fulloptions{:style => "border: 1px solid black; background: rgb(239,239,239); border-radius: 4px;"}
   %tr
     %th{:colspan => 4} Dénomination
     %th Quantité
@@ -11,11 +11,13 @@
       - case ligne[0]
       - when "2event"
         %td
-        %td{:colspan => 3}= ligne[1]
+        %td{:colspan => 3}
+          %i= ligne[1]
       - when "3service"
         %td
         %td
-        %td{:colspan => 2}= ligne[1]
+        %td{:colspan => 2}
+          %i= ligne[1]
       - when "4seritem"
         %td
         %td

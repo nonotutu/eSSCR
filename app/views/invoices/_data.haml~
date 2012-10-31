@@ -1,1 +1,20 @@
- 
+.dl_deux_colonnes_base
+  %dl
+    %dt Numéro
+    %dd= @invoice.number
+  %dl
+    %dt Client (papier) :
+    %dd
+      - if @invoice.customer_data != nil
+        - @invoice.customer_data.lines.each do |line|
+          = line
+          %br
+      - else
+        %i no client
+  %dl
+    %dt Envoyée le :
+    %dd= @invoice.sent_at
+  %dl
+    %dt Payée le :
+    %dd= @invoice.paid_at
+

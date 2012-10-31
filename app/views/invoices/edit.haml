@@ -5,9 +5,10 @@
 
   .section
     = render 'form'
-
-    %hr.intrasection
-   
-  .lien_bas_de_page
-    ➤
-    = link_to "Back", invoice_path
+  
+    %hr.intrasection_top_liens
+  
+    .liens_intrasection
+      = link_to "⇇ back", invoice_path
+      
+    %hr.intrasection_bottom_liens

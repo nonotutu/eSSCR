@@ -1,5 +1,6 @@
 ESSCR2::Application.routes.draw do
 
+  # Miracle ... route définie pour updater juste les stats
   match "events/:event_id/service/:id/update_stats" => "services#update_stats"
   
   match "seritems/:id/move_up"   => "seritems#move_up"
@@ -33,6 +34,8 @@ ESSCR2::Application.routes.draw do
   match "volos/:id/overview" => "volos#overview", :as => :volo_overview
   
   match "home" => "home#index", :as => :home
+  
+  match 'tools/montants/montants' => 'tools#montants', :as => :montants
   
   match "tools" => "tools#index", :as => :tools
   scope "/tools" do

@@ -1,16 +1,16 @@
-
-= render 'events/list'
-
 .main
   = render 'events/header', :selected_item => 'services'
 
-  .title.two
-    New service
-    
   .section
+
+    = render '/table_titre_intrasection', :params => { :titre => 'Nouveau service' }
 
     = render 'form'
 
-  .lien_bas_de_page
-    >
-    = link_to "Back", :back # TODO : à trouver mieux
+    %hr.intrasection_top_liens
+    
+    .liens_intrasection
+
+      = link_to "⇇ back", event_services_path(@event.id)
+      
+    %hr.intrasection_bottom_liens

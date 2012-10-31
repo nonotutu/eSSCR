@@ -50,42 +50,15 @@ module ApplicationHelper
 #   TODO : faire mieux
   end
 
-
   
-
-
-  def calcul_prix_service_included(service_id)
-
-    total = BigDecimal.new("0.0")
-    service = Service.find(service_id)
-    
-    total = service.calcul_prix
-    
-    tot = BigDecimal.new("0.0")
-    service.event.evitems.each do |item|
-      if item.kind == 2
-        tot = total * item.price / BigDecimal.new("100.0")
-      end
-      total += tot
+  def number_with_negative_sign(number)
+    if number < 0
+      return "- " + (number *-1).to_s
+    else
+      return number.to_s
     end
-
-    if service.event.invoice
-      tot = BigDecimal.new("0.0")
-      service.event.invoice.nositems.each do |item|
-        if item.kind == 2
-          tot = total * item.price / BigDecimal.new("100.0")
-        end
-        total += tot
-      end
-    end
-      
-    total
-    
   end
 
-  
-
-    
   
 #   [0]   1 : item
 #         2 : sous-total
@@ -497,7 +470,7 @@ module ApplicationHelper
       end
       table << ligne
     end
-
+        
     ligne = Array.new
     ligne << "1total" << to_euro(total_invoice)
     table << ligne

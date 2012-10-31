@@ -37,15 +37,27 @@ class Volo < ActiveRecord::Base
     self.first_name + " " + self.last_name + " (" + ( self.crentite.nil? ? "autre" : self.crentite.short ) + ")"
   end
   
-  def quantity_of_services
-    self.services.uniq.count
+  def quantity_of_services(annee = nil)
+    unless annee
+      self.services.uniq.count
+    else
+      s = self.services.only_year(annee.to_s).count(:service_id, distinct: true)
+    end      
   end
-  
+
   # TODO : gérer les doublinscriptions
-  def duration_of_services
+  def duration_of_services(annee = nil)
     duration = 0
-    self.servolos.each do |servolo|
-      duration += servolo.fin - servolo.debut
+    unless annee
+      self.servolos.each do |servolo|
+        duration += servolo.fin - servolo.debut
+      end
+    else
+      self.servolos.each do |servolo|
+        if servolo.service.starts_at.year == annee
+          duration += servolo.fin - servolo.debut
+        end
+      end
     end
     duration
   end

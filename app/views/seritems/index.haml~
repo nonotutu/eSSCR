@@ -6,19 +6,24 @@
   = render 'services/header', :selected_item => 'seritems'
 
   .section
-    = render "table"
-    %hr.intrasection
+    = render 'table'
 
     - if params[:mode] == 'edit'
-      = render "form"
-
-  .lien_bas_de_page
-    - unless params[:mode] == 'edit'
-      >
-      = link_to 'Manage invoiced service item', event_service_seritems_path(:mode => "edit")
+      %hr.intrasection
+      = render 'form'
+      %hr.intrasection_top_liens
     - else
-      >
-      = link_to 'Back', event_service_seritems_path
-      - if params[:seritem_id].present?
+      %hr.intrasection_top_liens
+
+    .liens_intrasection
+      - unless params[:mode] == 'edit'
+        = link_to '⇇ back', event_service_overview_path(@event, @service)
         |
-        = link_to 'Clear (create new)', event_service_seritems_path(:mode => 'edit')
+        = link_to '⚙ manage', event_service_seritems_path(:mode => 'edit')
+      - else
+        = link_to '⇇ back', event_service_seritems_path
+        - if params[:seritem_id].present?
+          |
+          = link_to '✯ new (clear)', event_service_seritems_path(:mode => 'edit')
+          
+    %hr.intrasection_bottom_liens

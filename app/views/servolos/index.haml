@@ -5,10 +5,11 @@
   = render 'events/header', :selected_item => 'services'
   = render 'services/header', :selected_item => 'servolos'
 
-  - if params[:mode] == 'edit'
-    .section
-      = render "graph"
-      %hr.intrasection
+  .section
+    = render "graph"
+    %hr.intrasection_light
+  
+    - if params[:mode] == 'edit'
       %table{:style => "width: 100%; vertical-align: top"}
         %tr
           %td{:style => "vertical-align: top"}
@@ -24,18 +25,15 @@
                 = link_to "✯ new", event_service_servolos_path(:mode => 'edit')
             %hr.intrasection_bottom_liens
       
-  - else
+    - else
         
-    .section
-      = render "graph"
-      %hr.intrasection
       = render "table"
       
       %hr.intrasection_top_liens
       
       .liens_intrasection
-        = link_to "⚙ manage", event_service_servolos_path(:mode =>'edit')
-        |
         = link_to "⇇ back", event_service_overview_path(@event, @service)
+        |
+        = link_to "⚙ manage", event_service_servolos_path(:mode =>'edit')
 
       %hr.intrasection_bottom_liens

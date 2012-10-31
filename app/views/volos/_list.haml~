@@ -1,32 +1,67 @@
-
 :ruby
 
-  if controller_name == 'invoices'
+  if controller_name == 'volos'
     volo_id = params[:id].to_i
   else
     volo_id = params[:volo_id].to_i
   end
 
-  if (params[:volos_liste_entite].present?)
-    session[:volos_liste_entite] = params[:volos_liste_entite]
+  if (params[:volos_liste_crentite].present?)
+    session[:volos_liste_crentite] = params[:volos_liste_crentite].to_i
+  end
+  if (params[:volos_liste_actif].present?)
+    session[:volos_liste_actif] = params[:volos_liste_actif]
+  end
+  if (params[:volos_liste_ordre].present?)
+    session[:volos_liste_ordre] = params[:volos_liste_ordre]
+  end
+  if (params[:volos_liste_groupe].present?)
+    session[:volos_liste_groupe] = params[:volos_liste_groupe]
   end
 
-  liste_entite = []
-  liste_entite << { :value => '0', :name => '<toutes>' }
-  liste_entite << { :value => '1', :name => 'Uccle' }
-  liste_entite << { :value => '2', :name => 'Autres' }
+  liste_crentite = []
+  liste_crentite << { :value => '-1', :name => '<toutes>' }
+  Crentite.all.each do |crentite|
+    liste_crentite << { :value => crentite.id, :name => crentite.name }
+  end
   
+  liste_actif = []
+  liste_actif << { :value => '0', :name => '<tous>' }
+  liste_actif << { :value => '1', :name => 'oui' }
+  liste_actif << { :value => '2', :name => 'non' }
+
+  liste_ordre = []
+  liste_ordre << { :value => '1', :name => 'prénom' }
+  liste_ordre << { :value => '2', :name => 'nom' }
+
+  liste_groupe = []
+  liste_groupe << { :value => '1', :name => 'alphabet' }
+  liste_groupe << { :value => '2', :name => 'entité' }
+  liste_groupe << { :value => '3', :name => 'not' }
+
   volos = Volo
 
-  case( session[:volos_liste_entite] )
+  case( session[:volos_liste_actif] )
     when '1'
-      volos = volos.only_uccle
+      volos = volos.only_actif
     when '2'
-      volos = volos.only_not_uccle
+      volos = volos.only_not_actif
+    else
+      volos = volos
+  end
+
+  case( session[:volos_liste_ordre] )
+    when '1'
+      volos = volos.by_first_name
+    when '2'
+      volos = volos.by_last_name
     else
       volos = volos.all
   end
 
+  if ( session[:volos_liste_crentite] && session[:volos_liste_crentite] > 0 )
+    volos = volos.where("crentite_id = ?", session[:volos_liste_crentite])
+  end
   
 .left_menus
 
@@ -36,30 +71,61 @@
         %tr
           %td
             Entité :
-            %select{:name => 'volos_liste_entite'}
-              - liste_entite.each do |item|
-                - selected = ( item[:value] == session[:volos_liste_entite] ? 'selected' : nil )
+            %select{:name => 'volos_liste_crentite'}
+              - liste_crentite.each do |item|
+                - selected = ( item[:value] == session[:volos_liste_crentite] ? 'selected' : nil )
                 %option{ :value => item[:value], :selected => selected }= item[:name]
           %td{:style => 'text-align: right'}
-          -#
-            Cat :
-            %select{:name => 'invoices_liste_categ'}
-              - liste_categ.each do |item|
-                - selected = ( item[:value] == session[:invoices_liste_categ] ? 'selected' : nil )
+            Actif :
+            %select{:name => 'volos_liste_actif'}
+              - liste_actif.each do |item|
+                - selected = ( item[:value] == session[:volos_liste_actif] ? 'selected' : nil )
                 %option{ :value => item[:value], :selected => selected }= item[:name]
+        %tr
+          %td
+            Ordre :
+            %select{:name => 'volos_liste_ordre'}
+              - liste_ordre.each do |item|
+                - selected = ( item[:value] == session[:volos_liste_ordre] ? 'selected' : nil )
+                %option{ :value => item[:value], :selected => selected }= item[:name]
+          %td{:style => 'text-align: right'}
+            Groupe :
+            %select{:name => 'volos_liste_groupe'}
+              - liste_groupe.each do |item|
+                - selected = ( item[:value] == session[:volos_liste_groupe] ? 'selected' : nil )
+                %option{ :value => item[:value], :selected => selected }= item[:name]
+
       %table{:style => 'border-collapse: collapse; width: 100%'}
         %tr
           %td{:style => 'text-align: right'}
             %input{:type => :submit, :value => 'go'}
 
 
-  .menu_gauche_1
+  .menu_gauche_3
     %ul
-      %li
-        %font{:style => "font-family: HeydingsIconsRegular"} +
-        = link_to 'Volontaire', new_volo_path
+      %li= link_to '✯ nouveeau volontaire', new_volo_path
       %hr
-      - volos.each do |volo|
-        %li
-          - active = (volo_id == volo.id ? :active_light : nil)
-          = link_to volo.to_s, volo_path(volo.id), :class => active
+      - if session[:volos_liste_groupe] != "1" && session[:volos_liste_groupe] != "2"
+        - volos.each do |volo|
+          %li
+            - active = (volo_id == volo.id ? :active_light : nil)
+            = link_to volo.to_s, volo_path(volo.id), :class => active
+      - if session[:volos_liste_groupe] == "1"
+        - ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'].each do |letter|
+          - if ( ( session[:volos_liste_ordre] == "1" && !volos.only_first_letter_of_first_name(letter).empty? ) || ( session[:volos_liste_ordre] == "2" && !volos.only_first_letter_of_last_name(letter).empty? ) )
+            %li{:style => "text-align: center"}
+              %b
+                %font{:style => "color: white; text-shadow: 0 0 4px black; font-family: 'monospace';"}
+                  ────&nbsp
+                  = letter
+                  &nbsp────
+            - if session[:volos_liste_ordre] == "1"
+              - volos.only_first_letter_of_first_name(letter).each do |volo|
+                %li
+                  - active = (volo_id == volo.id ? :active_light : nil)
+                  = link_to volo.to_s, volo_path(volo.id), :class => active
+            - if session[:volos_liste_ordre] == "2"
+              - volos.only_first_letter_of_last_name(letter).each do |volo|
+                %li
+                  - active = (volo_id == volo.id ? :active_light : nil)
+                  = link_to volo.last_name + ' ' + volo.first_name, volo_path(volo.id), :class => active

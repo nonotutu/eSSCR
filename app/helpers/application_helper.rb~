@@ -50,6 +50,14 @@ module ApplicationHelper
 #   TODO : faire mieux
   end
 
+  
+  def number_with_negative_sign(number)
+    if number < 0
+      return "- " + (number *-1).to_s
+    else
+      return number.to_s
+    end
+  end
 
   
 
@@ -238,7 +246,7 @@ module ApplicationHelper
     invoice = Invoice.find(invoice_id)
     
     invoice.events.each do |event|
-      total += calcul_prix_event(event.id)
+      total += event.calcul_prix
     end
     ligne = Array.new
     ligne << 3 << nil << "Events/Services related items" << nil << nil << to_euro(total)
@@ -497,7 +505,7 @@ module ApplicationHelper
       end
       table << ligne
     end
-
+        
     ligne = Array.new
     ligne << "1total" << to_euro(total_invoice)
     table << ligne

@@ -6,23 +6,28 @@
   = render 'services/header', :selected_item => 'disposers'
 
   .section
-    = render "disposers/list"
-    %hr.intrasection
-    = render "disposers/inline_pictures", :params => { :icon_size => 4 }
-    %hr.intrasection
+    = render 'disposers/list'
+    %hr.intrasection_light
+    = render 'disposers/inline_pictures', :params => { :icon_size => 4 }
 
+    
     - if params[:mode] == 'edit'
-      = render "disposers/form"
-  
-  .lien_bas_de_page
-    - unless params[:mode] == 'edit'
-      ➤
-      = link_to "Manage", event_service_disposers_path(:mode =>'edit')
-      |
-      = link_to "Back", event_service_overview_path(@event, @service)
+      %hr.intrasection
+      = render 'disposers/form'
+      %hr.intrasection_top_liens
     - else
-      ➤
-      = link_to "Back", event_service_disposers_path
-      - if params[:disposer_id].present?
-        |
-        = link_to 'Clear (create new)', event_service_disposers_path(:mode => 'edit')
+      %hr.intrasection_top_liens
+
+  
+    .liens_intrasection
+      - unless params[:mode] == 'edit'
+      = link_to '⇇ back', event_service_overview_path(@event, @service)
+      |
+      = link_to '⚙ manage', event_service_disposers_path(:mode =>'edit')
+      - else
+        = link_to '⇇ back', event_service_disposers_path
+          - if params[:seritem_id].present?
+          |
+          = link_to '✯ new (clear)', event_service_disposers_path(:mode => 'edit')
+                  
+    %hr.intrasection_bottom_liens

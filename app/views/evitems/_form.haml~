@@ -2,7 +2,7 @@
   # remplir les champs avec les données du template_invoiced_item_id si passé en paramètre
   t_id = params[:templitem_id]
   if t_id.present?
-    template      = TemplateInvoicedItem.find(t_id)
+    template      = Templitem.find(t_id)
     item          = Evitem.new
     item.name     = template.name
     item.kind     = template.kind
@@ -11,13 +11,10 @@
     evitem        = item
   end
 
-=# formulaire mis en page
-%table.formulaire
-  %tr
-    %th
-      %i
-        Template :
-    %td{ :colspan => '5' }
+.dl_form
+  %dl
+    %dt Modèle
+    %dd
       %form{ :method => :get }
         %select{ :name => :templitem_id }
           %option{ :value => '' }
@@ -30,14 +27,14 @@
   = simple_form_for ([@event, evitem ||= @evitem ||= Evitem.new]) do |f|
     %tr
       %th
-        Name :
+        Dénomination :
       %td{ :colspan => '5' }
-        = f.input :name, :label => false
+        = f.input :name, :label => false, :input_html => {:size => 40}
     %tr
       %th
         Quantity :
       %td
-        = f.input :qty, :label => false, :input_html => {:size => 2} 
+        = f.input :qty, :label => false, :input_html => {:size => 4} 
       %th
         Kind :
       %td
@@ -50,7 +47,7 @@
       %th
         Price :
       %td
-        = f.input :price, :label => false, :input_html => {:size => 2} 
+        = f.input :price, :label => false, :input_html => {:size => 4} 
     %tr
       %td
       %td{ :colspan => '5', :align => :right }

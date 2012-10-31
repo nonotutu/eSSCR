@@ -4,10 +4,10 @@
     %hr
     %li.matching_results_line
       ――
-      = services.count
-      = "service" + (services.count>1?"s":"") + " matching"
+      = @services.count
+      = "service" + (@services.count>1?"s":"") + " matching"
       ――
-    - services.group(:event_id).each do |service|
+    - @services.group(:event_id).each do |service|
       %li
         - active = (event_id == service.event.id ? :active_light : nil)
         - evt = service.event.category.short_name + " - " + service.event.name
@@ -30,7 +30,7 @@
     %ul
       %li= link_to "✯ nouveau service", new_event_service_path(@event)
       %hr
-      - services.where("event_id = ?", event_id).each do |service|
+      - @services.where("event_id = ?", event_id).each do |service|
         %li
           - active = (service_id == service.id ? :active_light : nil)
           - ser = service.to_s

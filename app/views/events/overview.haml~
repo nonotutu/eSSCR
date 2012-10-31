@@ -1,7 +1,7 @@
-= render 'events/list'
+= render "events/list"
 
 .main
-  = render 'events/header', :selected_item => 'overview'
+  = render "events/header", :selected_item => "overview"
 
   .section
 
@@ -13,14 +13,13 @@
       = render "/table_titre_intrasection", :params => { :titre => service.to_s, :link_to_show => event_service_overview_path(@event, service) }
       
       - @service = service
-      = render "services/volness_inline_pictures", :params => { :icon_size => 2 }
+      = render 'services/volness_inline_pictures', :params => { :icon_size => 2 }
       &nbsp &nbsp &nbsp
-      = render "disposers/inline_pictures", :params => { :icon_size => 2 }
+      = render 'disposers/inline_pictures', :params => { :icon_size => 2 }
       &nbsp &nbsp &nbsp
-      = render "services/subs_inline_pictures", :params => { :icon_size => 2 }
+      = render 'services/subs_inline_pictures', :params => { :icon_size => 2 }
       %br
-      - unless @service.crentite || @service.servolos.count == 0
-        = render "servolos/graph"
+      = render 'servolos/graph'
 
       %table.white_compact
         %tr
@@ -35,7 +34,7 @@
           %td
             %font
               →
-              = to_euro(calcul_prix_service_included(@service.id))
+              = to_euro(service.calcul_prix_included)
             
     = render "/table_titre_intrasection", :params => { :titre => "Statistiques" }
     = render "/table_oneline_stats"
@@ -54,7 +53,7 @@
           %font Refacturation
       %tr
         %td
-          %font 
+          %font
             ⤷
             - if !@event.is_free
               - if @event.invoice
@@ -62,7 +61,7 @@
                 = link_to "show", invoice_path(@event.invoice)
               - else
                 aucune
-                = link_to "(new)", new_invoice_path
+                = link_to "(✯)", new_invoice_path
             - else
               événement gratuit
         %td

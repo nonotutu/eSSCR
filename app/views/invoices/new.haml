@@ -3,4 +3,14 @@
 
   .section
 
+    = render '/table_titre_intrasection', :params => { :titre => 'Nouvelle facture' }
+
     = render 'form'
+    
+    %hr.intrasection_top_liens
+    
+    .liens_intrasection
+
+      = link_to "⇇ back", invoices_path
+      
+    %hr.intrasection_bottom_liens

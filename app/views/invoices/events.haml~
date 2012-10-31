@@ -1,14 +1,24 @@
 = render "invoices/list"
 
 .main
-  = render "header", :selected_item => 'events'
+  = render "header", :selected_item => "events"
 
   .section
-    = render "list_events"
+    = render "invoices/list_events"
+    
+    - if params[:mode] == "edit"
+      %hr.intrasection_light
+      = render "list_events_without_invoice"
+    
+    %hr.intrasection_top_liens
 
-    - unless params[:mode] == 'edit'
-      = link_to "Add/Remove events", invoice_events_path(:mode=>'edit')
-    - else
-      = render 'list_events_without_invoice'
-      %hr
-      = link_to "Back", invoice_events_path
+    
+    .liens_intrasection
+      - unless params[:mode] == "edit"
+        = link_to "⇇ back", invoice_path
+        |
+        = link_to "⚙ manage", invoice_events_path(:mode=>'edit')
+      - else
+        = link_to "⇇ back", invoice_events_path
+      
+    %hr.intrasection_bottom_liens

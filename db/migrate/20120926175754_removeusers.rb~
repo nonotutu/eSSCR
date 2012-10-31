@@ -1,0 +1,7 @@
+class Removeusers < ActiveRecord::Migration
+
+  def change
+    remove :users
+  end
+
+end

@@ -31,29 +31,36 @@ class Service < ActiveRecord::Base
   before_destroy :prevent_destroy_unless_service_empty
   before_update :stats_to_zero
 
-  scope :only_year, lambda  { |year| where("SUBSTR(starts_at,1,4) = ?", year) unless year.nil? }
-  scope :only_categ, lambda { |categ| includes(:event).where("events.category_id = ?", categ) unless categ.nil? }
-  scope :only_not_invoiced, includes(:event).where("events.invoice_id IS NULL") # TODO : OR = "" ?
-  scope :only_future, where("starts_at >= ?", Date.today)
-  scope :only_past, where("ends_at <= ?", Date.today)
-  scope :only_find, lambda  { |find| includes(:event).where("events.name LIKE '%#{find}%'") unless find.nil? }
- 
-  scope :by_date, order(:starts_at)
+  scope :only_year, lambda  { |year| where('SUBSTR(services.starts_at,1,4) = ?', year) unless year.nil? }
+  scope :only_categ, lambda { |categ| includes(:event).where('events.category_id = ?', categ) unless categ.nil? }
+  scope :only_not_invoiced, includes(:event).where('events.invoice_id IS NULL') # TODO : OR = "" ?
+  scope :only_future, where('services.starts_at >= ?', Date.today)
+  scope :only_future_plus_7, where('services.starts_at >= ?', Date.today - 7.day)
+  scope :only_past, where('services.ends_at <= ?', Date.today)
+  scope :only_past_plus_7, where('services.ends_at <= ?', Date.today + 7.day)
+  scope :only_find, lambda  { |find| includes(:event).where("events.name LIKE '%#{find}%' OR events.place LIKE '%#{find}%'" ) unless find.nil? }
+  scope :only_customer, lambda { |client| includes(:event).where("events.customer_id = #{client}") unless client.nil? }
+  scope :only_volo, lambda { |volo| includes(:volos).where("volos.id = #{volo}") unless volo.nil? }
+  scope :only_date, lambda { |date| where('services.starts_at >= ? AND services.ends_at <= ?', date, date) unless date.nil? }
+
+  scope :by_date, order('services.starts_at')
+  scope :by_date_inverted, order('services.starts_at DESC')
   scope :by_name, joins(:event).order(:name)
+  scope :by_name_inverted, joins(:event).order('events.name DESC')
   
   def subs_to_s
     if self.subs
       case self.subs
       when 0
-        "non"
+        'non'
       when 1
-        "oui"
+        'oui'
       end
     else
-      "non-défini"
+      'non-défini'
     end
   end
-  
+
 
   def is_finished
     if self.ends_at < DateTime.now
@@ -179,6 +186,9 @@ class Service < ActiveRecord::Base
     end
   end
 
+  def fullname
+    self.event.name + " :: " + self.to_s
+  end
   
   # Array des heures, par bloc de 5 minutes, en commençant avant la 1ère seconde
   def generate_ligne_heures
@@ -235,7 +245,7 @@ class Service < ActiveRecord::Base
     # gestion des doublinscrits
     pos = 0
     while pos < fin
-      if tsv[pos][largeur-2] == tsv[pos + 1][largeur-2]
+      if tsv[pos][largeur-1] == tsv[pos + 1][largeur-1]
         sspos = 0
         while sspos < largeur-2
           tsv[pos][sspos] += tsv[pos+1][sspos]
@@ -274,7 +284,7 @@ class Service < ActiveRecord::Base
     # gestion des doublinscrits
     pos = 0
     while pos < fin
-      if tsv[pos][largeur-2] == tsv[pos + 1][largeur-2]
+      if tsv[pos][largeur-1] == tsv[pos + 1][largeur-1]
         sspos = 0
         while sspos < largeur-2
           tsv[pos][sspos] += tsv[pos+1][sspos]
@@ -310,7 +320,7 @@ class Service < ActiveRecord::Base
   def calcul_prix
     
     total = BigDecimal.new("0.0")
-    self.seritems.each do |seritem|
+    self.seritems.order(:pos).each do |seritem|
       if seritem.kind == 1
         total += seritem.qty * seritem.price
       elsif seritem.kind == 2
@@ -321,7 +331,35 @@ class Service < ActiveRecord::Base
     total
         
   end
-  
+
+
+  def calcul_prix_included
+
+    total = BigDecimal.new("0.0")
+    total = self.calcul_prix
+    
+    tot = BigDecimal.new("0.0")
+    self.event.evitems.each do |item|
+      if item.kind == 2
+        tot = total * item.price / BigDecimal.new("100.0")
+      end
+      total += tot
+    end
+
+    if self.event.invoice
+      tot = BigDecimal.new("0.0")
+      self.event.invoice.nositems.each do |item|
+        if item.kind == 2
+          tot = total * item.price / BigDecimal.new("100.0")
+        end
+        total += tot
+      end
+    end
+      
+    total
+    
+  end
+
   
   private
   

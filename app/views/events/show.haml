@@ -5,16 +5,14 @@
   = render 'header', :selected_item => 'show'
 
   .section
-    = render "data"
-    %hr.intrasection
+    = render 'data'
+    %hr.intrasection_top_liens
 
-  .lien_bas_de_page
-    ➤
-    = link_to "Devis", event_path(@event, :pdf)
-    %font{:style => "font-family: HeydingsIconsRegular"} D
-    |
-    = link_to "Edit", edit_event_path
-    |
-    = link_to "Destroy", { :action => :destroy, :id => @event.id }, :method => :delete
-    |
-    = link_to "Back", event_overview_path(@event)
+    .liens_intrasection
+      = link_to '⊚ edit', edit_event_path
+      |
+      = link_to '⊗ delete', { :action => :destroy, :id => @event.id }, :method => :delete
+      |
+      = link_to '⬇ devis', event_path(@event, :pdf)
+
+    %hr.intrasection_bottom_liens

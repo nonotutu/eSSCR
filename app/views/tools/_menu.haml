@@ -6,7 +6,7 @@
       = link_to 'Clients', customers_path, :class => active
 
     %li
-      - active = selected_item == "dispositifs" ? :active : nil
+      - active = selected_item == 'dispositifs' ? :active : nil
       = link_to "Dispositifs", dispositifs_path, :class => active
 
     %li
@@ -16,3 +16,7 @@
     %li
       - active = selected_item == 'crentites' ? :active : nil
       = link_to 'Entités CR', crentites_path, :class => active
+      
+    %li
+      - active = selected_item == 'montants' ? :active : nil
+      = link_to 'Montants', montants_path, :class => active

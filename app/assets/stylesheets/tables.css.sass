@@ -25,6 +25,11 @@ table.titre_intrasection
 table.base
   border-collapse: collapse
   width: 100%
+  &.spotchi
+    width: 1%
+    white-space: nowrap
+  &.egal
+    table-layout: fixed
   th
     font-size: small
     text-align: left
@@ -135,6 +140,11 @@ table.base_with_padding
   td:last-child
     /*padding-right: 16px*/
     padding-right: 8px
+
+
+table.little
+  @extend table.base_with_padding
+  @extend table.base_with_href
 
 $c-red: 0
 $c-green: 0

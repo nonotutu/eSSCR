@@ -18,7 +18,7 @@
             = dispo.name
           %td
             = image_tag("/dispositifs/code_image_s1/#{dispo.id}", :alt => "☒")
-          %td
+          %td.a_droite
             = dispo.disposers.sum(:quantity)
             ×
           %td.manage_link

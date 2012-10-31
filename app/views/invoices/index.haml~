@@ -21,7 +21,7 @@
 
   .section
 
-    %table.invisible
+    %table.invisible.egal
       %tr
         %td
           %form{:action => '', :method => :get}
@@ -31,34 +31,42 @@
                 %dd
                   %select{:name => "annee"}
                     - @annees.each do |item|
-                      - selected = ( ( item[:value] == params[:annee] ||= session[:invoices_annee] ) ? 'selected' : nil )
+                      - selected = ( ( item[:value] == session[:invoices_annee] ) ? 'selected' : nil )
                       %option{ :value => item[:value], :selected => selected }= item[:name]
               %dl
                 %dt Catégorie :
                 %dd
                   %select{:name => "categ"}
                     - @categs.each do |item|
-                      - selected = ( ( item[:value] == params[:categ] ||= session[:invoices_categ] ) ? 'selected' : nil )
+                      - selected = ( ( item[:value] == session[:invoices_categ] ) ? 'selected' : nil )
                       %option{ :value => item[:value], :selected => selected }= item[:name]
               %dl
                 %dt Sens :
                 %dd
                   %select{:name => "sens"}
-                    - @categs.each do |item|
-                      - selected = ( ( item[:value] == params[:sens] ||= session[:invoices_sens] ) ? 'selected' : nil )
+                    - @sens.each do |item|
+                      - selected = ( ( item[:value] == session[:invoices_sens] ) ? 'selected' : nil )
                       %option{ :value => item[:value], :selected => selected }= item[:name]
               %dl
                 %dt
                 %dd
-                  %input{:type => :submit, :value => '→ → → →'}
-        %td{:style => "vertical-align: middle; text-align: center; color: blue"}
-          %font{:style => "font-size: small; border-bottom: 2px dashed lightblue"}
+                  %input{:type => :submit, :value => '▶ ▶'}
+        %td{:style => "vertical-align: bottom; text-align: left"}
+        
+          %hr.intrasection_top_liens
+          .liens_intrasection
+            = link_to "✯ nouvelle facture", new_invoice_path
+          %hr.intrasection_bottom_liens
+
+          %font{:style => "font-size: small; color: blue"}
             &nbsp
-            factures concernées :
+            factures :
           %font{:style => "font-weight: bold; font-size: large; font-family: 'DejaVu Sans Mono'; text-shadow: 0 0 1px blue, 0 1px 1px blue, 0 -1px 1px blue, 1px 0 1px blue, 1px 1px 1px blue, 1px -1px 1px blue, -1px 0 1px blue, -1px 1px 1px blue, -1px -1px 1px blue; color: white;"}
             &nbsp
-            = @invoices.count
+            = @invoices.count.class != Fixnum ? @invoices.count.count : @invoices.count
             &nbsp
+           
+    %hr.intrasection
 
       
   
@@ -69,6 +77,7 @@
         %th Montant
         %th # événements
         %th Envoyée le
+        %th Rappel le
         %th Payée le
         %th Status
         %th.au_centre ✔/✘
@@ -84,16 +93,12 @@
           %td.a_droite
             = invoice.sent_at
           %td.a_droite
+            - if dr = invoice.dernier_rappel
+              = "#{dr[:num]}e :"
+              = dr[:date]
+          %td.a_droite
             = invoice.paid_at
           %td
             = invoice.status[:texte]
           %td.au_centre
             = invoice.status[:symbole]
-
-    %hr.intrasection_top_liens
-
-    .liens_intrasection
-      = link_to "✯ nouvelle facture", new_invoice_path
-    
-    %hr.intrasection_bottom_liens
-    

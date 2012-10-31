@@ -1,7 +1,14 @@
+# encoding: utf-8
+
 class EventsController < InheritedResources::Base
 
+  def new
+    generate_liste
+    @event = Event.new(params[:event])
+  end
   
   def show
+    generate_liste
     @event = Event.find(params[:id])
     respond_to do |format|
       format.html
@@ -20,9 +27,9 @@ class EventsController < InheritedResources::Base
     if @event.destroy
       redirect_to events_path, :notice => "Event destroyed"
     else
-      mess = 'Error destroying event'
+      mess = "Error destroying event"
       unless @event.errors.empty?
-	mess += " : " + @event.errors.messages[:base].join(", ")
+        mess += " : " + @event.errors.messages[:base].join(", ")
       end
       redirect_to :back, :notice => mess
     end
@@ -31,9 +38,10 @@ class EventsController < InheritedResources::Base
   
 
   def create
-   
-    @event = Event.new(params[:event])   
 
+    generate_liste
+
+    @event = Event.new(params[:event])
     @event.ref = params[:ref_year] + "-" + params[:ref_number] + params[:ref_type]
 
     if @event.save
@@ -48,7 +56,6 @@ class EventsController < InheritedResources::Base
   def update
    
     @event = Event.find(params[:id])
-    
     @event.ref = params[:ref_year] + "-" + params[:ref_number] + params[:ref_type]
 
     if @event.update_attributes(params[:event])
@@ -59,13 +66,21 @@ class EventsController < InheritedResources::Base
  
   end
 
+    
+  def edit
+    generate_liste
+    @event = Event.find(params[:id])
+  end
 
+  
   def overview
+    generate_liste
     @event = Event.find(params[:id])
   end
 
   
   def fullitem
+    generate_liste
     @event = Event.find(params[:id])
   end
 
@@ -92,5 +107,133 @@ class EventsController < InheritedResources::Base
       redirect_to :back, :alert => 'Error removing event from invoice'
     end
   end
+  
+  def index
+  # génération des tableaux de liste de choix
 
+    @categs = Array.new
+    @categs << { :value => 'all', :name => '········' }
+    Category.all.each do |categ|
+      @categs << { :value => categ.id, :name => categ.name }
+    end
+
+    @annees = Array.new
+    @annees << { :value => 'all', :name => '········' }
+    2010.upto ( 2012 ) { |i| # TODO : event_last_year()
+      @annees << { :value => i.to_s, :name => i.to_s } }
+
+    @clients = Array.new
+    @clients << { :value => 'all', :name => '········' }
+    Customer.all.each do |client|
+      @clients << { :value => client.id, :name => client.data.lines.first }
+    end
+
+    @sens = Array.new
+    @sens << { :value => 'up',   :name => '↑↑' }
+    @sens << { :value => 'down', :name => '↓↓' }
+    @sens << { :value => 'ab',   :name => 'αβ' }
+    @sens << { :value => 'nab',  :name => '!αβ' }
+
+    @moments = Array.new
+    @moments << { :value => 'all',   :name => '········' }
+    @moments << { :value => 'past',  :name => 'passé' }
+    @moments << { :value => 'futur', :name => 'futur (-7j)' }
+    
+    @volos = Array.new
+    @volos << { :value => 'all', :name => '········' }
+    Volo.all.each do |volo|
+      @volos << { :value => volo.id, :name => volo.full_name }
+    end
+    
+    generate_liste
+    
+  end
+
+#txt='2012-10-31'
+#
+#re1=	# YYYYMMDD 1
+#
+#re=(re1)
+
+#if m.match(txt)
+#    yyyymmdd1=m.match(txt)[1];
+#    puts "("<<yyyymmdd1<<")"<< "\n"
+#end
+
+
+protected
+
+  def generate_liste
+
+    if (params[:reset] == 'reset')
+      session[:events_categ] = 'all'
+      session[:events_moment] = 'all'
+      session[:events_annee] = 'all'
+      session[:events_client] = 'all'
+      session[:events_sens] = 'up'
+      session[:events_find] = nil
+      session[:events_volo] = 'all'
+    end
+    
+    # assignation des choix, premièrement si paramètres, deuxièmement, si variables de session
+    categ  = params[:categ]  ||= session[:events_categ]
+    moment = params[:moment] ||= session[:events_moment]
+    annee  = params[:annee]  ||= session[:events_annee]
+    client = params[:client] ||= session[:events_client]
+    find   = params[:find]   ||= session[:events_find]
+    volo   = params[:volo]   ||= session[:events_volo]
+    sens   = params[:sens]   ||= session[:events_sens]   ||= 'up'
+
+    # si aucun paramètre ou session, génération de la liste de TOUS
+
+    @services = Service #doit être scopé. (le sera au minimum sur le sens)
+    
+    # affutage selon les paramètres ou les sessions 
+    if categ && categ != 'all'
+        @services = @services.only_categ(categ)
+    end
+    
+    if moment && moment != 'all'
+      if moment == 'past'
+        @services = @services.only_past
+      else
+        @services = @services.only_future_plus_7
+      end
+    end
+    
+    if annee && annee != 'all'
+        @services = @services.only_year(annee)
+    end
+
+    if client && client != 'all'
+        @services = @services.only_customer(client)
+    end
+
+    if find
+      m = Regexp.new('((?:(?:[1]{1}\\d{1}\\d{1}\\d{1})|(?:[2]{1}\\d{3}))[-:\\/.](?:[0]?[1-9]|[1][012])[-:\\/.](?:(?:[0-2]?\\d{1})|(?:[3][01]{1})))(?![\\d])',Regexp::IGNORECASE)
+      if m.match(find)
+        @services = @services.only_date(Date.new(find[0,4].to_i, find[5,2].to_i, find[8,2].to_i))
+      else
+        @services = @services.only_find(find)
+      end
+    end
+
+    if volo && volo != 'all'
+        @services = @services.only_volo(volo)
+    end
+
+    if sens
+      if sens == 'down'
+        @services = @services.by_date_inverted
+      elsif sens == 'ab'
+        @services = @services.by_name
+      elsif sens == 'nab'
+        @services = @services.by_name_inverted
+      else #== 'up'
+        @services = @services.by_date
+      end
+    end
+    
+  end
+  
 end

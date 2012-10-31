@@ -1,0 +1,347 @@
+-# mise en session des paramètres
+
+- if (params[:de_annee].present?)
+  - session[:montants_de_annee] = params[:de_annee] ||= 2010
+- if (params[:to_annee].present?)
+  - session[:montants_to_annee] = params[:to_annee] ||= 2012
+
+- de_annee = session[:montants_de_annee].to_i
+- to_annee = session[:montants_to_annee].to_i
+
+:ruby
+
+  @annees = Array.new
+  2010.upto ( 2012 ) { |i| # TODO : event_last_year()
+    @annees << { :value => i.to_s, :name => i.to_s } }
+
+  table = Array.new
+
+  (de_annee..to_annee).each do |année|
+
+    sstab_an = Array.new
+
+    (1..12).each do |mois|
+      
+      dadate = Date.new(année, mois, 1)
+      un_mois = (dadate..dadate+1.month-1.day)
+      services = Service.where(:starts_at => un_mois)
+      inv_sent = Invoice.where(:sent_at => un_mois)
+      inv_paid = Invoice.where(:paid_at => un_mois)
+      
+      presté_ser = Array.new
+      presté = BigDecimal.new("0,0")
+      services.each do |service|
+        presté += service.calcul_prix_included
+        d1 = service.event.services.order(:starts_at).first.starts_at
+        d2 = service.event.services.order(:ends_at).last.ends_at
+        d5 = to_euro(service.event.calcul_prix_included)
+        if service.event.invoice
+          d3 = service.event.invoice.sent_at
+          d4 = service.event.invoice.paid_at
+          d6 = to_euro(service.event.invoice.calcul_prix)
+        end
+        presté_ser << [service.fullname, to_euro(service.calcul_prix_included), service.id, d1, d2, d3, d4, d5, d6]
+      end
+
+      payé_ser = Array.new
+      payé = BigDecimal.new("0,0")
+      services.each do |service|
+        if service.event.invoice && service.event.invoice.paid_at
+          payé += service.calcul_prix_included
+          d1 = service.event.services.order(:starts_at).first.starts_at
+          d2 = service.event.services.order(:ends_at).last.ends_at
+          d3 = service.event.invoice.sent_at
+          d4 = service.event.invoice.paid_at
+          d5 = to_euro(service.event.calcul_prix_included)
+          d6 = to_euro(service.event.invoice.calcul_prix)
+          payé_ser << [service.fullname, to_euro(service.calcul_prix_included), service.id, d1, d2, d3, d4, d5, d6]
+        end
+      end
+
+      reçu_ser = Array.new
+      reçu = BigDecimal.new("0,0")
+      inv_paid.each do |invoice|
+        if invoice.events.count > 0 # pour ne compter que les factures "SSCR"
+          reçu += invoice.calcul_prix
+          invoice.events.each do |event|
+            event.services.each do |service|
+              d1 = service.event.services.order(:starts_at).first.starts_at
+              d2 = service.event.services.order(:ends_at).last.ends_at
+              d3 = service.event.invoice.sent_at
+              d4 = service.event.invoice.paid_at
+              d5 = to_euro(service.event.calcul_prix_included)
+              d6 = to_euro(service.event.invoice.calcul_prix)
+              reçu_ser << [service.fullname, to_euro(service.calcul_prix_included), service.id, d1, d2, d3, d4, d5, d6]
+            end
+          end
+        end
+      end
+
+      facturé_ser = Array.new
+      facturé = BigDecimal.new("0,0")
+      inv_sent.each do |invoice|
+        if invoice.events.count > 0 # pour ne compter que les factures "SSCR"
+          facturé += invoice.calcul_prix
+          invoice.events.each do |event|
+            event.services.each do |service|
+              d1 = service.event.services.order(:starts_at).first.starts_at
+              d2 = service.event.services.order(:ends_at).last.ends_at
+              d3 = service.event.invoice.sent_at
+              d4 = service.event.invoice.paid_at
+              d5 = to_euro(service.event.calcul_prix_included)
+              d6 = to_euro(service.event.invoice.calcul_prix)
+              facturé_ser << [service.fullname, to_euro(service.calcul_prix_included), service.id, d1, d2, d3, d4, d5, d6]
+            end
+          end
+        end
+      end
+      
+      nonpayé_ser = Array.new
+      nonpayé = BigDecimal.new("0.0")
+      services.each do |service|
+        if service.event.invoice && service.event.invoice.paid_at.nil?
+          nonpayé += service.calcul_prix_included
+          d1 = service.event.services.order(:starts_at).first.starts_at
+          d2 = service.event.services.order(:ends_at).last.ends_at
+          d3 = service.event.invoice.sent_at
+          d4 = service.event.invoice.paid_at
+          d5 = to_euro(service.event.calcul_prix_included)
+          d6 = to_euro(service.event.invoice.calcul_prix)
+          nonpayé_ser << [service.fullname, to_euro(service.calcul_prix_included), service.id, d1, d2, d3, d4, d5, d6]
+        end
+      end
+
+      #inv_paid = Invoice.where(:paid_at => un_mois)
+
+      ligne = [Array.new, Array.new, Array.new, Array.new, Array.new, Array.new, Array.new, Array.new]
+      ligne[0] << année
+      ligne[1] << mois
+      ligne[2] << services.count
+      ligne[3] << presté << presté_ser
+      ligne[4] << payé << payé_ser
+      ligne[5] << reçu << reçu_ser
+      ligne[6] << facturé << facturé_ser
+      ligne[7] << nonpayé << nonpayé_ser
+      sstab_an << ligne
+      
+    end
+    table << sstab_an
+  end
+  
+  # TODO : faire mieux - calcul des totals et totaux (Amélie ta gueule)
+  totgen = [['totaux'],[nil],[0,[],''],[BigDecimal.new("0,0"),[],''],[BigDecimal.new("0,0"),[],''],[BigDecimal.new("0,0"),[],''],[BigDecimal.new("0,0"),[],''],[BigDecimal.new("0,0"),[],'']]
+  table.each do |sstab_an|
+    tot = [['total '+ sstab_an[0][0][0].to_s],[nil],[0,[],''],[BigDecimal.new("0,0"),[],''],[BigDecimal.new("0,0"),[],''],[BigDecimal.new("0,0"),[],''],[BigDecimal.new("0,0"),[],''],[BigDecimal.new("0,0"),[],'']]
+    sstab_an.each do |ligne|
+      (2..7).each do |ind|
+      	tot[ind][0] += ligne[ind][0]
+      	if ligne[ind][1] && ligne[ind][1].count > 0
+        	tot[ind][1] += ligne[ind][1]
+        end
+      end
+    end
+    sstab_an << tot
+    (2..7).each do |ind|
+    	totgen[ind][0] += tot[ind][0]
+      if tot[ind][1] && tot[ind][1].count > 0
+        #totgen[ind][1] += tot[ind][1] # fonctionne, mais risque d'être trop gros
+      end
+    end
+  end
+  sstab_an = Array.new()
+  ligne = [['totaux'],[nil],totgen[2],totgen[3],totgen[4],totgen[5],totgen[6],totgen[7]]
+  sstab_an << ligne
+  table << sstab_an
+
+  # to_euros
+  table.each do |sstab|
+    sstab.each do |ligne|
+      (3..7).each do |ind|
+      	ligne[ind][0] = to_euro(ligne[ind][0])
+        # foireux
+      	# en texte
+      	#if ligne[ind][1]
+      	#  ligne[ind][2] = ''
+        #	ligne[ind][1].each do |s|
+        #	  ligne[ind][2] += '⋅ ' + s + "\n"
+        #	end
+        #end
+      end
+    end
+  end
+
+.main
+  = render 'tools/header', :selected_item => 'montants'
+
+  .section
+
+    %table.invisible
+      %tr
+        %td{:style => 'width: 1%; vertical-align: top; align: left'}
+          %form{:action => '', :method => :get}
+            .dl_search
+              %dl
+                %dt de :
+                %dd
+                  %select{:name => 'de_annee'}
+                    - @annees.each do |item|
+                      - selected = ( item[:value] == session[:montants_de_annee] ? 'selected' : nil )
+                      %option{ :value => item[:value], :selected => selected }= item[:name]
+              %dl
+                %dt à :
+                %dd
+                  %select{:name => 'to_annee'}
+                    - @annees.each do |item|
+                      - selected = ( item[:value] == session[:montants_to_annee] ? 'selected' : nil )
+                      %option{ :value => item[:value], :selected => selected }= item[:name]
+              %dl
+                %dt
+                %dd
+                  %input{:type => :submit, :value => '▶ ▶'}
+
+          
+          %table.grille.spotchi
+            %tr
+              %th{:style => 'font-size: x-small'} Année
+              %th{:style => 'font-size: x-small'} Mois
+              %th{:style => 'font-size: x-small'} # sv
+              %th{:style => 'font-size: x-small'} Presté
+              %th{:style => 'font-size: x-small'} Payé
+              %th{:style => 'font-size: x-small'} Reçu
+              %th{:style => 'font-size: x-small'} Facturé
+              %th{:style => 'font-size: x-small'} Non-payé
+            - table.each do |sstab_an|
+              - sstab_an.each do |ligne|
+                %tr
+                  - unless ligne[0][0][0] == 't'
+                    %td.mono_droite{:style => 'font-size: x-small'}= ligne[0][0]
+                    %td.mono_droite{:style => 'font-size: x-small'}= ligne[1][0]
+                    - en_gris = ligne[2][0] == 0 ? 'color: lightgray' : '' 
+                    %td.mono_droite{:style => 'font-size: x-small;' + en_gris }= ligne[2][0]
+                    - (3..7).each do |ind|
+                      - # check pour highlighter
+                      - if params[:detail] |
+                          && params[:detail].count > 0 |
+                          && ligne[0][0].to_s == params[:detail][0] |
+                          && ligne[1][0].to_s == params[:detail][1] |
+                          && ind.to_s == params[:detail][2] |
+                        - en_vert = '; background: lightgreen' 
+                      - else
+                        - en_vert = ''
+                      - # check pour griser
+                      - en_gris = ligne[ind][0] == "0,00 €" ? 'color: lightgray' : nil 
+                      %td.mono_droite{ :title => ligne[ind][2], :style => 'font-size: x-small' + en_vert }
+                        = link_to ligne[ind][0], montants_path( :params => { :detail => [ligne[0][0], ligne[1][0], ind] } ), :style => en_gris
+                  - else
+                    %th.mono_droite{:style => 'font-size: x-small'}= ligne[0][0]
+                    %th.mono_droite{:style => 'font-size: x-small'}= ligne[1][0]
+                    - en_gris = ligne[2][0] == 0 ? 'color: darkgray' : '' 
+                    %th.mono_droite{:style => 'font-size: x-small;' + en_gris }= ligne[2][0]
+                    - (3..7).each do |ind|
+                      - # check pour highlighter
+                      - if params[:detail] |
+                          && params[:detail].count > 0 |
+                          && ligne[0][0].to_s == params[:detail][0] |
+                          && ligne[1][0].to_s == params[:detail][1] |
+                          && ind.to_s == params[:detail][2] |
+                        - en_vert = '; background: lightgreen' 
+                      - else
+                        - en_vert = ''
+                      - # check pour griser
+                      - en_gris = ligne[ind][0] == "0,00 €" ? 'color: darkgray' : nil 
+                      %th.mono_droite{ :title => ligne[ind][2], :style => 'font-size: x-small; font-color: blue' + en_vert }
+                        - if ligne[0][0] != 'totaux'
+                          = link_to ligne[ind][0], montants_path( :params => { :detail => [ligne[0][0], ligne[1][0], ind] } ), :style => en_gris
+                        
+        %td{:style => 'vertical-align: top; align: left; padding-left: 8px'}
+         
+          - d1 = d2 = d3 = d4 = d5 = d6 = d7 = nil
+         
+          - if params[:service_id]
+            = render "/table_titre_intrasection", :params => { :titre => "Facturation" }
+            = render 'seritems/table', :params => { :service_id => params[:service_id] }
+            
+          - if params[:detail]
+
+            = render "/table_titre_intrasection", :params => { :titre => "Services" }
+            %table.ligne
+              %tr
+                %th Services
+                %th Montant
+
+              - if params[:detail] && params[:detail].count > 0
+                - table.each do |sstab|
+                  - sstab.each do |ligne|
+                    - if ligne[0][0].to_s == params[:detail][0] && ligne[1][0].to_s == params[:detail][1]
+                      - ligne[params[:detail][2].to_i][1].each do |ser|
+                        - if params[:service_id] |
+                            && params[:service_id].to_i == ser[2] |
+                          - en_vert = 'background: lightgreen' 
+                          - d1 = ser[3]
+                          - d2 = ser[4]
+                          - d3 = ser[5]
+                          - d4 = ser[6]
+                          - d5 = ser[1]
+                          - d6 = ser[7]
+                          - d7 = ser[8]
+                        - else
+                          - en_vert = ''
+                        %tr
+                          %td{:style => 'font-size: x-small;' + en_vert }
+                            = link_to ser[0], montants_path( :params => { :detail => params[:detail], :service_id => ser[2] } ), :style => en_vert
+                          %td.mono_droite{:style => 'font-size: x-small;' + en_vert }
+                            = link_to ser[1], montants_path( :params => { :detail => params[:detail], :service_id => ser[2] } ), :style => en_vert
+                            
+          - if params[:service_id]
+            = render "/table_titre_intrasection", :params => { :titre => "Infos" }
+            
+            %table.white.egal
+              %tr
+                %th
+                  %font
+                    presté :
+                %th
+                  %font
+                    envoyé :
+                %th
+                  %font
+                    payé :
+              %tr
+                %td
+                  %font
+                    ⤷
+                    = d1.to_s(:cust_date)
+                    \-
+                    = d2.to_s(:cust_date)
+                %td
+                  %font
+                    ⤷
+                    = d3
+                %td
+                  %font
+                    ⤷
+                    = d4
+            %table.white.egal
+              %tr
+                %th
+                  %font
+                    montant service :
+                %th
+                  %font
+                    montant événement :
+                %th
+                  %font
+                    montant facture :
+              %tr
+                %td
+                  %font
+                    ⤷
+                    = d5
+                %td
+                  %font
+                    ⤷
+                    = d6
+                %td
+                  %font
+                    ⤷
+                    = d7

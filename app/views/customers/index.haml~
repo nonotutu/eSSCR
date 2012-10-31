@@ -1,6 +1,6 @@
 
 .main
-  = render 'tools/header', :selected_item => 'customers'
+  = render "tools/header", :selected_item => "customers"
   
   .section
 
@@ -8,7 +8,7 @@
       %tr
         %th Nom
         %th Adresse
-        %th # E/S
+        %th ? e/s
       - Customer.all.each do |cust|
         %tr
           %td
@@ -24,12 +24,17 @@
             = cust.events.count
             \/
             = s
+            = link_to "⊙", events_path(:params => { :client => cust.id, :reset => 'reset' })
               
-          %td.taille_min
-            = link_to 'show', customer_path(cust.id)
+          %td.manage_link
+            = link_to "⊙", customer_path(cust.id)
 
-    .lien_bas_de_page
-      ➤
-      = link_to 'New customer', new_customer_path
+    %hr.intrasection_top_liens
+            
+    .liens_intrasection
+      = link_to "✯ new", new_customer_path
+              
+    %hr.intrasection_bottom_liens
+
         
   

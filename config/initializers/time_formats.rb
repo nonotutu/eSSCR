@@ -90,10 +90,11 @@
 #   %+ - date(1) (%a %b %e %H:%M:%S %Z %Y)
 
 
-Time::DATE_FORMATS[:cust_short] = "%d/%m/%y - %H:%M"
-Time::DATE_FORMATS[:cust_long]  = "%A %d %B %Y - %Hh%M"
-Time::DATE_FORMATS[:cust_longdate]  = "%A %d %B %Y"
-Time::DATE_FORMATS[:cust_time]  = "%H:%M"
-Time::DATE_FORMATS[:cust_date]  = "%d/%m/%y"
-Time::DATE_FORMATS[:cust_jdate]  = "%A %d/%m/%y"
-Time::DATE_FORMATS[:cust_jtime]  = "%A %H:%M"
+Time::DATE_FORMATS[:cust_short]    = "%d/%m/%y - %H:%M"
+Time::DATE_FORMATS[:cust_long]     = "%A %d %B %Y - %Hh%M"
+Time::DATE_FORMATS[:cust_longdate] = "%A %d %B %Y"
+Time::DATE_FORMATS[:cust_time]     = "%H:%M"
+Time::DATE_FORMATS[:cust_date]     = "%d/%m/%y"
+Time::DATE_FORMATS[:cust_jdate]    = "%A %d/%m/%y"
+Time::DATE_FORMATS[:cust_jtime]    = "%A %H:%M"
+Time::DATE_FORMATS[:cust_mmyy]     = "%m/%y"

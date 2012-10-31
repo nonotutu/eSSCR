@@ -6,13 +6,17 @@
       = link_to 'Clients', customers_path, :class => active
 
     %li
-      - active = selected_item == "dispositifs" ? :active : nil
+      - active = selected_item == 'dispositifs' ? :active : nil
       = link_to "Dispositifs", dispositifs_path, :class => active
 
     %li
       - active = selected_item == 'templitems' ? :active : nil
-      = link_to 'Éléments facturés', templitems_path, :class => active
+      = link_to 'Éléments facturables', templitems_path, :class => active
       
     %li
       - active = selected_item == 'crentites' ? :active : nil
       = link_to 'Entités CR', crentites_path, :class => active
+      
+    %li
+      - active = selected_item == 'montants' ? :active : nil
+      = link_to 'Montants', montants_path

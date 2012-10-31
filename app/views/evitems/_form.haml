@@ -11,13 +11,10 @@
     evitem        = item
   end
 
-=# formulaire mis en page
-%table.formulaire
-  %tr
-    %th
-      %i
-        Template :
-    %td{ :colspan => '5' }
+.dl_form
+  %dl
+    %dt Modèle
+    %dd
       %form{ :method => :get }
         %select{ :name => :templitem_id }
           %option{ :value => '' }
@@ -28,30 +25,28 @@
         %input{ :type => :hidden, :name => 'mode', :value => 'edit' }
         %input{ :type => :submit, :value => 'Use' }
   = simple_form_for ([@event, evitem ||= @evitem ||= Evitem.new]) do |f|
-    %tr
-      %th
-        Name :
-      %td{ :colspan => '5' }
-        = f.input :name, :label => false
-    %tr
-      %th
-        Quantity :
-      %td
-        = f.input :qty, :label => false, :input_html => {:size => 2} 
-      %th
-        Kind :
-      %td
+    %dl
+      %dt Dénomination :
+      %dd
+        = f.input :name, :label => false, :input_html => {:size => 40}
+    %dl
+      %dt Quantité :
+      %dd
+        = f.input :qty, :label => false, :input_html => {:size => 4} 
+    %dl
+      %dt Type :
+      %dd
         = f.input :kind,
             :as => :radio,
             :collection => [['€', 1], ['%', 2]],
             :label_method => :first,
             :value_method => :last,
             :label => false
-      %th
-        Price :
-      %td
-        = f.input :price, :label => false, :input_html => {:size => 2} 
-    %tr
-      %td
-      %td{ :colspan => '5', :align => :right }
+    %dl
+      %dt Prix :
+      %dd
+        = f.input :price, :label => false, :input_html => {:size => 4} 
+    %dl
+      %dt
+      %dd
         = f.button :submit    

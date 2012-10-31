@@ -7,9 +7,9 @@
 .left_menus
   .menu_gauche_3
     %ul
-      -#%li= link_to "✯ nouvelle facture", new_invoice_path
-      -#%hr
+      %li= link_to "✯ nouvelle facture", new_invoice_path
+      %hr
       - @invoices.each do |invoice|
         %li
           - active = (invoice_id == invoice.id ? :active_light : nil)
-          = link_to invoice.to_s, invoice_path(invoice.id), :class => active
+          = link_to invoice.to_s, invoice_overview_path(invoice.id), :class => active

@@ -54,4 +54,3 @@ gem 'prawn'
 
 # arno: accès
 gem 'cancan'
-gem 'authlogic'

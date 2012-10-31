@@ -1,14 +1,15 @@
-
-= render 'events/list'
-
 .main
 
   .section
   
-    = render "/table_titre_intrasection", :params => { :titre => "New event" }
+    = render '/table_titre_intrasection', :params => { :titre => 'Nouvel événement' }
   
     = render 'form'
+
+    %hr.intrasection_top_liens
     
-  .lien_bas_de_page
-    ➤
-    = link_to "Back", events_path
+    .liens_intrasection
+
+      = link_to "⇇ back", events_path
+      
+    %hr.intrasection_bottom_liens
