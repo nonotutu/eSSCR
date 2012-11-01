@@ -144,6 +144,7 @@ table.base_with_padding
 
 table.little
   @extend table.base_with_padding
+  @extend table.base_with_href
 
 $c-red: 0
 $c-green: 0

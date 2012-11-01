@@ -33,7 +33,10 @@
           %td
             = cust.events.includes(:invoice).where('invoices.paid_at IS NULL').count
           %td
-            = Invoice.where('customer_data = ? ', cust.data).count
+            - c = cust.data.lines.first
+            - l = c.length
+            -# TODO : changer cette méthode pourrie
+            = Invoice.where('SUBSTR(customer_data,0,?) = ? AND paid_at IS NULL', l, c[0..l-2]).count
               
           %td.manage_link
             = link_to "⊙", customer_path(cust.id)

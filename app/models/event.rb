@@ -63,9 +63,17 @@ class Event < ActiveRecord::Base
       end
     else
       unless self.is_free || self.invoice
-        {:texte => "à facturer", :code => 3}
+        {:texte => "terminé - à facturer", :code => 3}
       else
-        {:texte => "terminé", :code => 1}
+        if self.invoice
+          unless self.invoice.paid_at
+            {:texte => "terminé - attente paiement", :code => 4}
+          else
+            {:texte => "terminé & payé", :code => 1}
+          end
+        else
+          {:texte => "terminé", :code => 5} # gratuit
+        end
       end
     end
   end

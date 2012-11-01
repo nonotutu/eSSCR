@@ -41,7 +41,7 @@ class Service < ActiveRecord::Base
   scope :only_find, lambda  { |find| includes(:event).where("events.name LIKE '%#{find}%' OR events.place LIKE '%#{find}%'" ) unless find.nil? }
   scope :only_customer, lambda { |client| includes(:event).where("events.customer_id = #{client}") unless client.nil? }
   scope :only_volo, lambda { |volo| includes(:volos).where("volos.id = #{volo}") unless volo.nil? }
-  scope :only_date, lambda { |date| where('services.starts_at >= ? AND services.ends_at <= ?', date, date) unless date.nil? }
+  scope :only_date, lambda { |date| where('services.starts_at >= ? AND services.starts_at <= ?', date, date+1.day) unless date.nil? }
 
   scope :by_date, order('services.starts_at')
   scope :by_date_inverted, order('services.starts_at DESC')

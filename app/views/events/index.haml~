@@ -90,8 +90,8 @@
               %dl
                 %dt Liste :
                 %dd
-                  %input{ :name => 'liste_type', :checked => ( ( session[:events_liste_type] == '1' ) ? 'checked' : '') , :type => 'radio', :value => '1' } événements
-                  %input{ :name => 'liste_type', :checked => ( ( session[:events_liste_type] == '2' ) ? 'checked' : '') , :type => 'radio', :value => '2' } événements & services
+                  %input{ :name => 'liste_type', :checked => ( ( session[:events_liste_type] == '1' ) ? 'checked' : nil) , :type => 'radio', :value => '1' } événements
+                  %input{ :name => 'liste_type', :checked => ( ( session[:events_liste_type] == '2' ) ? 'checked' : nil) , :type => 'radio', :value => '2' } événements & services
               %dl
                 %dt
                 %dd
@@ -138,7 +138,7 @@
           %th Cat
           %th Événement
           %th Période
-          %th # services
+          %th services
           %th Status
         - Event.only_without_services.each do |event|
           %tr
