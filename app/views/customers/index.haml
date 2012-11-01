@@ -9,6 +9,9 @@
         %th Nom
         %th Adresse
         %th ? e/s
+        %th ? ep
+        %th ? enp
+        %th ? fnp
       - Customer.all.each do |cust|
         %tr
           %td
@@ -25,6 +28,12 @@
             = cust.events.count
             \/
             = s
+          %td
+            = cust.events.includes(:invoice).where('invoices.paid_at IS NOT NULL').count
+          %td
+            = cust.events.includes(:invoice).where('invoices.paid_at IS NULL').count
+          %td
+            = Invoice.where('customer_data = ? AND paid_at IS NULL', cust.data).count
               
           %td.manage_link
             = link_to "⊙", customer_path(cust.id)

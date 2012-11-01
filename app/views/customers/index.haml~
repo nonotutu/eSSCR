@@ -9,6 +9,9 @@
         %th Nom
         %th Adresse
         %th ? e/s
+        %th ? ep
+        %th ? enp
+        %th ? fnp
       - Customer.all.each do |cust|
         %tr
           %td
@@ -18,13 +21,19 @@
               = ligne
               %br
           %td
+            = link_to "⊙", events_path(:params => { :client => cust.id, :reset => 'reset' })
             - s = 0
             - cust.events.each do |c|
               - s += c.services.count
             = cust.events.count
             \/
             = s
-            = link_to "⊙", events_path(:params => { :client => cust.id, :reset => 'reset' })
+          %td
+            = cust.events.includes(:invoice).where('invoices.paid_at IS NOT NULL').count
+          %td
+            = cust.events.includes(:invoice).where('invoices.paid_at IS NULL').count
+          %td
+            = Invoice.where('customer_data = ? ', cust.data).count
               
           %td.manage_link
             = link_to "⊙", customer_path(cust.id)

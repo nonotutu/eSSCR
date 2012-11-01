@@ -39,6 +39,7 @@ class InvoicesController < InheritedResources::Base
     @sens << { :value => "down", :name => "↓↓" }
 
     @status = Array.new
+    @status << { :value => "0", :name => "········" }
     @status << { :value => '-1', :name => "erreur" }
     @status << { :value => '1', :name => "payée" }
     @status << { :value => '2', :name => "à envoyer" }
@@ -90,14 +91,24 @@ protected
       when '1'
         @invoices = @invoices.only_with_events
       when '2'
-        @invoices = @invoices.only_without_events
+        @invoices = @invoices.only_without_events # TODO : ne fonctionne pas avec .all
       end
     end
- 
+     
     if sens && sens == 'down'
-      @invoices = @invoices.reverse
+      @invoices = @invoices.by_number_inverted
     else # sens == 'up'
-      @invoices = @invoices.all
+      @invoices = @invoices.by_number
+    end
+
+    if status && status != '0' # dernier car non scopable TODO : le scopabilifier
+      invoices = []
+      @invoices.each do |invoice|
+        if invoice.status[:code] == status
+          invoices << invoice
+        end
+      end
+      @invoices = invoices
     end
     
   end

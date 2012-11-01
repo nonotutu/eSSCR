@@ -75,7 +75,7 @@
         %th Numéro
         %th Client (papier)
         %th Montant
-        %th # événements
+        %th # evts
         %th Envoyée le
         %th Rappel le
         %th Payée le

@@ -10,6 +10,10 @@
     session[:invoices_categ] = params[:categ]
   end
 
+  if (params[:status].present?)
+    session[:invoices_status] = params[:status]
+  end
+
   if (params[:sens].present?)
     session[:invoices_sens] = params[:sens]
   end
@@ -39,6 +43,13 @@
                   %select{:name => "categ"}
                     - @categs.each do |item|
                       - selected = ( ( item[:value] == session[:invoices_categ] ) ? 'selected' : nil )
+                      %option{ :value => item[:value], :selected => selected }= item[:name]
+              %dl
+                %dt Status :
+                %dd
+                  %select{:name => "status"}
+                    - @status.each do |item|
+                      - selected = ( ( item[:value] == session[:invoices_status] ) ? 'selected' : nil )
                       %option{ :value => item[:value], :selected => selected }= item[:name]
               %dl
                 %dt Sens :
