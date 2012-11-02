@@ -40,6 +40,10 @@ module ApplicationHelper
   def invoice_last_year()
     begin Invoice.order(:number).last.number[0..3].to_i rescue 2010 end
   end
+
+  def last_year()
+    max(event_last_year(), invoice_last_year())
+  end
   
   def to_euro(number)
     number_to_currency(number, :separator => ',', :delimiter => ' ', :unit => "€", :format => "%n %u", :negative_format => "- %n %u")

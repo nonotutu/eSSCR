@@ -1,5 +1,5 @@
 = simple_form_for @customer do |f|
-  .dl_form
+  .dl.form
     %dl
       %dt Data :
       %dd

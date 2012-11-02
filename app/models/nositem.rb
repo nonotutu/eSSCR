@@ -1,3 +1,5 @@
+#coding: UTF-8
+
 class Nositem < ActiveRecord::Base
   
   attr_accessible :invoice_id, :pos, :name, :kind, :qty, :price
@@ -10,11 +12,13 @@ class Nositem < ActiveRecord::Base
   validate  :kind_is_one_or_two
   validate  :qty_is_not_nil_if_kind_is_1
   validates :price, :presence => true
+
+  before_create :prevent_update_if_invoice_sent_or_paid     #,  :notice => "Ajout impossible : Facture envoyée et/ou payée."
+  before_update :prevent_update_if_invoice_sent_or_paid     #,  :notice => "Modification impossible : Facture envoyée et/ou payée."
+  before_destroy :prevent_update_if_invoice_sent_or_paid    #, :notice => "Suppression impossible : Facture envoyée et/ou payée."
   
   def kind_is_one_or_two
-    if ( self.kind != 1 && self.kind != 2 )
-      self.kind = 1
-    end
+    self.kind == 1 || self.kind == 2
   end
   
   def qty_is_not_nil_if_kind_is_1
@@ -24,6 +28,14 @@ class Nositem < ActiveRecord::Base
       end
     else
       self.qty = 0
+    end
+  end
+ 
+private
+  
+  def prevent_update_if_invoice_sent_or_paid
+    if self.invoice.sent_at || self.invoice.paid_at
+      false
     end
   end
   

@@ -119,7 +119,7 @@ class EventsController < InheritedResources::Base
 
     @annees = Array.new
     @annees << { :value => 'all', :name => '········' }
-    2010.upto ( 2012 ) { |i| # TODO : event_last_year()
+    2010.upto ( event_last_year() ) { |i|
       @annees << { :value => i.to_s, :name => i.to_s } }
 
     @clients = Array.new
@@ -235,5 +235,11 @@ protected
     end
     
   end
-  
+
+private
+
+  def event_last_year()
+    begin Service.order(:ends_at).last.fin.year rescue 2010 end
+  end
+
 end

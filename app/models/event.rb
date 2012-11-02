@@ -23,6 +23,8 @@ class Event < ActiveRecord::Base
   scope :only_without_services, lambda { includes(:services) - Event.joins(:services) }
   scope :only_without_invoice_and_not_free, where(:invoice_id => nil).where(:is_free => false)
   
+  scope :only_year, lambda { |annee| includes(:services).where("SUBSTR(services.starts_at,1,4) = ?", annee.to_s).group(:event_id) }
+  
   scope :by_date, includes(:services).order("services.starts_at")
 
   def to_s

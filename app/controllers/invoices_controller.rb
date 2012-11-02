@@ -26,7 +26,7 @@ class InvoicesController < InheritedResources::Base
     # génération des tableaux de liste de choix
     @annees = Array.new
     @annees << { :value => "all", :name => "········" } #☰☱☳☷☶☴☰☵☲
-    2010.upto ( 2012 ) { |i| # TODO : invoice_last_year()
+    2010.upto ( invoice_last_year() ) { |i|
       @annees << { :value => i.to_s, :name => i.to_s } }
 
     @categs = Array.new
@@ -111,6 +111,11 @@ protected
       @invoices = invoices
     end
     
+  end
+  
+private
+  def invoice_last_year()
+    begin Invoice.order(:number).last.number[0..3].to_i rescue 2010 end
   end
 
 end

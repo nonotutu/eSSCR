@@ -1,22 +1,22 @@
 #coding: UTF-8
 
-class Seritem < ActiveRecord::Base
+class Nositem < ActiveRecord::Base
   
-  attr_accessible :service_id, :pos, :name, :kind, :qty, :price
+  attr_accessible :invoice_id, :pos, :name, :kind, :qty, :price
   
-  belongs_to :service
+  belongs_to :invoice
   
-  validates :service_id, :presence => true
+  validates :invoice_id, :presence => true
   validates :pos, :numericality => { :greater_than => 0 }
   validates :name, :presence => true
   validate  :kind_is_one_or_two
   validate  :qty_is_not_nil_if_kind_is_1
   validates :price, :presence => true
-  
+
   before_create :prevent_update_if_invoice_sent_or_paid     #,  :notice => "Ajout impossible : Facture envoyée et/ou payée."
   before_update :prevent_update_if_invoice_sent_or_paid     #,  :notice => "Modification impossible : Facture envoyée et/ou payée."
   before_destroy :prevent_update_if_invoice_sent_or_paid    #, :notice => "Suppression impossible : Facture envoyée et/ou payée."
-   
+  
   def kind_is_one_or_two
     self.kind == 1 || self.kind == 2
   end
@@ -30,7 +30,7 @@ class Seritem < ActiveRecord::Base
       self.qty = 0
     end
   end
-  
+ 
 private
   
   def prevent_update_if_invoice_sent_or_paid

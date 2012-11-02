@@ -8,10 +8,9 @@
       %tr
         %th Nom
         %th Adresse
-        %th ? e/s
+        %th ? e(s)
         %th ? ep
         %th ? enp
-        %th ? fnp
       - Customer.all.each do |cust|
         %tr
           %td
@@ -21,22 +20,8 @@
               = ligne
               %br
           %td
+            = cust.nb_evt_srv
             = link_to "⊙", events_path(:params => { :client => cust.id, :reset => 'reset' })
-            - s = 0
-            - cust.events.each do |c|
-              - s += c.services.count
-            = cust.events.count
-            \/
-            = s
-          %td
-            = cust.events.includes(:invoice).where('invoices.paid_at IS NOT NULL').count
-          %td
-            = cust.events.includes(:invoice).where('invoices.paid_at IS NULL').count
-          %td
-            - c = cust.data.lines.first
-            - l = c.length
-            -# TODO : changer cette méthode pourrie
-            = Invoice.where('SUBSTR(customer_data,0,?) = ? AND paid_at IS NULL', l, c[0..l-2]).count
               
           %td.manage_link
             = link_to "⊙", customer_path(cust.id)

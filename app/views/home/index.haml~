@@ -20,6 +20,14 @@
                     Status :
                     = service.status
           = render "/table_titre_intrasection", :params => { :titre => "Zone test" }
+          Année en cours :
+          = Date.today.year
+          %br
+          Last service year :
+          = Event.
+          %br
+          Last invoice year :
+          %br
           - e = Event.find(36)
           - s = Service.find(86)
           = e.name
@@ -46,7 +54,7 @@
           %ul.empty
             - Service.only_past.group(:event_id).only_not_invoiced.each do |service|
               %li
-                = link_to ( service.event.name + " - " + to_euro(calcul_prix_event_included(service.event.id)) ), |
+                = link_to ( service.event.name + " - " + to_euro(service.event.calcul_prix_included) ), |
                   event_overview_path(service.event.id)                                                           |
           = render "/table_titre_intrasection", :params => { :titre => "Factures à envoyer" }
           %ul.empty

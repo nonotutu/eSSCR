@@ -1,9 +1,9 @@
 -# mise en session des paramètres
 
 - if (params[:de_annee].present?)
-  - session[:montants_de_annee] = params[:de_annee] ||= 2010
+  - session[:montants_de_annee] = params[:de_annee] ||= event_last_year()
 - if (params[:to_annee].present?)
-  - session[:montants_to_annee] = params[:to_annee] ||= 2012
+  - session[:montants_to_annee] = params[:to_annee] ||= event_last_year()
 
 - de_annee = session[:montants_de_annee].to_i
 - to_annee = session[:montants_to_annee].to_i
@@ -11,7 +11,7 @@
 :ruby
 
   @annees = Array.new
-  2010.upto ( 2012 ) { |i| # TODO : event_last_year()
+  2010.upto ( event_last_year() ) { |i|
     @annees << { :value => i.to_s, :name => i.to_s } }
 
   table = Array.new

@@ -5,7 +5,7 @@
       %dd
         = f.input :starts_at,                      
                   :start_year => 2010,             
-                  :end_year => Date.today.year+2,  
+                  :end_year => Date.today.year+1,  
                   :minute_step => 5,               
                   :order => [:day, :month, :year], 
                   :label => false                  
@@ -14,7 +14,7 @@
       %dd
         = f.input :ends_at,                        
                   :start_year => 2010,             
-                  :end_year => Date.today.year+2,  
+                  :end_year => Date.today.year+1,  
                   :minute_step => 5,               
                   :order => [:day, :month, :year], 
                   :label => false                  

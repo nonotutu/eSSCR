@@ -26,7 +26,7 @@ class InvoicesController < InheritedResources::Base
     # génération des tableaux de liste de choix
     @annees = Array.new
     @annees << { :value => "all", :name => "········" } #☰☱☳☷☶☴☰☵☲
-    2010.upto ( 2012 ) { |i| # TODO : invoice_last_year()
+    2010.upto ( invoice_last_year() ) { |i|
       @annees << { :value => i.to_s, :name => i.to_s } }
 
     @categs = Array.new
@@ -101,7 +101,7 @@ protected
       @invoices = @invoices.by_number
     end
 
-    if status && status != '0' # dernier car non scopable TODO : le scopifabiliser
+    if status && status != '0' # dernier car non scopable TODO : le scopabilifier
       invoices = []
       @invoices.each do |invoice|
         if invoice.status[:code] == status

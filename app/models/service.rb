@@ -31,7 +31,7 @@ class Service < ActiveRecord::Base
   before_destroy :prevent_destroy_unless_service_empty
   before_update :stats_to_zero
 
-  scope :only_year, lambda  { |year| where('SUBSTR(services.starts_at,1,4) = ?', year) unless year.nil? }
+  scope :only_year, lambda  { |year| where('SUBSTR(services.starts_at,1,4) = ?', year.to_s) unless year.nil? }
   scope :only_categ, lambda { |categ| includes(:event).where('events.category_id = ?', categ) unless categ.nil? }
   scope :only_not_invoiced, includes(:event).where('events.invoice_id IS NULL') # TODO : OR = "" ?
   scope :only_future, where('services.starts_at >= ?', Date.today)

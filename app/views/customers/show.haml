@@ -3,7 +3,10 @@
   = render 'tools/header', :selected_item => "customers"
   
   .section
-    .dl_deux_colonnes_base
+    
+    = render "/table_titre_intrasection", :params => { :titre => 'Général' }
+
+    .dl_show
       %dl
         %dt Data :
         %dd
@@ -11,21 +14,61 @@
             - @customer.data.lines.each do |ligne|
               = ligne
               %br
+      %dl
+        %dt
+        %dd
+          .liens_intrasection
+            = link_to "⊚ edit", edit_customer_path(@customer.id)
+            |
+            = link_to "⊗ delete", customer_path(@customer.id), :method => :delete
+
+    = render "/table_titre_intrasection", :params => { :titre => 'Statistiques' }
+
+    .dl_show
+      %dl
+        %dt Événements :
+        %dd
+          %table.little.spotchi
+            %tr
+              %th Année
+              %th Événements
+              %th Services
+              %th Payés
+              %th Non payés
+              %th Montant
+            - (2010..last_year()).each do |année|
+              %tr
+                %td.mono_droite
+                  = année
+                %td.mono_droite
+                  = @customer.nb_events(année)
+                %td.mono_droite
+                  = @customer.nb_services(année)
+                %td.mono_droite
+                  = @customer.nb_evt_paid(année)
+                %td.mono_droite
+                  = @customer.nb_evt_notpaid(année)
+                %td.mono_droite
+                  = to_euro(@customer.calcul_prix_events(année))
+            %tr
+              %th.mono_droite
+                = 'total'
+                =# link_to "⊙", events_path(:params => { :client => @customer.id, :reset => 'reset' })
+              %th.mono_droite
+                = @customer.nb_events
+              %th.mono_droite
+                = @customer.nb_services
+              %th.mono_droite
+                = @customer.nb_evt_paid
+              %th.mono_droite
+                = @customer.nb_evt_notpaid
+              %th.mono_droite
+                = to_euro(@customer.calcul_prix_events)
 
     %hr.intrasection_top_liens
     
     .liens_intrasection
       = link_to "⇇ back", customers_path
-      |
-      = link_to "⊚ edit", edit_customer_path(@customer.id)
-      |
-      = link_to "⊗ delete", customer_path(@customer.id), :method => :delete
-            
+
     %hr.intrasection_bottom_liens
-     
-    %ul.empty
-      - @customer.events.each do |event|
-        %li
-          = event.name
-          = "(#{event.services.count})"
-      
+                

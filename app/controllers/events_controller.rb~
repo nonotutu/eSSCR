@@ -119,7 +119,7 @@ class EventsController < InheritedResources::Base
 
     @annees = Array.new
     @annees << { :value => 'all', :name => '········' }
-    2010.upto ( 2012 ) { |i| # TODO : event_last_year()
+    2010.upto ( event_last_year() ) { |i|
       @annees << { :value => i.to_s, :name => i.to_s } }
 
     @clients = Array.new
@@ -212,7 +212,7 @@ protected
     if find
       m = Regexp.new('((?:(?:[1]{1}\\d{1}\\d{1}\\d{1})|(?:[2]{1}\\d{3}))[-:\\/.](?:[0]?[1-9]|[1][012])[-:\\/.](?:(?:[0-2]?\\d{1})|(?:[3][01]{1})))(?![\\d])',Regexp::IGNORECASE)
       if m.match(find)
-        @services = @services.only_date(DateTime.new(find[0,4].to_i, find[5,2].to_i, find[8,2].to_i))
+        @services = @services.only_date(Date.new(find[0,4].to_i, find[5,2].to_i, find[8,2].to_i))
       else
         @services = @services.only_find(find)
       end

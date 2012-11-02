@@ -60,41 +60,6 @@ module ApplicationHelper
   end
 
   
-
-
-  def calcul_prix_service_included(service_id)
-
-    total = BigDecimal.new("0.0")
-    service = Service.find(service_id)
-    
-    total = service.calcul_prix
-    
-    tot = BigDecimal.new("0.0")
-    service.event.evitems.each do |item|
-      if item.kind == 2
-        tot = total * item.price / BigDecimal.new("100.0")
-      end
-      total += tot
-    end
-
-    if service.event.invoice
-      tot = BigDecimal.new("0.0")
-      service.event.invoice.nositems.each do |item|
-        if item.kind == 2
-          tot = total * item.price / BigDecimal.new("100.0")
-        end
-        total += tot
-      end
-    end
-      
-    total
-    
-  end
-
-  
-
-    
-  
 #   [0]   1 : item
 #         2 : sous-total
 #         3 : total services related items

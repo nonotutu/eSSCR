@@ -1,46 +1,69 @@
 = simple_form_for ([@event, @service]) do |f|
-  %table.formulaire
-    %tr
-      %th Début :
-      %td= f.input :starts_at,                      |
-                   :start_year => 2010,             |
-                   :end_year => Date.today.year+2,  |
-                   :minute_step => 5,               |
-                   :order => [:day, :month, :year], |
-                   :label => false                  |
-    %tr
-      %th Fin :
-      %td= f.input :ends_at,                        |
-                   :start_year => 2010,             |
-                   :end_year => Date.today.year+2,  |
-                   :minute_step => 5,               |
-                   :order => [:day, :month, :year], |
-                   :label => false                  |
-    %tr
-      %th Rendez-vous :
-      %td= f.input :rendezvous,                    |
-                   :input_html => { :size => 12 }, |
-                   :label => false                 |
-    %tr
-      %th Départ :
-      %td= f.input :depart_at,                      |
-                   :as => :time,                    |
-                   :label => false,                 |
-                   :include_blank => true           |
-    %tr
-      %th Surplace :
-      %td= f.input :surplace_at,                    |
-                   :start_year => 2010,             |
-                   :end_year => Date.today.year+2,  |
-                   :minute_step => 5,               |
-                   :as => :time,                    |
-                   :label => false,                 |
-                   :include_blank => true           |
-    %tr
-      %th Volontaires nécessaires :
-      %td= f.input :volness,                      |
-                   :input_html => { :size => 2 }, |
-                   :label => false                |
-    %tr
-      %th
-      %td{ :align => :right }= f.submit
+  .dl_deux_colonnes_base
+    %dl
+      %dt Début :
+      %dd
+        = f.input :starts_at,                      
+                  :start_year => 2010,             
+                  :end_year => Date.today.year+2,  
+                  :minute_step => 5,               
+                  :order => [:day, :month, :year], 
+                  :label => false                  
+    %dl
+      %dt Fin :
+      %dd
+        = f.input :ends_at,                        
+                  :start_year => 2010,             
+                  :end_year => Date.today.year+2,  
+                  :minute_step => 5,               
+                  :order => [:day, :month, :year], 
+                  :label => false                  
+    %dl
+      %dt Rendez-vous :
+      %dd
+        = f.input :rendezvous,                    
+                  :input_html => { :size => 12 }, 
+                  :label => false                 
+    %dl
+      %dt Départ :
+      %dd
+        = f.input :depart_at,                     
+                  :as => :time,                   
+                  :minute_step => 5,              
+                  :label => false,                
+                  :include_blank => true          
+    %dl
+      %dt Surplace :
+      %dd
+        = f.input :surplace_at,                    
+                  :minute_step => 5,               
+                  :as => :time,                    
+                  :label => false,                 
+                  :include_blank => true           
+    %dl
+      %dt Volontaires nécessaires :
+      %dd
+        = f.input :volness,                      
+                  :input_html => { :size => 2 }, 
+                  :label => false                
+    %dl
+      %dt Subsistance :
+      %dd
+        = f.input :subs,                               
+                  :as => :radio,                       
+                  :collection => [['non-défini', ""],  
+                                  ['oui', 1],          
+                                  ['non', 0]],         
+                  :label_method => :first,             
+                  :value_method => :last,              
+                  :label => false                      
+    %dl
+      %dt Assuré par :
+      %dd
+        = f.association :crentite,
+                        :collection => Crentite.all,
+                        :label => false
+
+    %dl
+      %dt
+      %dd= f.submit

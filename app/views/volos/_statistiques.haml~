@@ -5,6 +5,10 @@
     %dt Services :
     %dd
       %table.little.spotchi
+        %tr
+          %th Année
+          %th Nb
+          %th Durée
         - (2010..2012).each do |année|
           - if ( q = @volo.quantity_of_services(année) ) != 0
             %tr

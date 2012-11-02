@@ -9,7 +9,7 @@
           %th Année
           %th Nb
           %th Durée
-        - (2010..2012).each do |année|
+        - (2010..event_last_year()).each do |année|
           - if ( q = @volo.quantity_of_services(année) ) != 0
             %tr
               %td.mono_droite
